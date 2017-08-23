@@ -1,3 +1,11 @@
+To run the code:
+	1. navigate to the directory of the project in terminal
+	2. type "php artisan:serve"
+	3. go to http://localhost:8000
+	
+
+
+
 <p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
 
 <p align="center">
