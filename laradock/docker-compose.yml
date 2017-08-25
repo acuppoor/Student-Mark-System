@@ -196,12 +196,12 @@ services:
         - frontend
 
 ### MySQL Container #########################################
-
+#${MYSQL_VERSION}
     mysql:
       build:
         context: ./mysql
-        args:
-          - MYSQL_VERSION=${MYSQL_VERSION}
+#        args:
+#          - MYSQL_VERSION=8.0
       environment:
         - MYSQL_DATABASE=${MYSQL_DATABASE}
         - MYSQL_USER=${MYSQL_USER}
