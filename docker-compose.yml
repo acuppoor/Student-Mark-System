@@ -34,8 +34,8 @@ services:
  mysql:
     build:
       context: ./server/mysql
-#      args:
-#           - MYSQL_VERSION=8.0
+      args:
+           - MYSQL_VERSION=8.0
     volumes_from:
       - applications
 
