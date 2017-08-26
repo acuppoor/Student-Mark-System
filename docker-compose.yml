@@ -1,0 +1,125 @@
+version: "2"
+
+services:
+
+###Applications Code Container (Data volume container) ###################
+ applications:
+  image: busybox
+  volumes:
+      - .:/var/www/html
+
+### Workspace Utilities Container ###########################
+
+ workspace:
+        build:
+            context: ./server/workspace
+            args:
+                - INSTALL_XDEBUG=true
+                - INSTALL_NODE=true
+                - COMPOSER_GLOBAL_INSTALL=true
+                - INSTALL_WORKSPACE_SSH=true
+                - NODE_VERSION=stable
+                - TZ=Africa/Johannesburg
+        volumes_from:
+            - applications
+
+        ports:
+           - "2222:22"
+        tty: true
+        networks:
+              - webserver
+
+
+### MYSQL Container #########################
+ mysql:
+    build:
+      context: ./server/mysql
+#      args:
+#           - MYSQL_VERSION=8.0
+    volumes_from:
+      - applications
+
+    ports :
+          - "3306:3306"
+    environment:
+        MYSQL_DATABASE: studentmarksystem
+        MYSQL_USER: root
+        MYSQL_PASSWORD: root
+        MYSQL_ROOT_PASSWORD: root
+        TZ: Africa/Johannesburg
+    volumes:
+                  - ./storage/database:/var/lib/mysql
+                 # - ${MYSQL_ENTRYPOINT_INITDB}:/docker-entrypoint-initdb.d
+    entrypoint: ['/entrypoint.sh', '--character-set-server=utf8', '--collation-server=utf8_general_ci'] # because of incompatability issue
+    networks:
+      - webserver
+
+
+
+ ### PHP Container #############################
+ php-fpm:
+   build:
+     context: ./server/php-fpm
+     args:
+                     - INSTALL_MYSQLI=true
+
+   volumes_from:
+       - applications
+   volumes:
+       - ./server/php-fpm/php.ini:/usr/local/etc/php/conf.d/php.ini
+   ports:
+       - "9000:9000"
+   depends_on:
+           - workspace
+   environment:
+               # IMPORTANT: Set the Remote Interpreter entry matching name to `laravel`
+               - PHP_IDE_CONFIG=serverName=laravel
+
+   networks:
+       - webserver
+
+
+## Apache Server Container #################################
+
+ apache2:
+    build:
+      context: ./server/apache2
+      args:
+          - PHP_UPSTREAM_CONTAINER=php-fpm
+          - PHP_UPSTREAM_PORT=9000
+    volumes_from:
+          - applications
+    volumes:
+          - ./server/apache2/logs:/var/log/apache2
+          - ./server/apache2/sites-available/lecture.gamification.conf:/etc/apache2/sites-available/lecture.gamification.conf
+          - ./server/apache2/apache2.conf:/etc/apache2/apache2.conf
+    ports:
+          - "8080:80"
+          - "443:443"
+    depends_on:
+        - php-fpm
+
+    networks:
+        - webserver
+
+### phpMyAdmin Container ####################################
+
+ phpmyadmin:
+      build: ./server/phpmyadmin
+      environment:
+        - PMA_ARBITRARY=1
+        - MYSQL_USER=root
+        - MYSQL_PASSWORD=root
+        - MYSQL_ROOT_PASSWORD=root
+      ports:
+        - "8000:80"
+      depends_on:
+        - mysql
+        - php-fpm
+        - apache2
+      networks:
+        - webserver
+
+networks:
+   webserver:
+     driver: bridge

@@ -1,10 +1,59 @@
-## To run the code:
-	- 1. navigate to the directory of the project in terminal
-	- 2. type "php artisan:serve"
-	- 3. go to http://localhost:8000
-	
 
 
+################# Install Docker ###########################################################################################
+ First Step is to install docker
+ Macintosh :
+ Linux :
+ Windows:
+
+############### Starting the application servers ############################################################################
+   - Rename the project folder as lecture_gamification.dev
+   - cd into the project folder
+   
+   Then run the following:
+   - docker-compose up -d
+   Note this will download(if not downloaded yet) the following images:
+    - PHP, Apache, MySQL
+    and it will start their respective containers
+    The PHP image comes installed with composer,npm, bower and phpunit, webpack
+
+############### Working with core Laravel components inside containers ######################################################
+
+   - Type: docker exec -ti lecturegamificationdev_workspace_1 bash
+    Then run the following commands:
+    - composer install
+    - composer update
+    - npm install
+    Note you can always run npm,gulp, bower, phpunit commands in this container
+
+  Continue typing the following:
+ - php artisan clear-compiled
+ - php artisan config:cache
+ - php artisan migrate
+ - npm run dev
+
+Note this is the container whereby you will be typing all your commands
+
+ Finally
+ Go to your browser and open the app on localhost:8080
+ 
+############### MySQL Connection & Logging Into phpMyAdmin For Database Management ###############
+
+You can use any database manager you wish 
+The Login details would be as such
+
+Username: capstone
+Password: capstone123@
+
+The application automatically connects to MYSQL,this is done in the .env file
+
+To Login Using the phpMyAdmin Web Interface head to localhost:8000 and use the following details:
+
+Server: lecturegamificationdev_mysql_1
+Username: capstone
+Password: capstone123@
+
+######################################################################################################
 
 <p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
 
