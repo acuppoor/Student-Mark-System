@@ -12,7 +12,7 @@ ENV APACHE_RUN_GROUP = www-data
 ENV APACHE_LOG_DIR = /var/log/apache2
 
 RUN a2enmod vhost_alias
-RUN ln -s /etc/apache2/sites-available/lecture.gamification.conf /etc/apache2/sites-enabled/000-default.conf
+RUN ln -s /etc/apache2/sites-available/studentmark.system.conf /etc/apache2/sites-enabled/000-default.conf
 
 EXPOSE 80 443
 
