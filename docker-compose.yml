@@ -44,8 +44,8 @@ services:
     environment:
         MYSQL_DATABASE: studentmarksystem
         MYSQL_USER: root
-        MYSQL_PASSWORD: root
-        MYSQL_ROOT_PASSWORD: root
+        MYSQL_PASSWORD: studentmarksystem
+        MYSQL_ROOT_PASSWORD: studentmarksystem
         TZ: Africa/Johannesburg
     volumes:
                   - ./storage/database:/var/lib/mysql
@@ -91,7 +91,7 @@ services:
           - applications
     volumes:
           - ./server/apache2/logs:/var/log/apache2
-          - ./server/apache2/sites-available/lecture.gamification.conf:/etc/apache2/sites-available/lecture.gamification.conf
+          - ./server/apache2/sites-available/studentmark.system.conf:/etc/apache2/sites-available/studentmark.system.conf
           - ./server/apache2/apache2.conf:/etc/apache2/apache2.conf
     ports:
           - "8080:80"
@@ -109,8 +109,8 @@ services:
       environment:
         - PMA_ARBITRARY=1
         - MYSQL_USER=root
-        - MYSQL_PASSWORD=root
-        - MYSQL_ROOT_PASSWORD=root
+        - MYSQL_PASSWORD=studentmarksystem
+        - MYSQL_ROOT_PASSWORD=studentmarksystem
       ports:
         - "8000:80"
       depends_on:
@@ -123,3 +123,5 @@ services:
 networks:
    webserver:
      driver: bridge
+
+
