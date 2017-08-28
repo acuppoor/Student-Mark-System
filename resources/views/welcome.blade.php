@@ -63,8 +63,10 @@
                 margin-bottom: 30px;
             }
         </style>
+        @include('include.bootstrap')
     </head>
     <body>
+    @include('include.nav')
         <div class="flex-center position-ref full-height">
             @if (Route::has('login'))
                 <div class="top-right links">
