@@ -13,10 +13,15 @@
     @include('include.bootstrap')
 </head>
 <body id="page-top">
+<header class="masthead">
+<br/>
+<br/>
+<br/>
+<hr/>
+<br/>
     @include('include.nav')
     @yield('content')
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}"></script>
+</body>
     @include('include.scripts')
 </body>
 </html>

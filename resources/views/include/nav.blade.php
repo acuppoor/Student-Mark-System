@@ -26,7 +26,7 @@
 <hr>
 <br>--}}
 
-<nav class="navbar navbar-expand-lg navbar-light fixed-top" style="background-color: #7DA0B1" id="mainNav">
+<nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
     <div class="container">
         <a class="navbar-brand js-scroll-trigger" href="{{ url('/') }}">
             <img style="height: 50px; width: 50px" src="{{asset('images/uct.png')}}" alt="UCT">
@@ -128,9 +128,4 @@
         </div>
     </div>
 </nav>--}}
-<br/>
-<br/>
-<br/>
-<hr/>
-<br/>
 
