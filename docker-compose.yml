@@ -40,7 +40,7 @@ services:
       - applications
 
     ports :
-          - "3307:3306"
+          - "3306:3306"
     environment:
         MYSQL_DATABASE: studentmarksystem
         MYSQL_USER: root
