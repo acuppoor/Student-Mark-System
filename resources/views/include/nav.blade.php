@@ -48,7 +48,7 @@
                         <a class="nav-link js-scroll-trigger" href="{{ route('register') }}">Register</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link js-scroll-trigger" href="{{ route('register') }}">Contact</a>
+                        <a class="nav-link js-scroll-trigger" href="{{ route('contact') }}">Contact</a>
                     </li>
                 @else
                     {{-- Need to modify parts below --}}
