@@ -13,15 +13,10 @@
     @include('include.bootstrap')
 </head>
 <body id="page-top">
-<header class="masthead">
-<br/>
-<br/>
-<br/>
-<hr/>
-<br/>
+<div class="masthead">
     @include('include.nav')
     @yield('content')
-</body>
     @include('include.scripts')
+</div>
 </body>
 </html>
