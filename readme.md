@@ -2,25 +2,27 @@
 
 ################# Install Docker ###########################################################################################
  First Step is to install docker
- Macintosh :
- Linux :
- Windows:
+ Linux : execute the following command in bash: 
+ $ sudo apt-get install docker-ce
 
 ############### Starting the application servers ############################################################################
-   - Rename the project folder as lecture_gamification.dev
+   - Rename the project folder as studentmarksystem.dev
    - cd into the project folder
    
    Then run the following:
    - docker-compose up -d
    Note this will download(if not downloaded yet) the following images:
-    - PHP, Apache, MySQL
+    - PHP, Apache, MySQL and any other images as required
     and it will start their respective containers
     The PHP image comes installed with composer,npm, bower and phpunit, webpack
-
+```
+    http://localhost:8080 - website
+    hhtp://localhost:8000 - phpmyadmin
+```
 ############### Working with core Laravel components inside containers ######################################################
-
-   - Type: docker exec -ti lecturegamificationdev_workspace_1 bash
-    Then run the following commands:
+    (After the starting the application server, then do as follows)
+   - Type: docker exec -ti studentmarksystemdev_workspace_1 bash
+    Then run the following commands (can skip till the need arise):
     - composer install
     - composer update
     - npm install
@@ -42,27 +44,18 @@ Note this is the container whereby you will be typing all your commands
 You can use any database manager you wish 
 The Login details would be as such
 
-Username: capstone
-Password: capstone123@
+Username: root
+Password: studentmarksystem
 
 The application automatically connects to MYSQL,this is done in the .env file
 
 To Login Using the phpMyAdmin Web Interface head to localhost:8000 and use the following details:
 
-Server: lecturegamificationdev_mysql_1
-Username: capstone
-Password: capstone123@
+Server/Host: studentmarksystemdev_mysql_1
+Username: root
+Password: studentmarksystem
 
 ######################################################################################################
-
-<p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
-
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
 
 ## About Laravel
 
