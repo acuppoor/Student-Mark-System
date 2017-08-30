@@ -25,3 +25,4 @@
 <script src="{{asset('mybootstrap2/js/jquery.easing.min.js')}}"></script>
 <!-- Custom scripts for this template -->
 <script src="{{asset('mybootstrap2/js/new-age.min.js')}}"></script>
+<script src="{{asset('mybootstrap2/js/colourchanger.js')}}"></script>

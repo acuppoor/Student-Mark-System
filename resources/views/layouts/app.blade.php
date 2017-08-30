@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Mark System') }}</title>
+    <title>@yield('title') - Mark System{{--{{ config('app.name', 'Mark System') }}--}}</title>
 
     @include('include.bootstrap')
 </head>

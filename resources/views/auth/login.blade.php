@@ -1,10 +1,14 @@
 @extends('layouts.app')
 
+@section('title')
+    Login
+@endSection
+
 @section('content')
 <div class="container" style="padding-top: 12%">
     <div class="row justify-content-md-center">
         <div class="col-md-6">
-            <div class="panel panel-default">
+            <div class="panel panel-default" style="opacity: 0.9">
                 <div class="panel-heading">
                     <div class="section-heading text-center">
                         <h2>Login</h2>

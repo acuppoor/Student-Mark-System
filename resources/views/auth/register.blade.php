@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('title')
+    Register
+@endSection
+
 @section('content')
 <div class="container" style="padding-top: 5%">
     <div class="row justify-content-md-center">
@@ -54,12 +58,6 @@
                                 </div>
                                 <div class="col-md-12" style="width: 100%">
                                     <input id="studentNumber" type="text" class="form-control" name="studentNumber" value="{{ old('studentNumber') }}" required autofocus>
-
-                                    @if ($errors->has('studentNumber'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('studentNumber') }}</strong>
-                                        </span>
-                                    @endif
                                 </div>
                             </div>
 
@@ -69,14 +67,21 @@
                                 </div>
                                 <div class="col-md-12" style="width: 100%">
                                     <input id="employeeID" type="text" class="form-control" name="employeeID" value="{{ old('employeeID') }}" required autofocus>
-
-                                    @if ($errors->has('employeeID'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('employeeID') }}</strong>
-                                        </span>
-                                    @endif
                                 </div>
                             </div>
+                        </div>
+                        <div>
+                            @if ($errors->has('studentNumber'))
+                                <span class="help-block">
+                                            <strong>{{ $errors->first('studentNumber') }}</strong>
+                                        </span>
+                            @endif
+
+                            @if ($errors->has('employeeID'))
+                                <span class="help-block">
+                                        <strong>{{ $errors->first('employeeID') }}</strong>
+                                    </span>
+                            @endif
                         </div>
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                             <div style="width:100%; text-align: left">
@@ -130,4 +135,19 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="thankyouModal" tabindex="1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Thank you for pre-registering!</h4>
+            </div>
+            <div class="modal-body">
+                <p>Thanks for getting in touch!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection

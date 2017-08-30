@@ -1,10 +1,14 @@
 @extends('layouts.app')
 
+@section('title')
+    Contact
+@endSection
+
 @section('content')
-<div class="container" style="padding-top: 5%">
+<div class="container" style="padding-top: 5%;">
     <div class="row justify-content-md-center">
         <div class="col-md-6">
-            <div class="panel panel-default">
+            <div class="panel panel-default" style="opacity: 0.9">
                 <div class="panel-heading">
                     <div class="section-heading text-center">
                         <h2>Contact Us</h2>
@@ -57,7 +61,7 @@
                             <label for="message" class="col-md-4 form-control-label">Message</label>
 
                             <div class="col-md-12">
-                                <textarea id="message" type="text" class="form-control" name="message" value="{{ old('message') }}" required autofocus></textarea>
+                                <textarea id="message" rows="6" type="text" class="form-control" name="message" value="{{ old('message') }}" required autofocus></textarea>
 
                                 @if ($errors->has('message'))
                                     <span class="help-block">
@@ -80,5 +84,6 @@
         </div>
     </div>
 </div>
+
 <script src="{{asset('mybootstrap2/js/ContactForm.js')}}"></script>
 @endsection
