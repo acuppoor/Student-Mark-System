@@ -24,6 +24,17 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->timestamps();
         });
+
+        DB::table('users')->insert(
+            array(
+                'firstName' => 'Kushal',
+                'lastName' => 'Cuppoor',
+                'studentNumber' => 'cppkus001',
+                'employeeID' => 1234567,
+                'email' => 'cppkus001@myuct.ac.za',
+                'password' => bcrypt('1234567')
+            )
+        );
     }
 
     /**

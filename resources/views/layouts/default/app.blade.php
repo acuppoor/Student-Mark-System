@@ -10,13 +10,13 @@
 
     <title>@yield('title') - Mark System{{--{{ config('app.name', 'Mark System') }}--}}</title>
 
-    @include('include.bootstrap')
+    @include('include.default.bootstrap')
 </head>
 <body id="page-top">
     <div id="main_div" class="masthead">
-        @include('include.nav')
+        @include('include.default.nav')
         @yield('content')
     </div>
-    @include('include.scripts')
+    @include('include.default.scripts')
 </body>
 </html>
