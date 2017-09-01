@@ -15,6 +15,8 @@ Route::get('/', function () {
     return view('dashboard');
 });
 
+Route::get('/login', function (){return view('auth.login');});
+
 Route::get('/contact', 'ContactController@index');
 
 Route::get('/home', 'HomeController@index')->name('home');

@@ -8,6 +8,7 @@
     <div class="sidebar-wrapper">
         <div class="logo">
             <a href="/" class="simple-text">
+                <img src="{{url('images/uct.png')}}" style="width: 50px; height: 50px">
                 Mark System
             </a>
         </div>

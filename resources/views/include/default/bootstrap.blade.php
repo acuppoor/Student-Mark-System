@@ -17,18 +17,17 @@
 
 
 <!-- Bootstrap core CSS -->
-<link href="{{asset('mybootstrap2/css/bootstrap.css')}}" rel="stylesheet">
-<link href="{{asset('first_bootstrap')}}" rel="stylesheet">
+<link href="{{asset('first_bootstrap/css/bootstrap.css')}}" rel="stylesheet">
 
 <!-- Custom fonts for this template -->
-<link rel="stylesheet" href="{{asset('mybootstrap2/css/font-awesome.min.css')}}">
-<link rel="stylesheet" href="{{asset('mybootstrap2/css/simple-line-icons.css')}}">
+<link rel="stylesheet" href="{{asset('first_bootstrap/css/font-awesome.min.css')}}">
+<link rel="stylesheet" href="{{asset('first_bootstrap/css/simple-line-icons.css')}}">
 <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet">
 
 <!-- Plugin CSS -->
-<link rel="stylesheet" href="{{asset('mybootstrap2/css/device-mockups.min.css')}}">
+<link rel="stylesheet" href="{{asset('first_bootstrap/css/device-mockups.min.css')}}">
 
 <!-- Custom styles for this template -->
-<link href="{{asset('mybootstrap2/css/new-age.css')}}" rel="stylesheet">
+<link href="{{asset('first_bootstrap/css/new-age.css')}}" rel="stylesheet">

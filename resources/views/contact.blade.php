@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.default.app')
 
 @section('title')
     Contact
@@ -85,5 +85,5 @@
     </div>
 </div>
 
-<script src="{{asset('mybootstrap2/js/ContactForm.js')}}"></script>
+<script src="{{asset('first_bootstrap/js/ContactForm.js')}}"></script>
 @endsection
