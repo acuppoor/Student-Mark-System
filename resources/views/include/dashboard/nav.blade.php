@@ -1,4 +1,3 @@
-
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -8,11 +7,11 @@
                 <span class="icon-bar bar2"></span>
                 <span class="icon-bar bar3"></span>
             </button>
-            <a class="navbar-brand" href="#">Dashboard</a>
+            <a class="navbar-brand" href="#">@yield('nav_title')</a>
         </div>
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li>
+               {{-- <li>
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="ti-panel"></i>
                         <p>Stats</p>
@@ -38,11 +37,11 @@
                         <i class="ti-settings"></i>
                         <p>Settings</p>
                     </a>
-                </li>
+                </li>--}}
 
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                        {{ Auth::user()->firstName }} <span class="caret"></span>
+                        {{ /*Auth::user()->firstName?Auth::user()->firstName:*/'Kushal' }} <span class="caret"></span>
                     </a>
 
                     <ul class="dropdown-menu" role="menu">
@@ -62,7 +61,6 @@
                                                      document.getElementById('logout-form').submit();">
                                 Logout
                             </a>
-
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                 {{ csrf_field() }}
                             </form>

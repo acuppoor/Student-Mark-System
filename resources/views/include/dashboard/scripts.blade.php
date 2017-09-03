@@ -1,6 +1,7 @@
 <!--   Core JS Files   -->
 <script src="{{asset('second_bootstrap/js/jquery-1.10.2.js')}}" type="text/javascript"></script>
 <script src="{{asset('second_bootstrap/js/bootstrap.min.js')}}" type="text/javascript"></script>
+<script src="{{asset('second_bootstrap/js/custom_script.js')}}"></script>
 
 <!--  Checkbox, Radio & Switch Plugins -->
 <script src="{{asset('second_bootstrap/js/bootstrap-checkbox-radio.js')}}"></script>

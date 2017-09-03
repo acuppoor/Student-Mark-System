@@ -18,6 +18,7 @@
 
 <!-- Bootstrap core CSS -->
 <link href="{{asset('first_bootstrap/css/bootstrap.css')}}" rel="stylesheet">
+<link href="{{asset('first_bootstrap/css/custom_bootstrap.min.css')}}" rel="stylesheet">
 
 <!-- Custom fonts for this template -->
 <link rel="stylesheet" href="{{asset('first_bootstrap/css/font-awesome.min.css')}}">
