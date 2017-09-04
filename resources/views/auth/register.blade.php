@@ -19,8 +19,8 @@
                     <form class="form-horizontal" method="POST" action="{{ route('register') }}">
                         {{ csrf_field() }}
 
-                        <div>
-                            <div style="float: left" class="form-group{{ $errors->has('firstName') ? ' has-error' : '' }}">
+                        <div class="row">
+                            <div class="col-md-6 form-group{{ $errors->has('firstName') ? ' has-error' : '' }}">
                                 <div style="width:100%; text-align: left">
                                     <label for="firstName" class="col-md-6 form-control-label">First Name</label>
                                 </div>
@@ -35,7 +35,7 @@
                                 </div>
                             </div>
 
-                            <div style="float: right" class="form-group{{ $errors->has('lastName') ? ' has-error' : '' }}">
+                            <div class="col-md-6 form-group{{ $errors->has('lastName') ? ' has-error' : '' }}">
                                 <div style="width:100%; text-align: left">
                                     <label for="lastName" class="col-md-6 form-control-label">Last Name</label>
                                 </div>
@@ -51,8 +51,8 @@
                             </div>
 
                         </div>
-                        <div>
-                            <div style="float: left" class="form-group{{ $errors->has('studentNumber') ? ' has-error' : '' }}">
+                        <div class="row">
+                            <div class="col-md-6 form-group{{ $errors->has('studentNumber') ? ' has-error' : '' }}">
                                 <div style="width:100%; text-align: left">
                                     <label for="studentNumber" class="col-md-10 form-control-label">Student/Staff Number</label>
                                 </div>
@@ -61,7 +61,7 @@
                                 </div>
                             </div>
 
-                            <div style="float: right" class="form-group{{ $errors->has('employeID') ? ' has-error' : '' }}">
+                            <div class="col-md-6 form-group{{ $errors->has('employeID') ? ' has-error' : '' }}">
                                 <div style="width:100%; text-align: left">
                                     <label for="employeeID" class="col-md-10 form-control-label">Employee ID</label>
                                 </div>

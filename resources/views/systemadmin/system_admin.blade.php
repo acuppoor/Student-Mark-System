@@ -37,6 +37,12 @@
                         <p>Courses</p>
                     </a>
                 </li>
+                <li id="system_admin_tab">
+                    <a href="/systemadmin/searchmarks">
+                        <i class="ti-panel"></i>
+                        <p>Search Marks</p>
+                    </a>
+                </li>
                 <li class="active">
                     <a href="/systemadmin/admin">
                         <i class="ti-panel"></i>

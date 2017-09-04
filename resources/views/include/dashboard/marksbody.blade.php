@@ -203,7 +203,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="panel" style="border: 1px solid black">
+                                            {{--<div class="panel" style="border: 1px solid black">
                                                 <div class="panel-heading">
                                                     <h6>Query Marks</h6>
                                                 </div>
@@ -222,7 +222,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div>--}}
                                         </div>
                                     </div>
                                 </div>
@@ -357,7 +357,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="panel" style="border: 1px solid black">
+                                            {{--<div class="panel" style="border: 1px solid black">
                                                 <div class="panel-heading">
                                                     <h6>Query Marks</h6>
                                                 </div>
@@ -376,7 +376,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div>--}}
                                         </div>
                                     </div>
                                 </div>

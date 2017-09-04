@@ -82,9 +82,9 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="card">
-                        <a href="#">
+                        <a href="/courseconvenor/courseedit">
                             <div class="header">
-                                <h4 class="title">CSC1016S</h4>
+                                <h4 class="title">1. CSC1016S</h4>
                                 <p class="category">First Year Second Semester Computer Science</p>
                             </div>
                         </a>
@@ -95,6 +95,14 @@
                                 <table>
                                     <tr>
                                         <td>
+                                            Year:
+                                        </td>
+                                        <td>
+                                            2017
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
                                             Number of students:
                                         </td>
                                         <td>
@@ -103,10 +111,18 @@
                                     </tr>
                                     <tr>
                                         <td>
-                                            Number of unresolved queries:
+                                            Start Date:
                                         </td>
                                         <td>
-                                            5
+                                            14th August 2017
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            End Date:
+                                        </td>
+                                        <td>
+                                            10th November 2017
                                         </td>
                                     </tr>
                                 </table>

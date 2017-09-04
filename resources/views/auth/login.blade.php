@@ -18,7 +18,7 @@
                 <div class="panel-body">
                     <form class="form-horizontal" method="POST" action="{{ route('login') }}">
                         {{ csrf_field() }}
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                        <div class="col-md-12 form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                             <label for="email" class="col-md-4 form-control-label">E-Mail Address</label>
 
                             <div class="col-md-12">
@@ -31,7 +31,7 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                        <div class="col-md-12 form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                             <label for="password" class="col-md-4 form-control-label">Password</label>
 
                             <div class="col-md-12">
@@ -45,7 +45,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <div class="col-md-12 form-group">
                             <div class="col-md-6 col-md-offset-4">
                                 <div class="checkbox">
                                     <label>
@@ -54,7 +54,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="col-md-12 form-group">
                             <div {{--class="col-md-8 col-md-offset-4"--}} style="text-align: center">
                                 <button type="submit" class="btn btn-primary btn-outline btn-xl">{{--btn btn-primary">--}}
                                     Login

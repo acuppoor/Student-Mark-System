@@ -30,6 +30,12 @@
                         <p>Courses</p>
                     </a>
                 </li>
+                <li>
+                    <a href="/lecturer/searchmarks">
+                        <i class="ti-panel"></i>
+                        <p>Search Marks</p>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>

@@ -25,15 +25,21 @@
                     </a>
                 </li>
                 <li>
+                    <a href="/teachingassistant/courses">
+                        <i class="ti-panel"></i>
+                        <p>My Marks</p>
+                    </a>
+                </li>
+                <li>
                     <a href="/teachingassistant/courses_ta">
                         <i class="ti-panel"></i>
                         <p>Courses (TA)</p>
                     </a>
                 </li>
                 <li>
-                    <a href="/teachingassistant/courses">
+                    <a href="/teachingassistant/searchmarks">
                         <i class="ti-panel"></i>
-                        <p>Marks</p>
+                        <p>Search Marks</p>
                     </a>
                 </li>
             </ul>

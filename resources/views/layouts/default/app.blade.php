@@ -17,6 +17,7 @@
         @include('include.default.nav')
         @yield('content')
     </div>
+    @include('include.default.footer')
     @include('include.default.scripts')
 </body>
 </html>

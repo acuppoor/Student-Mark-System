@@ -13,8 +13,9 @@
     @include('include.dashboard.bootstrap')
 </head>
 <body>
+<div class="masthead">
 @yield('content')
-
+</div>
 </body>
 
 @include('include.dashboard.scripts')
