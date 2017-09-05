@@ -108,6 +108,14 @@
             </div>
         </nav>
 
+        <div class="row" style="background-color: whitesmoke">
+            <div class="card">
+                <div class="col-md-12">
+                    / <a href="">Faculties & Departments</a>
+                </div>
+            </div>
+        </div>
+
 
         <div class="content">
             <div class="container-fluid">

@@ -1,5 +1,3 @@
-
-
 <!-- Bootstrap core CSS     -->
 <link href="{{asset('second_bootstrap/css/bootstrap.min.css')}}" rel="stylesheet"/>
 

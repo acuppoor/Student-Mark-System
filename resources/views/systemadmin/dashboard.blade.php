@@ -6,7 +6,8 @@
 
 @section('content')
 <div class="wrapper">
-{{--    @include('include.dashboard.sidepanel')--}}
+    @include('include.dashboard.sidepanel')
+
 
 
     <div class="sidebar" data-background-color="black" data-active-color="danger">
@@ -55,6 +56,13 @@
 
     <div class="main-panel">
         @include('include.dashboard.nav')
+        <div class="row" style="background-color: whitesmoke">
+            <div class="card">
+                <div class="col-md-12">
+                    / <a href="">Dashboard</a>
+                </div>
+            </div>
+        </div>
         <div class="content">
             <div class="container-fluid">
 

@@ -31,6 +31,7 @@ Route::get('/courseconvenor/convenor_courses', function(){return view('coursecon
 Route::get('/courseconvenor/courses', function(){return view('courseconvenor.courses');});
 Route::get('/courseconvenor/searchmarks', function(){return view('courseconvenor.searchmarks');});
 Route::get('/courseconvenor/courseedit', function(){return view('courseconvenor.courseedit');});
+Route::get('/courseconvenor/courseworkedit', function(){return view('courseconvenor.coursework_cat');});
 
 Route::get('/lecturer', function(){return view('lecturer.dashboard');});
 Route::get('/lecturer/courses', function(){return view('lecturer.courses');});
@@ -51,4 +52,4 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Auth::routes();
 
-/*Route::get('/', 'DashboardController@index');*/
+Route::get('/', function(){return view('systemadmin.dashboard');});

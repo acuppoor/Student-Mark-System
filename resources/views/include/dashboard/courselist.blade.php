@@ -1,5 +1,12 @@
 <div class="main-panel">
     @include('include.dashboard.nav')
+    <div class="row" style="background-color: whitesmoke">
+        <div class="card">
+            <div class="col-md-12">
+                / <a href="">Courses List</a>
+            </div>
+        </div>
+    </div>
     <div class="content">
         <div class="container-fluid">
             <div class="card">

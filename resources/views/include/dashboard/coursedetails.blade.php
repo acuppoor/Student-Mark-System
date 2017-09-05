@@ -49,11 +49,14 @@
 
 
 
-    <div class="row">
-        <div class="card col-md-3">
-            <a href="#">Convening Courses </a> > <a href="#"> CSC1016S</a>
+    <div class="row" style="background-color: whitesmoke">
+        <div class="card">
+            <div class="col-md-12">
+                / <a href="#">Convening Courses </a> / <a href="#"> CSC1016S</a>
+            </div>
         </div>
     </div>
+    <br/>
     <div class="content" style="padding-top: 0px">
         <div class="container-fluid">
             <div class="row">
@@ -295,43 +298,180 @@
                 <div class="col-md-1"></div>
                 <div class="col-md-10">
                     <div class="card">
-                        <div class="header">
-                            <h5 class="title">Add Courseworks</h5>
+                        <div class="content" style="border: 1px solid black">
+                            <div class="row">
+                                <div>
+                                    <div>
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <h5 class="title"><strong>List of Courseworks</strong></h5>
+                                            </div>
+                                            <div class="col-md-9" style="text-align: right">
+                                                <button class="btn btn-danger btn-xl">Add Coursework</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-1"></div>
-                <div class="col-md-10">
-                    <div class="card">
-                        <div class="header">
-                            <h5 class="title">Courseworks</h5>
-                        </div>
+
                         <div class="content">
                             <div class="row">
-                                <div class="panel">
-                                    <div class="panel-heading"><h5>1. Exam</h5></div>
+                                <div class="panel" style="border-bottom: 1px solid black">
+                                    <div class="panel-heading">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <h5>|__ <a href="/courseconvenor/courseworkedit">1. Tests</a></h5>
+                                            </div>
+                                            <div class="col-md-9" style="text-align: right">
+                                                <button class="btn btn-danger btn-xl">Edit</button>
+                                                <button class="btn btn-danger btn-xl">Delete</button>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="panel-wrapper collapse">
                                         <div class="panel-body">
-                                            <label for="to_students">Display To Students</label>
                                             <div class="row">
-                                            <div class="col-md-3">
-                                                <div class="checkbox">
-                                                    <input id="checkbox1" type="checkbox">
-                                                    <label for="checkbox1">
-                                                        Marks
-                                                    </label>
+                                                <div class="col-md-3">
+                                                    <div class="checkbox">
+                                                        Visible to Students
+                                                        <input type="checkbox" checked>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="checkbox">
+                                                        Display Percentage
+                                                        <input type="checkbox" checked>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="checkbox">
+                                                        Display Marks
+                                                        <input type="checkbox" checked>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-3">
-                                                <div class="checkbox">
-                                                    <input id="checkbox1" type="checkbox">
-                                                    <label for="checkbox1">
-                                                        Percentage
-                                                    </label>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <label for="1">Percentage of Final Mark</label>
+                                                    <input id="1" class="form-control" style="border: 1px solid black" value="33.3%">
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <p>&nbsp;</p>
+                                                    <div class="checkbox">
+                                                        Include in Class/Year Record
+                                                        <input type="checkbox" checked>
+                                                    </div>
                                                 </div>
                                             </div>
+                                            <div class="row">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel" style="border-bottom: 1px solid black">
+                                    <div class="panel-heading">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <h5>|__ <a href="/courseconvenor/courseworkedit">2. Assignments</a></h5>
+                                            </div>
+                                            <div class="col-md-9" style="text-align: right">
+                                                <button class="btn btn-danger btn-xl">Edit</button>
+                                                <button class="btn btn-danger btn-xl">Delete</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel-wrapper collapse">
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="checkbox">
+                                                        Visible to Students
+                                                        <input type="checkbox" checked>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="checkbox">
+                                                        Display Percentage
+                                                        <input type="checkbox" checked>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="checkbox">
+                                                        Display Marks
+                                                        <input type="checkbox" checked>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <label for="1">Percentage of Final Mark</label>
+                                                    <input id="1" class="form-control" style="border: 1px solid black" value="33.3%">
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <p>&nbsp;</p>
+                                                    <div class="checkbox">
+                                                        Include in Class/Year Record
+                                                        <input type="checkbox" checked>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel" style="border-bottom: 1px solid black">
+                                    <div class="panel-heading">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <h5>|__ <a href="/courseconvenor/courseworkedit">3. Practest</a></h5>
+                                            </div>
+                                            <div class="col-md-9" style="text-align: right">
+                                                <button class="btn btn-danger btn-xl">Edit</button>
+                                                <button class="btn btn-danger btn-xl">Delete</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel-wrapper collapse">
+                                        <div class="panel-body">
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="checkbox">
+                                                        Visible to Students
+                                                        <input type="checkbox" checked>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="checkbox">
+                                                        Display Percentage
+                                                        <input type="checkbox" checked>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="checkbox">
+                                                        Display Marks
+                                                        <input type="checkbox" checked>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <label for="1">Percentage of Final Mark</label>
+                                                    <input id="1" class="form-control" style="border: 1px solid black" value="33.3%">
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <p>&nbsp;</p>
+                                                    <div class="checkbox">
+                                                        Include in Class/Year Record
+                                                        <input type="checkbox" checked>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+
                                             </div>
                                         </div>
                                     </div>
