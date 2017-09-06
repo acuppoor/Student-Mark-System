@@ -93,10 +93,18 @@
                 </div>
             </div>
         </nav>
+        <div class="row" style="background-color: whitesmoke">
+            <div class="card">
+                <div class="col-md-12">
+                    / <a href="">Dashboard</a>
+                </div>
+            </div>
+        </div>
         <div class="content">
             <div class="container-fluid">
             </div>
         </div>
+        @include('include.dashboard.footer')
     </div>
 </div>
 @endsection

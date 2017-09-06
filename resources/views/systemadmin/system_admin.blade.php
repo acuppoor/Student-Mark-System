@@ -1,7 +1,7 @@
 @extends('layouts.dashboard.main')
 
 @section('title')
-    Dashboard
+    Admin
 @endsection
 
 @section('content')
@@ -64,6 +64,90 @@
         </div>
         <div class="content">
             <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-md-1"></div>
+                    <div class="col-md-10">
+                        <div class="card">
+                            <div class="header" style="border-bottom: 1px solid black">
+                                <h5 class="title">Add User</h5>
+                            </div>
+                            <div class="content">
+                                <div class="header">
+                                    <h5>Department Admin</h5>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <label for=""><font color="black">Email</font></label>
+                                        <input type="email" class="form-control" style="border: solid 1px black">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for=""><font color="black">Staff #</font></label>
+                                        <input type="text" class="form-control" style="border: solid 1px black">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for=""><font color="black">Department</font></label>
+                                        <select class="form-control" style="border: solid 1px black">
+                                            <option selected>Computer Science</option>
+                                            <option>Biochem</option>
+                                            <option>Physics</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for=""><font color="black">Faculty</font></label>
+                                        <select class="form-control" style="border: solid 1px black">
+                                            <option selected>Science</option>
+                                            <option>Humanities</option>
+                                            <option>Engineering</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row" style="text-align: center"><br><button class="btn btn-danger btn-xl">Add</button> </div>
+                                <hr>
+                                <div class="header"><h5>Course Convenor</h5></div>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <label for=""><font color="black">Email</font></label>
+                                        <input type="email" class="form-control" style="border: solid 1px black">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for=""><font color="black">Staff #</font></label>
+                                        <input type="text" class="form-control" style="border: solid 1px black">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for=""><font color="black">Course</font></label>
+                                        <select class="form-control" style="border: solid 1px black">
+                                            <option selected>CSC1016S</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <label for=""><font color="black">Department</font></label>
+                                        <select class="form-control" style="border: solid 1px black">
+                                            <option selected>Computer Science</option>
+                                            <option>Biochem</option>
+                                            <option>Physics</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for=""><font color="black">Faculty</font></label>
+                                        <select class="form-control" style="border: solid 1px black">
+                                            <option selected>Science</option>
+                                            <option>Humanities</option>
+                                            <option>Engineering</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3" style="text-align: center">
+                                        <p>&nbsp;</p>
+                                        <button class="btn btn-danger btn-xl">Add</button> </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
                 <div class="row">
                     <div class="col-md-1"></div>
                     <div class="col-md-10">
@@ -74,7 +158,7 @@
                             <div class="content">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <label class="form-control-label" for="course_code">Filter by Student Numbers</label>
+                                        <label class="form-control-label" for="course_code">Filter by Student Number</label>
                                         <div class="row">
                                             <div class="col-md-3">
                                                 <input class="form-control" style="border: solid 1px black" placeholder="<none>">
@@ -116,6 +200,7 @@
                                             <th>Firstname</th>
                                             <th>Lastname</th>
                                             <th>Student/Staff Number</th>
+                                            <th>Faculty/Dept</th>
                                             <th>Email</th>
                                             <th>Approve</th>
                                         </tr>
@@ -125,6 +210,7 @@
                                             <td>John</td>
                                             <td>Doe</td>
                                             <td>1234567</td>
+                                            <td>Science/CSC</td>
                                             <td>john@example.com</td>
                                             <td>
                                                 <div class="checkbox">
@@ -136,6 +222,7 @@
                                             <td>Another</td>
                                             <td>Doe</td>
                                             <td>1234567</td>
+                                            <td>Science/CSC</td>
                                             <td>another@example.com</td>
                                             <td>
                                                 <div class="checkbox">
@@ -147,6 +234,7 @@
                                             <td>Other</td>
                                             <td>Doe</td>
                                             <td>1234567</td>
+                                            <td>Science/CSC</td>
                                             <td>other@example.com</td>
                                             <td>
                                                 <div class="checkbox">

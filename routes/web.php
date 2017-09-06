@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('auth.login');
+    return view('menu');
 });
 
 Route::get('/systemadmin', function(){return view('systemadmin.dashboard');});

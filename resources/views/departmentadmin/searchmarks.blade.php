@@ -1,7 +1,7 @@
 @extends('layouts.dashboard.main')
 
 @section('title')
-    Dashboard
+    Search Marks
 @endsection
 
 @section('content')
@@ -48,6 +48,13 @@
 
     <div class="main-panel">
         @include('include.dashboard.nav')
+        <div class="row" style="background-color: whitesmoke">
+            <div class="card">
+                <div class="col-md-12">
+                    / <a href="">Search Marks</a>
+                </div>
+            </div>
+        </div>
         @include('include.dashboard.search')
         @include('include.dashboard.footer')
     </div>

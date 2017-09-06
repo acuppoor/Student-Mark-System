@@ -1,7 +1,7 @@
 @extends('layouts.dashboard.main')
 
 @section('title')
-    View Marks
+    My Marks
 @endsection
 
 @section('nav_title')
