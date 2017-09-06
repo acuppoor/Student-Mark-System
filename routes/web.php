@@ -30,8 +30,17 @@ Route::get('/courseconvenor', function(){return view('courseconvenor.dashboard')
 Route::get('/courseconvenor/convenor_courses', function(){return view('courseconvenor.convenorcourses');});
 Route::get('/courseconvenor/courses', function(){return view('courseconvenor.courses');});
 Route::get('/courseconvenor/searchmarks', function(){return view('courseconvenor.searchmarks');});
-Route::get('/courseconvenor/courseedit', function(){return view('courseconvenor.courseedit');});
+Route::get('/courseconvenor/courseedit', function(){return view('course.coursedetails');});
 Route::get('/courseconvenor/courseworkedit', function(){return view('courseconvenor.coursework_cat');});
+
+Route::get('/course/details', function(){return view('course.coursedetails');});
+Route::get('/course/participants', function(){return view('course.participants');});
+Route::get('/course/coursework', function(){return view('course.coursework');});
+Route::get('/course/marks', function(){return view('course.marks');});
+Route::get('/course/export', function(){return view('course.export');});
+Route::get('/course/courseworkedit', function(){return view('course.cwedit');});
+Route::get('/course/subminimum', function(){return view('course.subminimum');});
+Route::get('/course/tests', function(){return view('course.tests');});
 
 Route::get('/lecturer', function(){return view('lecturer.dashboard');});
 Route::get('/lecturer/courses', function(){return view('lecturer.courses');});
@@ -52,4 +61,4 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Auth::routes();
 
-Route::get('/', function(){return view('systemadmin.dashboard');});
+Route::get('/', function(){return view('menu');});

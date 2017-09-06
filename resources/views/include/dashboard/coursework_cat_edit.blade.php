@@ -52,7 +52,8 @@
     <div class="row" style="background-color: whitesmoke">
         <div class="card">
             <div class="col-md-12">
-                / <a href="#">Convening Courses </a> / <a href="#"> CSC1016S </a> / <a href=""> Tests</a>
+                / <a href="#">Convening Courses </a> / <a href="#"> CSC1016S</a> / <a href=""> Courseworks</a> / <a
+                        href="">Tests</a>
             </div>
         </div>
     </div>
@@ -60,15 +61,14 @@
     <div class="content" style="padding-top: 0px">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-1"></div>
-                <div class="col-md-10 card">
+                <div class="col-md-2"></div>
+                <div class="col-md-8 card">
                     <ul class="nav nav-pills">
-                        <li role="presentation" class="coursetabs"><a href="#">Course Details</a></li>
-                        <li role="presentation" class="active"><a href="#">Participants</a></li>
-                        <li role="presentation"><a href="#">Courseworks</a></li>
-                        <li role="presentation"><a href="#">View/Update Marks</a></li>
-                        <li role="presentation"><a href="#">Import Marks</a></li>
-                        <li role="presentation"><a href="#">Export Marks</a></li>
+                        <li role="presentation"><a href="/course/details">Course Details</a></li>
+                        <li role="presentation"><a href="/course/participants">Participants</a></li>
+                        <li role="presentation" class="active"><a href="/course/coursework">Courseworks</a></li>
+                        <li role="presentation"><a href="/course/marks">View/Update Marks</a></li>
+                        <li role="presentation"><a href="/course/export">Export Marks</a></li>
                     </ul>
                 </div>
             </div>
