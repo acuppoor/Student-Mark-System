@@ -1,7 +1,7 @@
 @extends('layouts.dashboard.main')
 
 @section('title')
-    Dashboard
+    Participants
 @endsection
 
 @section('content')
@@ -111,7 +111,7 @@
                             <ul class="nav nav-pills">
                                 <li role="presentation"><a href="/course/details">Course Details</a></li>
                                 <li role="presentation" class="active"><a href="/course/participants">Participants</a></li>
-                                <li role="presentation"><a href="/course/coursework">Courseworks</a></li>
+                                <li role="presentation"><a href="/course/coursework">Coursework</a></li>
                                 <li role="presentation"><a href="/course/marks">View/Update Marks</a></li>
                                 <li role="presentation"><a href="/course/export">Export Marks</a></li>
                             </ul>

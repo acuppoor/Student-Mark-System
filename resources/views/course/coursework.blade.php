@@ -1,7 +1,7 @@
 @extends('layouts.dashboard.main')
 
 @section('title')
-    Dashboard
+    Coursework
 @endsection
 
 @section('content')
@@ -111,7 +111,7 @@
                             <ul class="nav nav-pills">
                                 <li role="presentation"><a href="/course/details">Course Details</a></li>
                                 <li role="presentation"><a href="/course/participants">Participants</a></li>
-                                <li role="presentation" class="active"><a href="/course/coursework">Courseworks</a></li>
+                                <li role="presentation" class="active"><a href="/course/coursework">Coursework</a></li>
                                 <li role="presentation"><a href="/course/marks">View/Update Marks</a></li>
                                 <li role="presentation"><a href="/course/export">Export Marks</a></li>
                             </ul>
@@ -128,7 +128,7 @@
                                             <div>
                                                 <div class="row">
                                                     <div class="col-md-3">
-                                                        <h5 class="title"><strong>List of Courseworks</strong></h5>
+                                                        <h5 class="title"><strong>List of Coursework</strong></h5>
                                                     </div>
                                                     <div class="col-md-9" style="text-align: right">
                                                         <button class="btn btn-danger btn-xl">Add Coursework</button>
@@ -177,8 +177,8 @@
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-md-4">
-                                                            <label for="1">Percentage of Final Mark</label>
-                                                            <input id="1" class="form-control" style="border: 1px solid black" value="33.3%">
+                                                            <label for="1">Weighting</label>
+                                                            <input id="1" class="form-control" style="border: 1px solid black" value="33.3">
                                                         </div>
                                                         <div class="col-md-4">
                                                             <p>&nbsp;</p>
@@ -230,7 +230,7 @@
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-md-4">
-                                                            <label for="1">Percentage of Final Mark</label>
+                                                            <label for="1">Weighting</label>
                                                             <input id="1" class="form-control" style="border: 1px solid black" value="33.3%">
                                                         </div>
                                                         <div class="col-md-4">
@@ -283,12 +283,8 @@
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-md-4">
-                                                            <label for="1">Percentage of Final Mark</label>
+                                                            <label for="1">Weighting</label>
                                                             <input id="1" class="form-control" style="border: 1px solid black" value="33.3">
-                                                        </div>
-                                                        <div class="col-md-4">
-                                                            <label for="1">Percentage Minimum For DP</label>
-                                                            <input id="1" class="form-control" style="border: 1px solid black" value="-1">
                                                         </div>
                                                         <div class="col-md-4">
                                                             <p>&nbsp;</p>
@@ -297,9 +293,6 @@
                                                                 <input type="checkbox" checked>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="row">
-
                                                     </div>
                                                 </div>
                                             </div>
@@ -341,12 +334,15 @@
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-md-4">
-                                                            <label for="1">Percentage of Final Mark</label>
-                                                            <input id="1" class="form-control" style="border: 1px solid black" value="33.3%">
+                                                            <label for="1">Weighting</label>
+                                                            <input id="1" class="form-control" style="border: 1px solid black" value="33.3">
                                                         </div>
                                                         <div class="col-md-4">
-                                                            <label for="1">Subminimum</label>
-                                                            <input id="1" class="form-control" style="border: 1px solid black" value="45%">
+                                                            <p>&nbsp;</p>
+                                                            <div class="checkbox">
+                                                                Include in Class/Year Record
+                                                                <input type="checkbox" checked>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="row">

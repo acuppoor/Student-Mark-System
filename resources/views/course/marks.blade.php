@@ -1,7 +1,7 @@
 @extends('layouts.dashboard.main')
 
 @section('title')
-    Dashboard
+    Marks
 @endsection
 
 @section('content')
@@ -111,7 +111,7 @@
                             <ul class="nav nav-pills">
                                 <li role="presentation"><a href="/coourse/details">Course Details</a></li>
                                 <li role="presentation"><a href="/course/participants">Participants</a></li>
-                                <li role="presentation"><a href="/course/coursework">Courseworks</a></li>
+                                <li role="presentation"><a href="/course/coursework">Coursework</a></li>
                                 <li role="presentation" class="active"><a href="/course/marks">View/Update Marks</a></li>
                                 <li role="presentation"><a href="/course/export">Export Marks</a></li>
                             </ul>
@@ -134,9 +134,9 @@
                                             <label class="form-control-label" for="course_code">Student/Employee #</label>
                                             <input type="text" class="form-control" style="border: solid black 1px">
                                         </div>
-                                        <div class="col-md-8" style="text-align: right">
+                                        <div class="col-md-8">
                                             <p>&nbsp;</p>
-                                            <button class="btn btn-danger btn-xl">Save</button>
+                                            <button class="btn btn-danger btn-xl">Search</button>
                                         </div>
                                     </div>
                                     <hr>

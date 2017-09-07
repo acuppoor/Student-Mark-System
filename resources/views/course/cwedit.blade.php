@@ -1,7 +1,7 @@
 @extends('layouts.dashboard.main')
 
 @section('title')
-    Dashboard
+    Coursework Edit
 @endsection
 
 @section('content')

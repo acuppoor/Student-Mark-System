@@ -70,9 +70,6 @@
                                     <a href="">Profile</a>
                                 </li>
                                 <li>
-                                    <a href="">Request Account Upgrade</a>
-                                </li>
-                                <li>
                                     <a href="{{url('/contact')}}">Contact</a>
                                 </li>
                                 <hr/>

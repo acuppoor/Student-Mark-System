@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+-<nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
     <div class="container">
         <a class="navbar-brand js-scroll-trigger" href="{{ url('/') }}">
             <img style="height: 50px; width: 50px" src="{{asset('images/uct.png')}}" alt="UCT">
@@ -25,7 +25,7 @@
                     {{-- Need to modify parts below --}}
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                            {{ Auth::user()->name }} <span class="caret"></span>
+                            {{ Auth::user()->firstName }} <span class="caret"></span>
                         </a>
 
                         <ul class="dropdown-menu" role="menu">

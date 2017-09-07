@@ -56,7 +56,7 @@
                         <span class="icon-bar bar2"></span>
                         <span class="icon-bar bar3"></span>
                     </button>
-                    <a class="navbar-brand" href="#">System Admin Dashboard</a>
+                    <a class="navbar-brand" href="#">Admin</a>
                 </div>
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav navbar-right">
@@ -128,27 +128,12 @@
                                             <option selected>CSC1016S</option>
                                         </select>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <label for=""><font color="black">Department</font></label>
-                                        <select class="form-control" style="border: solid 1px black">
-                                            <option selected>Computer Science</option>
-                                            <option>Biochem</option>
-                                            <option>Physics</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label for=""><font color="black">Faculty</font></label>
-                                        <select class="form-control" style="border: solid 1px black">
-                                            <option selected>Science</option>
-                                            <option>Humanities</option>
-                                            <option>Engineering</option>
-                                        </select>
-                                    </div>
                                     <div class="col-md-3" style="text-align: center">
                                         <p>&nbsp;</p>
                                         <button class="btn btn-danger btn-xl">Add</button> </div>
+                                </div>
+                                <div class="row">
+
                                 </div>
                             </div>
                         </div>
@@ -160,7 +145,7 @@
                     <div class="col-md-1"></div>
                     <div class="col-md-10">
                         <div class="card">
-                            <div class="header">
+                            <div class="header" style="border-bottom: solid 1px black">
                                 <h5 class="title">Approve Accounts</h5>
                             </div>
                             <div class="content">
@@ -181,6 +166,11 @@
                                 <hr>
 
                                 <div id="table_results_div" class="row">
+                                    <div class="row" style="text-align: right">
+                                        <div class="col-md-12">
+                                            <button id="search_btn_table" class="btn btn-danger btn-xl">Approve</button>
+                                        </div>
+                                    </div>
                                     <div style="text-align: center">
                                         <nav aria-label="Page navigation">
                                             <ul class="pagination">

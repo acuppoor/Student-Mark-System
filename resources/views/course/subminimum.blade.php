@@ -1,7 +1,7 @@
 @extends('layouts.dashboard.main')
 
 @section('title')
-    Dashboard
+    Subminimum
 @endsection
 
 @section('content')
@@ -112,7 +112,7 @@
                             <ul class="nav nav-pills">
                                 <li role="presentation"><a href="/course/details">Course Details</a></li>
                                 <li role="presentation"><a href="/course/participants">Participants</a></li>
-                                <li role="presentation" class="active"><a href="/course/coursework">Courseworks</a></li>
+                                <li role="presentation" class="active"><a href="/course/coursework">Coursework</a></li>
                                 <li role="presentation"><a href="/course/marks">View/Update Marks</a></li>
                                 <li role="presentation"><a href="/course/export">Export Marks</a></li>
                             </ul>
@@ -225,36 +225,32 @@
                                                     <label for="1">Min %</label>
                                                     <input id="1" class="form-control" style="border: 1px solid black" value="50">
                                                 </div>
-                                                <div class="col-md-2">
+                                                <div class="col-md-3">
                                                     <label for="1">For</label>
                                                     <select class="form-control" style="border: solid 1px black">
-                                                        <option>DP</option>
+                                                        <option selected>DP</option>
                                                         <option>Final Grade</option>
                                                     </select>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-3"></div>
-                                                <div class="col-md-3" style="text-align: center">
+                                                <div class="col-md-6" style="text-align: center">
                                                     <p>&nbsp;</p>
                                                     <button class="btn btn-danger btn-xl">Save</button>
-                                                </div>
-                                                <div class="col-md-3" style="text-align: center">
-                                                    <p>&nbsp;</p>
                                                     <button class="btn btn-danger btn-xl">Delete</button>
+                                                    <p></p>
                                                 </div>
+                                                <br>
                                             </div>
                                         </div>
                                     </div>
                                     <br/>
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <div class="header row">
-                                                <strong>Existing Combined Subminimum Requirement</strong>
-                                            </div>
                                             <div class="row">
                                                 <div class="col-md-1">
-                                                    1.
+                                                    2.
                                                 </div>
                                                 <div class="col-md-2">
                                                     <label for="1">1st</label>
@@ -300,13 +296,11 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-3"></div>
-                                                <div class="col-md-3" style="text-align: center">
+                                                <div class="col-md-6" style="text-align: center">
                                                     <p>&nbsp;</p>
                                                     <button class="btn btn-danger btn-xl">Save</button>
-                                                </div>
-                                                <div class="col-md-3" style="text-align: center">
-                                                    <p>&nbsp;</p>
                                                     <button class="btn btn-danger btn-xl">Delete</button>
+                                                    <p></p>
                                                 </div>
                                             </div>
                                         </div>

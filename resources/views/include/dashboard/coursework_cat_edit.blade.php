@@ -66,7 +66,7 @@
                     <ul class="nav nav-pills">
                         <li role="presentation"><a href="/course/details">Course Details</a></li>
                         <li role="presentation"><a href="/course/participants">Participants</a></li>
-                        <li role="presentation" class="active"><a href="/course/coursework">Courseworks</a></li>
+                        <li role="presentation" class="active"><a href="/course/coursework">Coursework</a></li>
                         <li role="presentation"><a href="/course/marks">View/Update Marks</a></li>
                         <li role="presentation"><a href="/course/export">Export Marks</a></li>
                     </ul>
@@ -139,8 +139,8 @@
                                                                 <input id="1" class="form-control" style="border: 1px solid black" value="35">
                                                             </div>
                                                             <div class="col-md-4">
-                                                                <label for="1">Weightage</label>
-                                                                <input id="1" class="form-control" style="border: 1px solid black" value="33.3%">
+                                                                <label for="1">Weighting</label>
+                                                                <input id="1" class="form-control" style="border: 1px solid black" value="33.3">
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <p>&nbsp;</p>
@@ -152,14 +152,13 @@
                                                         </div>
                                                         <hr>
                                                         <div class="row">
-                                                            <div class="col-md-5">
-                                                                <label for="2">Marks File</label>
-                                                                <div class="form-control-file">
-                                                                    <input id="1" class="form-control" type="file" style="border: 1px solid black">
-                                                                </div>
-                                                            </div>
                                                             <div class="col-md-3">
+                                                                <label for="2">Marks File</label>
+                                                                <input style="border: 1px solid black" class="form-control">
+                                                            </div>
+                                                            <div class="col-md-9">
                                                                 <p>&nbsp;</p>
+                                                                <button class="btn btn-danger btn-xl">Browse</button>
                                                                 <button class="btn btn-danger btn-xl">Upload</button>
                                                             </div>
                                                         </div>
@@ -213,8 +212,8 @@
                                                                 <input id="1" class="form-control" style="border: 1px solid black" value="35">
                                                             </div>
                                                             <div class="col-md-4">
-                                                                <label for="1">Weightage</label>
-                                                                <input id="1" class="form-control" style="border: 1px solid black" value="33.3%">
+                                                                <label for="1">Weighting</label>
+                                                                <input id="1" class="form-control" style="border: 1px solid black" value="33.3">
                                                             </div>
                                                             <div class="col-md-4">
                                                                 <p>&nbsp;</p>
@@ -226,14 +225,13 @@
                                                         </div>
                                                         <hr>
                                                         <div class="row">
-                                                            <div class="col-md-5">
-                                                                <label for="2">Marks File</label>
-                                                                <div class="form-control-file">
-                                                                    <input id="1" class="form-control" type="file" style="border: 1px solid black">
-                                                                </div>
-                                                            </div>
                                                             <div class="col-md-3">
+                                                                <label for="2">Marks File</label>
+                                                                <input style="border: 1px solid black" class="form-control">
+                                                            </div>
+                                                            <div class="col-md-9">
                                                                 <p>&nbsp;</p>
+                                                                <button class="btn btn-danger btn-xl">Browse</button>
                                                                 <button class="btn btn-danger btn-xl">Upload</button>
                                                             </div>
                                                         </div>
