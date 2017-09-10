@@ -10,7 +10,7 @@
     <ul class="nav navbar-nav navbar-left">
         <li class="">
             <a href="{{url('/systemadmin')}}" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                <h4><i class="fa fa-book"></i>&nbsp;Faculties & Departments</h4>
+                <h4><i class="fa fa-institution"></i>&nbsp;Faculties & Departments</h4>
             </a>
         </li>
     </ul>
@@ -19,8 +19,163 @@
 @section('content')
     <div class="right_col" role="main">
         <div class="row">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="x_panel" style="height: auto;">
+                        <div class="x_title">
+                            <h2>Faculties</h2>
+                            <ul class="nav navbar-right panel_toolbox">
+                                <li>
+                                    <button class="btn btn-dark btn-round">
+                                        <span class="glyphicon glyphicon-plus"></span>
+                                        New Faculty
+                                    </button>
+                                </li>
+                                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a>
+                                </li>
+                            </ul>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content" style="display: none;">
+                            <div class="row">
+                                <ul class="nav side-menu" style="">
+                                    <li>
+                                        <ul class="nav child_menu" style="display: block;">
+                                            <li>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="panel">
+                                                            <a class="panel-heading collapsed" role="tab" id="headingTwo3" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo3" aria-expanded="false" aria-controls="collapseTwo3">
+                                                                <div class="row panel-title">
+                                                                    <div class="col-md-5">
+                                                                        <h4 class="panel-title">
+                                                                            <a>Faculty of Science</a>
+                                                                        </h4>
+                                                                    </div>
+                                                                    <div class="col-md-7" style="text-align: right">
+                                                                        <button class="btn btn-round btn-dark">
+                                                                            <span class="fa fa-edit"></span>
+                                                                            Edit
+                                                                        </button>
+                                                                        <button class="btn btn-round btn-dark">
+                                                                            <span class="glyphicon glyphicon-trash"></span>
+                                                                            Delete
+                                                                        </button>
+                                                                        <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                                                    </div>
+
+                                                                </div>
+                                                            </a>
+                                                            <div id="collapseTwo3" class="panel-collapse" role="tabpanel" aria-labelledby="headingTwo3" aria-expanded="false" style="height: 0px;">
+                                                                <div class="panel-body">
+                                                                    <div class="row">
+                                                                        <div class="col-md-1"></div>
+                                                                        <div class="col-md-4">
+                                                                            <h5>
+                                                                                <label for="">Departments</label>
+                                                                            </h5>
+                                                                        </div>
+                                                                        <div class="col-md-7" style="text-align: right">
+                                                                            <button class="btn btn-dark btn-round">
+                                                                                <span class="glyphicon glyphicon-plus"></span>
+                                                                                New Department
+                                                                            </button>
+                                                                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                                                        </div>
+                                                                    </div>
+                                                                    <br>
+                                                                    <div class="row">
+                                                                        <div class="col-md-1"></div>
+                                                                        <div class="col-md-11">
+                                                                            <ul class="nav child_menu" style="display: block;">
+                                                                                <li class="sub_menu current-page">
+                                                                                    <div class="row panel-title" style="border-bottom: 1px solid black;">
+                                                                                        <div class="col-md-5">
+                                                                                            <h3 class="panel-title">
+                                                                                                Computer Science
+                                                                                            </h3>
+                                                                                        </div>
+                                                                                        <div class="col-md-7" style="text-align: right">
+                                                                                            <button class="btn btn-round btn-dark">
+                                                                                                <span class="fa fa-edit"></span>
+                                                                                                Edit
+                                                                                            </button>
+                                                                                            <button class="btn btn-round btn-dark">
+                                                                                                <span class="glyphicon glyphicon-trash"></span>
+                                                                                                Delete
+                                                                                            </button>
+                                                                                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                                                                        </div>
+
+                                                                                    </div>
+                                                                                    <br>
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-4">
+                                                                                            <label for="">Dept Admin Email:</label>
+                                                                                            <input type="email" class="form-control">
+                                                                                        </div>
+                                                                                        <div class="col-md-4">
+                                                                                            <p>&nbsp;</p>
+                                                                                            <button class="btn btn-dark btn-round">Add</button>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="row">
+                                                                                        {{--<div class="col-md-2"></div>--}}
+                                                                                        <div class="col-md-8">
+                                                                                            <table class="table table-striped jambo_table bulk_action">
+                                                                                                <thead>
+                                                                                                <tr class="headings">
+                                                                                                    <th>
+                                                                                                        <div class="icheckbox_flat-green" style="position: relative;"><input type="checkbox" id="check-all" class="flat" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute"></ins></div>
+                                                                                                    </th>
+                                                                                                    <th class="column-title">First Name</th>
+                                                                                                    <th class="column-title">Last Name</th>
+                                                                                                    <th class="column-title">Email</th>
+                                                                                                </tr>
+                                                                                                </thead>
+
+                                                                                                <tbody>
+                                                                                                <tr class="even pointer">
+                                                                                                    <td class="a-center ">
+                                                                                                        <div class="icheckbox_flat-green" style="position: relative;"><input type="checkbox" id="check-all" class="flat" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute"></ins></div>
+                                                                                                    </td>
+                                                                                                    <td class=" ">
+                                                                                                        First
+                                                                                                    </td>
+                                                                                                    <td class=" ">
+                                                                                                        DepartmentAdmin
+                                                                                                    </td>
+                                                                                                    <td class=" ">
+                                                                                                        firstadmin@cs.uct.ac.za
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                                </tbody>
+                                                                                            </table>
+                                                                                        </div>
+
+                                                                                    </div>
+                                                                                    <button class="btn btn-dark btn-round">Remove Selected</button>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+
 @endsection
 
 {{--

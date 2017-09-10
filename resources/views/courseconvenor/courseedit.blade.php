@@ -1145,7 +1145,7 @@
                                     <div class="col-md-12">
                                         <div class="x_panel" style="height: auto;">
                                             <div class="x_title">
-                                                <h2>Custom Export</h2>
+                                               <h2>Custom Export</h2>
                                                 <ul class="nav navbar-right panel_toolbox">
                                                     <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                                                     </li>

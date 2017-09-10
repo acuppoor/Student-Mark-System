@@ -23,7 +23,7 @@
                         <a href="{{url('/departmentadmin/search')}}"><i class="fa fa-search"></i> Search Marks</a>
                     </li>
                     <li>
-                        <a href="{{url('/departmentadmin/admin')}}"><i class="fa fa-admin"></i> Admin</a>
+                        <a href="{{url('/departmentadmin/admin')}}"><i class="fa fa-cogs"></i> Admin</a>
                     </li>
                 </ul>
             </div>
@@ -32,15 +32,6 @@
 
         <!-- /menu footer buttons -->
         <div class="sidebar-footer hidden-small">
-            <a data-toggle="tooltip" data-placement="top" title="Settings">
-                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
-            </a>
-            <a data-toggle="tooltip" data-placement="top" title="FullScreen">
-                <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
-            </a>
-            <a data-toggle="tooltip" data-placement="top" title="Lock">
-                <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
-            </a>
             <a data-toggle="tooltip" data-placement="top" title="Logout" href="{{ route('logout') }}"
                onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

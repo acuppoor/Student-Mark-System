@@ -10,13 +10,71 @@
     <ul class="nav navbar-nav navbar-left">
         <li class="">
             <a href="{{url('/departmentadmin/admin')}}" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                <h4><i class="fa fa-admin"></i>&nbsp;Admin</h4>
+                <h4><i class="fa fa-cogs "></i>&nbsp;Admin</h4>
             </a>
         </li>
     </ul>
 @endsection
 @section('content')
+    <div class="right_col" role="main">
+        <div class="row">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="x_panel" style="height: auto;">
+                        <div class="x_title">
+                            <h2>Features</h2>
+                            <ul class="nav navbar-right panel_toolbox">
+                                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                </li>
+                            </ul>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content collapse" style="display: block;">
+                            <div class="row">
+                                <i><h5>Admin Features to be determined and added here
+                                    </h5></i>
+                            </div>
+                            {{--<div class="row">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-10">
+                                    <div class="card">
+                                        <div class="header" style="border-bottom: 1px solid black">
+                                            <h5 class="title">Add User</h5>
+                                        </div>
+                                        <div class="content">
+                                            <div class="header"><h5>Course Convenor</h5></div>
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <label for=""><font color="black">Email</font></label>
+                                                    <input type="email" class="form-control" style="border: solid 1px black">
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label for=""><font color="black">Staff #</font></label>
+                                                    <input type="text" class="form-control" style="border: solid 1px black">
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label for=""><font color="black">Course</font></label>
+                                                    <select class="form-control" style="border: solid 1px black">
+                                                        <option selected>CSC1016S</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-3" style="text-align: center">
+                                                    <p>&nbsp;</p>
+                                                    <button class="btn btn-danger btn-xl">Add</button> </div>
+                                            </div>
+                                            <div class="row">
 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>--}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 {{--<div class="wrapper">
