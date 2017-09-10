@@ -1,3 +1,31 @@
+@extends('dashboard.main')
+@section('page_title')
+    Courses
+@endsection
+@section('sidebar')
+    @include('dashboard.lecturer_sidebar')
+@endsection
+
+@section('navbar_title')
+    <ul class="nav navbar-nav navbar-left">
+        <li class="">
+            <a href="{{url('/lecturer/courses')}}" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                <h4><i class="fa fa-book"></i>&nbsp;Courses</h4>
+            </a>
+        </li>
+    </ul>
+@endsection
+
+@section('content')
+    <div class="right_col" role="main">
+        <div class="row">
+        </div>
+    </div>
+@endsection
+
+
+
+{{--
 @extends('layouts.dashboard.main')
 
 @section('title')
@@ -6,7 +34,9 @@
 
 @section('content')
 <div class="wrapper">
-{{--    @include('include.dashboard.sidepanel')--}}
+--}}
+{{--    @include('include.dashboard.sidepanel')--}}{{--
+
 
     <div class="sidebar" data-background-color="black" data-active-color="danger">
         <div class="sidebar-wrapper">
@@ -43,3 +73,4 @@
 
 </div>
 @endsection
+--}}

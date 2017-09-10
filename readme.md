@@ -1,4 +1,7 @@
-
+################# Running the Website ######################################################################################
+Two ways: 
+1st one is using docker; please refer to other sections
+2nd one: run on an ubuntu terminal: $ php artisan serve
 
 ################# Install Docker ###########################################################################################
  First Step is to install docker

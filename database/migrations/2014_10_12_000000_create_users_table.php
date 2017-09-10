@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('employeeID');
             $table->string('email')->unique();
             $table->string('password');
+            $table->boolean('approved');
             $table->rememberToken();
             $table->timestamps();
         });
@@ -32,7 +33,8 @@ class CreateUsersTable extends Migration
                 'studentNumber' => 'cppkus001',
                 'employeeID' => 1234567,
                 'email' => 'cppkus001@myuct.ac.za',
-                'password' => bcrypt('1234567')
+                'password' => bcrypt('1234567'),
+                'approved' => 'true'
             )
         );
     }

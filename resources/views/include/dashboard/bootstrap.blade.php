@@ -1,19 +1,17 @@
-<!-- Bootstrap core CSS     -->
-<link href="{{asset('second_bootstrap/css/bootstrap.min.css')}}" rel="stylesheet"/>
 
-<!-- Animation library for notifications   -->
-<link href="{{asset('second_bootstrap/css/animate.min.css')}}" rel="stylesheet"/>
-
-<!--  Paper Dashboard core CSS    -->
-<link href="{{asset('second_bootstrap/css/paper-dashboard.css')}}" rel="stylesheet"/>
-
-
-<!--  CSS for Demo Purpose, don't include it in your project     -->
-<link href="{{asset('second_bootstrap/css/demo.css" rel="stylesheet')}}" />
-
-<!--  Fonts and icons     -->
-<link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
-<link href='https://fonts.googleapis.com/css?family=Muli:400,300' rel='stylesheet' type='text/css'>
-<link href="{{asset('second_bootstrap/css/themify-icons.css')}}" rel="stylesheet">
-
-<link href="{{asset('second_bootstrap/css/custom_bootstrap.css')}}" rel="stylesheet">
+<!-- Bootstrap Core CSS -->
+<link href="{{asset('bootstrap/bootstrap.min.css')}}" rel="stylesheet">
+<!-- Menu CSS -->
+<link href="{{asset('bootstrap/sidebar-nav.min.css')}}" rel="stylesheet">
+<!-- toast CSS -->
+<link href="{{asset('bootstrap/jquery.toast.css')}}" rel="stylesheet">
+<!-- morris CSS -->
+<link href="{{asset('bootstrap/morris.css')}}" rel="stylesheet">
+<!-- animation CSS -->
+<link href="{{asset('bootstrap/animate.css')}}" rel="stylesheet">
+<!-- Custom CSS -->
+<link href="{{asset('bootstrap/style.css')}}" rel="stylesheet">
+<!-- color CSS -->
+<link href="{{asset('bootstrap/blue-dark.css')}}" id="theme" rel="stylesheet">
+<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
