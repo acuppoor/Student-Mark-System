@@ -1,4 +1,8 @@
-@extends('layouts.app')
+@extends('layouts.default.app')
+
+@section('title')
+    Register
+@endSection
 
 @section('content')
 <div class="container" style="padding-top: 5%">
@@ -15,8 +19,8 @@
                     <form class="form-horizontal" method="POST" action="{{ route('register') }}">
                         {{ csrf_field() }}
 
-                        <div>
-                            <div style="float: left" class="form-group{{ $errors->has('firstName') ? ' has-error' : '' }}">
+                        <div class="row">
+                            <div class="col-md-6 form-group{{ $errors->has('firstName') ? ' has-error' : '' }}">
                                 <div style="width:100%; text-align: left">
                                     <label for="firstName" class="col-md-6 form-control-label">First Name</label>
                                 </div>
@@ -31,7 +35,7 @@
                                 </div>
                             </div>
 
-                            <div style="float: right" class="form-group{{ $errors->has('lastName') ? ' has-error' : '' }}">
+                            <div class="col-md-6 form-group{{ $errors->has('lastName') ? ' has-error' : '' }}">
                                 <div style="width:100%; text-align: left">
                                     <label for="lastName" class="col-md-6 form-control-label">Last Name</label>
                                 </div>
@@ -47,36 +51,37 @@
                             </div>
 
                         </div>
-                        <div>
-                            <div style="float: left" class="form-group{{ $errors->has('studentNumber') ? ' has-error' : '' }}">
+                        <div class="row">
+                            <div class="col-md-6 form-group{{ $errors->has('studentNumber') ? ' has-error' : '' }}">
                                 <div style="width:100%; text-align: left">
                                     <label for="studentNumber" class="col-md-10 form-control-label">Student/Staff Number</label>
                                 </div>
                                 <div class="col-md-12" style="width: 100%">
                                     <input id="studentNumber" type="text" class="form-control" name="studentNumber" value="{{ old('studentNumber') }}" required autofocus>
-
-                                    @if ($errors->has('studentNumber'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('studentNumber') }}</strong>
-                                        </span>
-                                    @endif
                                 </div>
                             </div>
 
-                            <div style="float: right" class="form-group{{ $errors->has('employeID') ? ' has-error' : '' }}">
+                            <div class="col-md-6 form-group{{ $errors->has('employeID') ? ' has-error' : '' }}">
                                 <div style="width:100%; text-align: left">
                                     <label for="employeeID" class="col-md-10 form-control-label">Employee ID</label>
                                 </div>
                                 <div class="col-md-12" style="width: 100%">
                                     <input id="employeeID" type="text" class="form-control" name="employeeID" value="{{ old('employeeID') }}" required autofocus>
-
-                                    @if ($errors->has('employeeID'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('employeeID') }}</strong>
-                                        </span>
-                                    @endif
                                 </div>
                             </div>
+                        </div>
+                        <div>
+                            @if ($errors->has('studentNumber'))
+                                <span class="help-block">
+                                            <strong>{{ $errors->first('studentNumber') }}</strong>
+                                        </span>
+                            @endif
+
+                            @if ($errors->has('employeeID'))
+                                <span class="help-block">
+                                        <strong>{{ $errors->first('employeeID') }}</strong>
+                                    </span>
+                            @endif
                         </div>
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                             <div style="width:100%; text-align: left">
@@ -130,4 +135,19 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="thankyouModal" tabindex="1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Thank you for pre-registering!</h4>
+            </div>
+            <div class="modal-body">
+                <p>Thanks for getting in touch!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection

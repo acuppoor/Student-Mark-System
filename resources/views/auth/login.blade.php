@@ -1,10 +1,14 @@
-@extends('layouts.app')
+@extends('layouts.default.app')
+
+@section('title')
+    Login
+@endSection
 
 @section('content')
 <div class="container" style="padding-top: 12%">
     <div class="row justify-content-md-center">
         <div class="col-md-6">
-            <div class="panel panel-default">
+            <div class="panel panel-default" style="opacity: 0.9">
                 <div class="panel-heading">
                     <div class="section-heading text-center">
                         <h2>Login</h2>
@@ -14,7 +18,7 @@
                 <div class="panel-body">
                     <form class="form-horizontal" method="POST" action="{{ route('login') }}">
                         {{ csrf_field() }}
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                        <div class="col-md-12 form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                             <label for="email" class="col-md-4 form-control-label">E-Mail Address</label>
 
                             <div class="col-md-12">
@@ -27,7 +31,7 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                        <div class="col-md-12 form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                             <label for="password" class="col-md-4 form-control-label">Password</label>
 
                             <div class="col-md-12">
@@ -41,7 +45,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <div class="col-md-12 form-group">
                             <div class="col-md-6 col-md-offset-4">
                                 <div class="checkbox">
                                     <label>
@@ -50,7 +54,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="col-md-12 form-group">
                             <div {{--class="col-md-8 col-md-offset-4"--}} style="text-align: center">
                                 <button type="submit" class="btn btn-primary btn-outline btn-xl">{{--btn btn-primary">--}}
                                     Login
