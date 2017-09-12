@@ -19,38 +19,17 @@
                     </div>
                     <div class="panel-body">
                         <div class="row" style="text-align: center">
-                            <div class="col-md-4" style="text-align: center">
+                            <div class="col-md-3" style="text-align: center">
                                 <a href="{{url('/register')}}" target="_blank"><button class="btn btn-danger btn-xl">Register</button></a>
                             </div>
-                            <div class="col-md-4" style="text-align: center">
+                            <div class="col-md-3" style="text-align: center">
                                 <a href="{{url('/login')}}" target="_blank"><button class="btn btn-danger btn-xl">Login</button></a>
                             </div>
-                            <div class="col-md-4" style="text-align: center">
+                            <div class="col-md-3" style="text-align: center">
                                 <a href="{{url('/contact')}}" target="_blank"><button class="btn btn-danger btn-xl">Contact</button></a>
                             </div>
-                        </div>
-                        <br/>
-                        <div class="row" style="text-align: center">
-                            <div class="col-md-4" style="text-align: center">
-                                <a href="{{url('/student')}}" target="_blank"><button class="btn btn-danger btn-xl">Student</button></a>
-                            </div>
-                            <div class="col-md-4" style="text-align: center">
-                                <a href="{{url('/teachingassistant')}}" target="_blank"><button class="btn btn-danger btn-xl">TA</button></a>
-                            </div>
-                            <div class="col-md-4" style="text-align: center">
-                                <a href="{{url('/lecturer')}}" target="_blank"><button class="btn btn-danger btn-xl">Lecturer</button></a>
-                            </div>
-                        </div>
-                        <br/>
-                        <div class="row" style="text-align: center">
-                            <div class="col-md-4" style="text-align: center">
-                                <a href="{{url('/courseconvenor')}}" target="_blank"><button class="btn btn-danger btn-xl">Convenor</button></a>
-                            </div>
-                            <div class="col-md-4" style="text-align: center">
-                                <a href="{{url('/departmentadmin')}}" target="_blank"><button class="btn btn-danger btn-xl">Dept. Admin</button></a>
-                            </div>
-                            <div class="col-md-4" style="text-align: center">
-                                <a href="{{url('/systemadmin')}}" target="_blank"><button class="btn btn-danger btn-xl">Sys. Admin</button></a>
+                            <div class="col-md-3" style="text-align: center">
+                                <a href="{{route('home')}}" target="_blank"><button class="btn btn-danger btn-xl">Home</button></a>
                             </div>
                         </div>
                     </div>

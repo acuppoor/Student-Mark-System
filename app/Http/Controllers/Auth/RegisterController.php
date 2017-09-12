@@ -51,7 +51,7 @@ class RegisterController extends Controller
             'firstName' => 'required|string|max:255',
             'lastName' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'studentNumber' => 'required|string|min:7|max:7',
+            'studentNumber' => 'required|string|min:9|max:9',
             'employeeID' => 'required|string|min:7|max:7',
             'password' => 'required|string|min:6|confirmed',
         ]);
@@ -65,13 +65,17 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        User::create([
             'firstName' => $data['firstName'],
             'lastName' => $data['lastName'],
             'email' => $data['email'],
             'studentNumber' => $data['studentNumber'],
             'employeeID' => $data['employeeID'],
-            'password' => bcrypt($data['password']),
+            'approved' => 0,
+            'role_id' => 1,
+            'password' => bcrypt($data['password'])
         ]);
+
+        return redirect()->route('login');
     }
 }

@@ -38,12 +38,12 @@
 </div>
 @endsection
 --}}
-@extends('dashboard.main')
+@extends('include_home.main')
 @section('page_title')
     My Marks
 @endsection
 @section('sidebar')
-    @include('dashboard.student_sidebar')
+    @include('include_home.student_sidebar')
 @endsection
 
 @section('navbar_title')

@@ -1,9 +1,9 @@
-@extends('dashboard.main')
+@extends('include_home.main')
 @section('page_title')
     TA Courses
 @endsection
 @section('sidebar')
-    @include('dashboard.ta_sidebar')
+    @include('include_home.ta_sidebar')
 @endsection
 
 @section('navbar_title')
