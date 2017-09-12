@@ -4,3 +4,5 @@ node_modules/
 vendor/
 storage/database/
 server/
+.idea/
+server/apache2/logs
