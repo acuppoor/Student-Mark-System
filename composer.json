@@ -47,5 +47,8 @@
         "preferred-install": "dist",
         "sort-packages": true,
         "optimize-autoloader": true
-    }
+    },
+    "files": [
+        "app/Http/helpers/UserRole.php"
+    ]
 }
