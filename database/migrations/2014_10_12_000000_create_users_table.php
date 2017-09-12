@@ -34,7 +34,7 @@ class CreateUsersTable extends Migration
                 'employeeID' => 1234567,
                 'email' => 'cppkus001@myuct.ac.za',
                 'password' => bcrypt('1234567'),
-                'approved' => 'true'
+                'approved' => '1'
             )
         );
     }

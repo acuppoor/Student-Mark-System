@@ -28,6 +28,6 @@ class User extends Authenticatable
     ];
 
     public function userRoleMap(){
-        return $this->hasMany('App\UserTypeMap');
+        return $this->hasMany('App\UserRoleMap');
     }
 }
