@@ -1,7 +1,16 @@
 <?php
-Route::get('/menu', function(){return view('menu');});
-Route::get('/home', 'HomeController@home')->name("home");
+Route::get('/', function(){return view('menu');});
 Route::get('/contact', 'ContactController@index')->name('contact');
+
+Route::get('/home', 'PagesController@home')->name("home");
+
+Route::get('/mymarks', 'PagesController@myMarks')->name("my_marks");
+Route::get('/tacourses', 'PagesController@taCourses')->name("ta_courses");
+
+Route::get('/conveningcourses', 'PagesController@conveningCourses')->name("convening_courses");
+Route::get('/courses', 'PagesController@lecturerCourses')->name("courses");
+
+Route::get('/searchmarks', 'PagesController@searchMarks')->name("search_marks");
 
 Auth::routes();
 
