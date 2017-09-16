@@ -8,9 +8,14 @@ Route::get('/mymarks', 'PagesController@myMarks')->name("my_marks");
 Route::get('/tacourses', 'PagesController@taCourses')->name("ta_courses");
 
 Route::get('/conveningcourses', 'PagesController@conveningCourses')->name("convening_courses");
-Route::get('/courses', 'PagesController@lecturerCourses')->name("courses");
+Route::get('/courses', 'PagesController@courses')->name("courses");
 
 Route::get('/searchmarks', 'PagesController@searchMarks')->name("search_marks");
+
+Route::get('/admin', 'PagesController@admin')->name("admin");
+Route::get('/faculties&departments', 'PagesController@admin')->name("faculties");
+
+Route::get('/courseconvenor/courseedit', function(){return view('lecturer.courseedit');});
 
 Auth::routes();
 

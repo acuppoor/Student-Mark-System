@@ -31,7 +31,6 @@ class PagesController extends Controller
             case 6:
                 return view('systemadmin.home');
         }
-
     }
 
     public function searchMarks(){
@@ -43,22 +42,15 @@ class PagesController extends Controller
         switch ($roleID){
             case 1:
                 return view('student.access_denied');
-                break;
             case 2:
                 return view('student.searchmarks');
-                break;
             case 3:
-                return view('lecturer.searchmarks');
-                break;
             case 4:
-                return view('courseconvenor.searchmarks');
-                break;
+                return view('lecturer.searchmarks');
             case 5:
                 return view('departmentadmin.searchmarks');
-                break;
             case 6:
                 return view('systemadmin.searchmarks');
-                break;
         }
     }
 
@@ -72,7 +64,27 @@ class PagesController extends Controller
             case 1 || 2:
                 return view('student.my_marks');
             default:
-                return view('stdent.access_denied');
+                return view('student.access_denied');
+        }
+    }
+
+    public function courses(){
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login');
+        }
+        $roleID = Auth::user()->role_id;
+        switch ($roleID){
+            case 1:
+            case 2:
+                return view('student.access_denied');
+            case 3:
+            case 4:
+                return view('lecturer.courses');
+            case 5:
+                return view('departmentadmin.courses');
+            case 6:
+                return view('systemadmin.courses');
         }
     }
 
@@ -83,10 +95,56 @@ class PagesController extends Controller
         }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
+            case 1:
+                return view('student.access_denied');
             case 2:
                 return view('student.ta_courses');
-            default:
-                return view('stdent.access_denied');
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+                return redirect()->route('courses');
         }
     }
+
+    public function conveningCourses(){
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login');
+        }
+        $roleID = Auth::user()->role_id;
+        switch ($roleID){
+            case 1:
+            case 2:
+                return view('student.access_denied');
+            case 3:
+                return view('lecturer.access_denied');
+            case 4:
+                return view('lecturer.convening_courses');
+            case 5:
+            case 6:
+                return redirect()->route('courses');
+        }
+    }
+
+    public function admin(){
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login');
+        }
+        $roleID = Auth::user()->role_id;
+        switch ($roleID){
+            case 1:
+            case 2:
+                return view('student.access_denied');
+            case 3:
+            case 4:
+                return view('lecturer.access_denied');
+            case 5:
+                return view('departmentadmin.admin');
+            case 6:
+                return view('systemadmin.admin');
+        }
+    }
+
 }

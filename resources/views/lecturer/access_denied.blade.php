@@ -3,7 +3,7 @@
     Access Denied
 @endsection
 @section('sidebar')
-    @include('include_home.student_sidebar')
+    @include('include_home.lecturer_sidebar')
 @endsection
 
 @section('navbar_title')
