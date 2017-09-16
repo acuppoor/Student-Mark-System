@@ -15,8 +15,21 @@ class CreateCourseworkTypesTable extends Migration
     {
         Schema::create('coursework_types', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('name');
             $table->timestamps();
         });
+
+        DB::table('coursework_types')->insert(
+            array(
+                array('name' => 'Assignment'),
+                array('name' => 'Exam'),
+                array('name' => 'Other'),
+                array('name' => 'Practical'),
+                array('name' => 'Practical Test'),
+                array('name' => 'Quiz'),
+                array('name' => 'Test')
+            )
+        );
     }
 
     /**

@@ -16,7 +16,7 @@ class CreateCourseworksTable extends Migration
         Schema::create('courseworks', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('course_id');
-            $table->name("name");
+            $table->string("name");
             $table->integer('coursework_type_id');
             $table->boolean('display_to_students');
             $table->boolean('include_in_classrecord');

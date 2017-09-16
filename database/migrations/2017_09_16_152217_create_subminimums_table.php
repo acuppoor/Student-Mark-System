@@ -15,7 +15,7 @@ class CreateSubminimumsTable extends Migration
     {
         Schema::create('subminimums', function (Blueprint $table) {
             $table->increments('id');
-            $table->increments('course_id');
+            $table->integer('course_id');
             $table->string('name');
             $table->boolean('for_DP?');
             $table->double('threshold');
