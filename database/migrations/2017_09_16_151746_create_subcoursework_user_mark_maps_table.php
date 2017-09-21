@@ -20,6 +20,14 @@ class CreateSubcourseworkUserMarkMapsTable extends Migration
             $table->double('marks');
             $table->timestamps();
         });
+
+        DB::table('subcoursework_user_mark_maps')->insert(
+            array(
+                'subcoursework_id' => 1,
+                'user_id' => 1,
+                'marks' => 95.0
+            )
+        );
     }
 
     /**

@@ -20,6 +20,14 @@ class CreateSectionsTable extends Migration
             $table->double('max_marks');
             $table->timestamps();
         });
+
+        DB::table('sections')->insert(
+            array(
+                'subcoursework_id' => 1,
+                'name' => 'Section 1',
+                'max_marks' => 100.0
+            )
+        );
     }
 
     /**

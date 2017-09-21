@@ -18,6 +18,12 @@ class CreateFacultiesTable extends Migration
             $table->string('name');
             $table->timestamps();
         });
+
+        DB::table('faculties')->insert(
+            array(
+                'name' => 'Science'
+            )
+        );
     }
 
     /**

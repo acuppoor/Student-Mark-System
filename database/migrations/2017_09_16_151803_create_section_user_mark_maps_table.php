@@ -20,6 +20,14 @@ class CreateSectionUserMarkMapsTable extends Migration
             $table->double('marks');
             $table->timestamps();
         });
+
+        DB::table('section_user_mark_maps')->insert(
+            array(
+                'section_id' => 1,
+                'user_id' => 1,
+                'marks' => 95.0
+            )
+        );
     }
 
     /**

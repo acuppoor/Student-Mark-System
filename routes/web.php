@@ -17,6 +17,10 @@ Route::get('/faculties&departments', 'PagesController@admin')->name("faculties")
 
 Route::get('/courseconvenor/courseedit', function(){return view('lecturer.courseedit');});
 
+Route::get('/faqs', function(){return view('faq');})->name('FAQs');
+Route::get('/privacypolicy', function(){return view('privacypolicy');})->name('privacy_policy');
+Route::get('/termsandconditions', function(){return view('termsandcondition');})->name('terms_and_conditions');
+
 Auth::routes();
 
 

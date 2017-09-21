@@ -16,7 +16,7 @@ class CreateCoursesTable extends Migration
         Schema::create('courses', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('type');
+            $table->string('code');
             $table->text('description');
             $table->date('start_date');
             $table->date('end_date');
@@ -24,6 +24,18 @@ class CreateCoursesTable extends Migration
             $table->integer('department_id');
             $table->timestamps();
         });
+
+        DB::table('courses')->insert(
+            array(
+                'name' => 'CSC1016S',
+                'code' => 'CSC1016S',
+                'description' => 'Computer Science',
+                'start_date' => \Carbon\Carbon::create(2017, 8, 16),
+                'end_date' => \Carbon\Carbon::create(2017, 11, 11),
+                'type_id' => 2,
+                'department_id' => 1
+            )
+        );
     }
 
     /**

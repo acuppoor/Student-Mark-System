@@ -16,9 +16,18 @@ class CreateDepartmentsTable extends Migration
         Schema::create('departments', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('faculty_id');
+            $table->string('code');
             $table->string('name');
             $table->timestamps();
         });
+
+        DB::table('departments')->insert(
+            array(
+                'faculty_id' => 1,
+                'code' => 'CSC',
+                'name' => 'Computer Science'
+            )
+        );
     }
 
     /**

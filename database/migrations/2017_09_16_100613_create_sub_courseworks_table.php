@@ -17,13 +17,25 @@ class CreateSubCourseworksTable extends Migration
             $table->increments('id');
             $table->integer('coursework_id');
             $table->string('name');
-            $table->boolean('display_marks');
-            $table->boolean('display_to_percentage');
+            $table->date('display_marks');
+            $table->boolean('display_percentage');
             $table->boolean('include_in_coursework');
-            $table->boolean('weighting_in_coursework');
+            $table->double('weighting_in_coursework');
             $table->double('max_marks');
             $table->timestamps();
         });
+
+        DB::table('sub_courseworks')->insert(
+            array(
+                'coursework_id' => 1,
+                'name' => 'Assignment 1',
+                'display_marks' => "2017-08-16",
+                'display_percentage' => "1",
+                'include_in_coursework' => '1',
+                'weighting_in_coursework' => 100.0,
+                'max_marks' => 100.0
+            )
+        );
     }
 
     /**

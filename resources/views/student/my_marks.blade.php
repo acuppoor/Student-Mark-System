@@ -23,21 +23,21 @@
                 <div class="col-md-12">
                     <div class="x_panel">
                         <div class="x_title">
+                            <form action="" method="POST">
+                                {{ csrf_field() }}
                             <div class="col-md-2 form-group pull-left top_search">
                                 <label for="fullname">Course Code:</label>
                                 <div class="input-group">
                                     <input type="text" class="form-control" placeholder="Course Code">
                                 </div>
                             </div>
-                            <div class="col-md-1">
+                            <div class="col-md-2">
                                 <label for="coursetype">Type:</label>
                                 <select class="form-control">
                                     <option></option>
-                                    <option>F</option>
-                                    <option>H</option>
-                                    <option>S</option>
-                                    <option>W</option>
-                                    <option>Z</option>
+                                    @foreach(\App\CourseType::all() as $courseType)
+                                        <option><?=$courseType->name?></option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div class="col-md-2">
@@ -46,32 +46,27 @@
                                     <option selected><?php echo(date("Y"));?></option>
                                     <?php
                                         $currentYear = (int) date("Y");
-                                        for ($i = $currentYear-1; $i >= 2010; $i--){
+                                        for ($i = $currentYear-1; $i >= 2015; $i--){
                                             echo('<option>'.$i.'</option>');
                                         }
                                     ?>
                                 </select>
                             </div>
-                            <div class="col-md-2">
-                                <label for="faculty">Faculty:</label>
-                                <select id="faculty" class="form-control">
-                                    <option>Science</option>
-                                </select>
-                            </div>
                             <div class="col-md-3">
                                 <label for="department">Department:</label>
                                 <select id="department" class="form-control">
-                                    <option>Computer Science</option>
+                                    <option></option>
+                                    @foreach(\App\Department::all() as $department)
+                                        <option><?=$department->code . " - " . $department->name?></option>
+                                    @endforeach
                                 </select>
                             </div>
-                            <div class="col-md-2 form-group pull-left top_search">
+                            <div class="col-md-3 form-group pull-left top_search">
                                 <p>&nbsp;</p>
-                                {{--<div class="input-group">--}}
-                                    {{--<span class="input-group-btn">--}}
-                                        <button class="btn btn-round btn-primary" type="button">Go!</button>
-                                    {{--</span>--}}
-                                {{--</div>--}}
+                                <button class="btn btn-round btn-dark" type="submit">Search</button>
+                                <a href="">Reset Results</a>
                             </div>
+                            </form>
                             <div class="clearfix"></div>
                         </div>
                     </div>
