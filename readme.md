@@ -1,12 +1,13 @@
 ################# Running the Website ######################################################################################
-Two ways: 
-1st one is using docker; please refer to other sections
-2nd one: run on an ubuntu terminal: $ php artisan serve
+Two ways: <br/><br/>
+1st one is using docker;<br/> 
+please refer to other sections<br/>
+2nd one: run on an ubuntu terminal: ```$ php artisan serve```
 
 ################# Install Docker ###########################################################################################
  First Step is to install docker
  Linux : execute the following command in bash: 
- $ sudo apt-get install docker-ce
+ ```$ sudo apt-get install docker-ce```
 
 ############### Starting the application servers ############################################################################
    - Rename the project folder as studentmarksystem.dev
