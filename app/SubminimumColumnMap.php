@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class SubminimumColumnMap extends Model
 {
-    public function subminimum(){
+   /* public function subminimum(){
         return $this->belongsTo('Subminimum');
     }
 
@@ -20,5 +20,5 @@ class SubminimumColumnMap extends Model
 
     public function section(){
         return $this->hasOne('Section');
-    }
+    }*/
 }

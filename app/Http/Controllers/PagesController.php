@@ -62,9 +62,7 @@ class PagesController extends Controller
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1 || 2:
-                $courses = Auth::user()->marks();
-                var_dump($courses);die();
-                return view('student.my_marks');
+                return app('App\Http\Controllers\StudentController')->index();
             default:
                 return view('student.access_denied');
         }

@@ -31,7 +31,7 @@ class User extends Authenticatable
         return $this->hasOne('App\Role');
     }
 
-    public function marks(){
-        return $this->hasMany('App\SubcourseworkUserMarkMap');
+    public function subCourseworkMarks(){
+        return $this->hasMany('App\SubCourseworkUserMarkMap', 'user_id', 'id');
     }
 }

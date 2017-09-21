@@ -13,7 +13,7 @@ class CreateSubcourseworkUserMarkMapsTable extends Migration
      */
     public function up()
     {
-        Schema::create('subcoursework_user_mark_maps', function (Blueprint $table) {
+        Schema::create('sub_coursework_user_mark_maps', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('subcoursework_id');
             $table->integer('user_id');
@@ -21,7 +21,7 @@ class CreateSubcourseworkUserMarkMapsTable extends Migration
             $table->timestamps();
         });
 
-        DB::table('subcoursework_user_mark_maps')->insert(
+        DB::table('sub_coursework_user_mark_maps')->insert(
             array(
                 'subcoursework_id' => 1,
                 'user_id' => 1,

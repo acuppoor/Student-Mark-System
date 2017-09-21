@@ -73,371 +73,364 @@
                 </div>
             </div>
             <h4>Results:</h4>
-            <div class="row">
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="x_panel">
-                        <div class="x_title">
-                            <h2>1. CSC1015F (2017)</h2>
-                            <ul class="nav navbar-right panel_toolbox">
-                                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a>
-                                </li>
-                            </ul>
-                            <div class="clearfix"></div>
-                        </div>
-                        <div class="x_content collapse">
-                            <!-- start accordion -->
-                            <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
-                                <div class="panel">
-                                    <a class="panel-heading collapsed" role="tab" id="headingOne" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                                        <h4 class="panel-title">Final Mark</h4>
-                                    </a>
-                                    <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne" aria-expanded="false" style="height: 0px;">
-                                        <div class="panel-body">
-                                            <h3>Result: 84</h3>
-                                            <br>
-                                            <h5>Marks Breakdown:</h5>
-                                            <table class="table table-bordered">
-                                                <thead>
-                                                <tr>
-                                                    <th>Name</th>
-                                                    <th>Marks</th>
-                                                    <th>Out Of</th>
-                                                    <th>Weighting</th>
-                                                    <th>Weighted Marks</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                <tr>
-                                                    <td scope="row">Class Record</td>
-                                                    <td>80</td>
-                                                    <td>100</td>
-                                                    <td>50</td>
-                                                    <td>40</td>
-                                                </tr>
-                                                <tr>
-                                                    <td scope="row">Exam</td>
-                                                    <td>70</td>
-                                                    <td>80</td>
-                                                    <td>50</td>
-                                                    <td>43.8</td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
+            @php ($courseCount = count($courses))
+            <?php
+//                print_r($courses); die();
+            ?>
+            @php ($counter = 0)
+            @for($i = 0; $i < $courseCount; $i+=2)
+                <div class="row">
+                    @for($j = $i; $j < ($i+2<=$courseCount? $i+2 : $courseCount); $j++)
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class="x_panel">
+                                <div class="x_title">
+                                    <h2><?=($j+1) . '. ' . $courses[$j]['courseName']. ' (' . $courses[$j]['year'] .')'?></h2>
+                                    <ul class="nav navbar-right panel_toolbox">
+                                        <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a>
+                                        </li>
+                                    </ul>
+                                    <div class="clearfix"></div>
                                 </div>
-
-                                <div class="panel">
-                                    <a class="panel-heading collapsed" role="tab" id="headingTwo" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                        <h4 class="panel-title">DP Status</h4>
-                                    </a>
-                                    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo" aria-expanded="false" style="height: 0px;">
-                                        <div class="panel-body">
-                                            <h3>Result: DP</h3>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="panel">
-                                    <a class="panel-heading collapsed" role="tab" id="headingThree" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                        <h4 class="panel-title">Class Record</h4>
-                                    </a>
-                                    <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree" aria-expanded="false" style="height: 0px;">
-                                        <div class="panel-body">
-                                            <h3>Result: 80</h3>
-                                            <br>
-                                            <h5>Marks Breakdown:</h5>
-                                            <table class="table table-bordered">
-                                                <thead>
-                                                <tr>
-                                                    <th>Name</th>
-                                                    <th>Marks</th>
-                                                    <th>Out Of</th>
-                                                    <th>Weighting</th>
-                                                    <th>Weighted Marks</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                <tr>
-                                                    <td scope="row">Test</td>
-                                                    <td>80</td>
-                                                    <td>100</td>
-                                                    <td>35</td>
-                                                    <td>28</td>
-                                                </tr>
-                                                <tr>
-                                                    <td scope="row">Assignments</td>
-                                                    <td>95</td>
-                                                    <td>100</td>
-                                                    <td>50</td>
-                                                    <td>47.5</td>
-                                                </tr>
-                                                <tr>
-                                                    <td scope="row">Prac Tests</td>
-                                                    <td>100</td>
-                                                    <td>100</td>
-                                                    <td>15</td>
-                                                    <td>15</td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="panel">
-                                    <a class="panel-heading collapsed" role="tab" id="headingFour" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-                                        <h4 class="panel-title">Assignments</h4>
-                                    </a>
-                                    <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour" aria-expanded="false" style="height: 0px;">
-                                        <div class="panel-body">
-                                            <h3>Result: 95</h3>
-                                            <br>
-                                            <h5>Marks Breakdown:</h5>
-                                            <table class="table table-bordered">
-                                                <thead>
-                                                <tr>
-                                                    <th>Name</th>
-                                                    <th>Marks</th>
-                                                    <th>Out Of</th>
-                                                    <th>Weighting</th>
-                                                    <th>Weighted Marks</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                <tr>
-                                                    <td scope="row">Assignment 1</td>
-                                                    <td>100</td>
-                                                    <td>100</td>
-                                                    <td>20</td>
-                                                    <td>20</td>
-                                                </tr>
-                                                <tr>
-                                                    <td scope="row">Assignment 2</td>
-                                                    <td>75</td>
-                                                    <td>100</td>
-                                                    <td>20</td>
-                                                    <td>15</td>
-                                                </tr>
-                                                <tr>
-                                                    <td scope="row">Assignment 3</td>
-                                                    <td>100</td>
-                                                    <td>100</td>
-                                                    <td>20</td>
-                                                    <td>20</td>
-                                                </tr>
-                                                <tr>
-                                                    <td scope="row">Assignment 4</td>
-                                                    <td>100</td>
-                                                    <td>100</td>
-                                                    <td>20</td>
-                                                    <td>20</td>
-                                                </tr>
-                                                <tr>
-                                                    <td scope="row">Assignment 5</td>
-                                                    <td>100</td>
-                                                    <td>100</td>
-                                                    <td>20</td>
-                                                    <td>20</td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="panel">
-                                    <a class="panel-heading collapsed" role="tab" id="headingTwo4" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo4" aria-expanded="false" aria-controls="collapseTwo4">
-                                        <h4 class="panel-title">Query Marks</h4>
-                                    </a>
-                                    <div id="collapseTwo4" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo4" aria-expanded="false" style="height: 0px;">
-                                        <div class="panel-body">
-                                            <div class="row">
-                                                <label for="">Query:</label>
-                                                <textarea rows="3" class="form-control"></textarea>
-                                                <button class="btn btn-primary btn-rounded">Send Query</button>
+                                <div class="x_content collapse">
+                                    <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
+                                        <div class="panel">
+                                            <a class="panel-heading collapsed" role="tab" id="headingOne" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                                <h4 class="panel-title">Final Mark</h4>
+                                            </a>
+                                            <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne" aria-expanded="false" style="height: 0px;">
+                                                <div class="panel-body">
+                                                    <h3>Result: 84</h3>
+                                                    <br>
+                                                    <h5>Marks Breakdown:</h5>
+                                                    <table class="table table-bordered">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>Name</th>
+                                                            <th>Marks</th>
+                                                            <th>Out Of</th>
+                                                            <th>Weighting</th>
+                                                            <th>Weighted Marks</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr>
+                                                            <td scope="row">Class Record</td>
+                                                            <td>80</td>
+                                                            <td>100</td>
+                                                            <td>50</td>
+                                                            <td>40</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td scope="row">Exam</td>
+                                                            <td>70</td>
+                                                            <td>80</td>
+                                                            <td>50</td>
+                                                            <td>43.8</td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
                                             </div>
                                         </div>
+
+                                        <div class="panel">
+                                            <a class="panel-heading collapsed" role="tab" id="headingTwo" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                <h4 class="panel-title">DP Status</h4>
+                                            </a>
+                                            <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo" aria-expanded="false" style="height: 0px;">
+                                                <div class="panel-body">
+                                                    <h3>Result: DP</h3>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="panel">
+                                            <a class="panel-heading collapsed" role="tab" id="headingThree" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                                <h4 class="panel-title">Class Record</h4>
+                                            </a>
+                                            <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree" aria-expanded="false" style="height: 0px;">
+                                                <div class="panel-body">
+                                                    <h3>Result: 80</h3>
+                                                    <br>
+                                                    <h5>Marks Breakdown:</h5>
+                                                    <table class="table table-bordered">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>Name</th>
+                                                            <th>Marks</th>
+                                                            <th>Out Of</th>
+                                                            <th>Weighting</th>
+                                                            <th>Weighted Marks</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr>
+                                                            <td scope="row">Test</td>
+                                                            <td>80</td>
+                                                            <td>100</td>
+                                                            <td>35</td>
+                                                            <td>28</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td scope="row">Assignments</td>
+                                                            <td>95</td>
+                                                            <td>100</td>
+                                                            <td>50</td>
+                                                            <td>47.5</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td scope="row">Prac Tests</td>
+                                                            <td>100</td>
+                                                            <td>100</td>
+                                                            <td>15</td>
+                                                            <td>15</td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        @php ($courseworks = $courses[$j]['courseworks'])
+
+                                        @foreach($courseworks as $key=>$coursework)
+                                            <div class="panel">
+                                                <a class="panel-heading collapsed" role="tab" id="headingFour<?=$key?>" data-toggle="collapse" data-parent="#accordion" href="#collapseFour<?=$key?>" aria-expanded="false" aria-controls="collapseFour<?=$key?>">
+                                                    <h4 class="panel-title"><?=$coursework['name']?></h4>
+                                                </a>
+                                                <div id="collapseFour<?=$key?>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour<?=$key?>" aria-expanded="false" style="height: 0px;">
+                                                    <div class="panel-body">
+                                                        <h3>Result: 95</h3>
+                                                        <br>
+                                                        <h5>Marks Breakdown:</h5>
+                                                        <table class="table table-bordered">
+                                                            <thead>
+                                                            <tr>
+                                                                <th>Name</th>
+                                                                <th>Marks</th>
+                                                                <th>Out Of</th>
+                                                                <th>Weighting</th>
+                                                                <th>Weighted Marks</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            <tr>
+                                                                <td scope="row">Assignment 1</td>
+                                                                <td>100</td>
+                                                                <td>100</td>
+                                                                <td>20</td>
+                                                                <td>20</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td scope="row">Assignment 2</td>
+                                                                <td>75</td>
+                                                                <td>100</td>
+                                                                <td>20</td>
+                                                                <td>15</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td scope="row">Assignment 3</td>
+                                                                <td>100</td>
+                                                                <td>100</td>
+                                                                <td>20</td>
+                                                                <td>20</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td scope="row">Assignment 4</td>
+                                                                <td>100</td>
+                                                                <td>100</td>
+                                                                <td>20</td>
+                                                                <td>20</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td scope="row">Assignment 5</td>
+                                                                <td>100</td>
+                                                                <td>100</td>
+                                                                <td>20</td>
+                                                                <td>20</td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endforeach
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    @endfor
                 </div>
-
-                <div class="col-md-6 col-sm-6 col-xs-12">
-                    <div class="x_panel">
-                        <div class="x_title">
-                            <h2>2. CSC10XX (2017)</h2>
-                            <ul class="nav navbar-right panel_toolbox">
-                                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a>
-                                </li>
-                            </ul>
-                            <div class="clearfix"></div>
-                        </div>
-                        <div class="x_content collapse">
-                            <!-- start accordion -->
-                            <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
-                                <div class="panel">
-                                    <a class="panel-heading collapsed" role="tab" id="headingOne1" data-toggle="collapse" data-parent="#accordion" href="#collapseOne1" aria-expanded="false" aria-controls="collapseOne1">
-                                        <h4 class="panel-title">Final Mark</h4>
-                                    </a>
-                                    <div id="collapseOne1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne1" aria-expanded="false" style="height: 0px;">
-                                        <div class="panel-body">
-                                            <h3>Result: 84</h3>
-                                            <br>
-                                            <h5>Marks Breakdown:</h5>
-                                            <table class="table table-bordered">
-                                                <thead>
-                                                <tr>
-                                                    <th class="column-title">Name</th>
-                                                    <th>Marks</th>
-                                                    <th>Out Of</th>
-                                                    <th>Weighting</th>
-                                                    <th>Weighted Marks</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                <tr>
-                                                    <td scope="row">Class Record</td>
-                                                    <td>80</td>
-                                                    <td>100</td>
-                                                    <td>50</td>
-                                                    <td>40</td>
-                                                </tr>
-                                                <tr>
-                                                    <td scope="row">Exam</td>
-                                                    <td>70</td>
-                                                    <td>80</td>
-                                                    <td>50</td>
-                                                    <td>43.8</td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="panel">
-                                    <a class="panel-heading collapsed" role="tab" id="headingTwo1" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo1" aria-expanded="false" aria-controls="collapseTwo1">
-                                        <h4 class="panel-title">DP Status</h4>
-                                    </a>
-                                    <div id="collapseTwo1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo1" aria-expanded="false" style="height: 0px;">
-                                        <div class="panel-body">
-                                            <h3>Result: DP</h3>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="panel">
-                                    <a class="panel-heading collapsed" role="tab" id="headingThree1" data-toggle="collapse" data-parent="#accordion" href="#collapseThree1" aria-expanded="false" aria-controls="collapseThree1">
-                                        <h4 class="panel-title">Class Record</h4>
-                                    </a>
-                                    <div id="collapseThree1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree1" aria-expanded="false" style="height: 0px;">
-                                        <div class="panel-body">
-                                            <h3>Result: 80</h3>
-                                            <br>
-                                            <h5>Marks Breakdown:</h5>
-                                            <table class="table table-bordered">
-                                                <thead>
-                                                <tr>
-                                                    <th>Name</th>
-                                                    <th>Marks</th>
-                                                    <th>Out Of</th>
-                                                    <th>Weighting</th>
-                                                    <th>Weighted Marks</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                <tr>
-                                                    <td scope="row">Test</td>
-                                                    <td>80</td>
-                                                    <td>100</td>
-                                                    <td>35</td>
-                                                    <td>28</td>
-                                                </tr>
-                                                <tr>
-                                                    <td scope="row">Assignments</td>
-                                                    <td>95</td>
-                                                    <td>100</td>
-                                                    <td>50</td>
-                                                    <td>47.5</td>
-                                                </tr>
-                                                <tr>
-                                                    <td scope="row">Prac Tests</td>
-                                                    <td>100</td>
-                                                    <td>100</td>
-                                                    <td>15</td>
-                                                    <td>15</td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="panel">
-                                    <a class="panel-heading collapsed" role="tab" id="headingFour1" data-toggle="collapse" data-parent="#accordion" href="#collapseFour1" aria-expanded="false" aria-controls="collapseFour1">
-                                        <h4 class="panel-title">Assignments</h4>
-                                    </a>
-                                    <div id="collapseFour1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour1" aria-expanded="false" style="height: 0px;">
-                                        <div class="panel-body">
-                                            <h3>Result: 95</h3>
-                                            <br>
-                                            <h5>Marks Breakdown:</h5>
-                                            <table class="table table-bordered">
-                                                <thead>
-                                                <tr>
-                                                    <th>Name</th>
-                                                    <th>Marks</th>
-                                                    <th>Out Of</th>
-                                                    <th>Weighting</th>
-                                                    <th>Weighted Marks</th>
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                <tr>
-                                                    <td scope="row">Assignment 1</td>
-                                                    <td>100</td>
-                                                    <td>100</td>
-                                                    <td>20</td>
-                                                    <td>20</td>
-                                                </tr>
-                                                <tr>
-                                                    <td scope="row">Assignment 2</td>
-                                                    <td>75</td>
-                                                    <td>100</td>
-                                                    <td>20</td>
-                                                    <td>15</td>
-                                                </tr>
-                                                <tr>
-                                                    <td scope="row">Assignment 3</td>
-                                                    <td>100</td>
-                                                    <td>100</td>
-                                                    <td>20</td>
-                                                    <td>20</td>
-                                                </tr>
-                                                <tr>
-                                                    <td scope="row">Assignment 4</td>
-                                                    <td>100</td>
-                                                    <td>100</td>
-                                                    <td>20</td>
-                                                    <td>20</td>
-                                                </tr>
-                                                <tr>
-                                                    <td scope="row">Assignment 5</td>
-                                                    <td>100</td>
-                                                    <td>100</td>
-                                                    <td>20</td>
-                                                    <td>20</td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            @endfor
         </div>
     </div>
 @endsection
+
+{{--
+
+<div class="x_content collapse">
+                                    <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
+                                        <div class="panel">
+                                            <a class="panel-heading collapsed" role="tab" id="headingOne" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                                <h4 class="panel-title">Final Mark</h4>
+                                            </a>
+                                            <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne" aria-expanded="false" style="height: 0px;">
+                                                <div class="panel-body">
+                                                    <h3>Result: 84</h3>
+                                                    <br>
+                                                    <h5>Marks Breakdown:</h5>
+                                                    <table class="table table-bordered">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>Name</th>
+                                                            <th>Marks</th>
+                                                            <th>Out Of</th>
+                                                            <th>Weighting</th>
+                                                            <th>Weighted Marks</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr>
+                                                            <td scope="row">Class Record</td>
+                                                            <td>80</td>
+                                                            <td>100</td>
+                                                            <td>50</td>
+                                                            <td>40</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td scope="row">Exam</td>
+                                                            <td>70</td>
+                                                            <td>80</td>
+                                                            <td>50</td>
+                                                            <td>43.8</td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="panel">
+                                            <a class="panel-heading collapsed" role="tab" id="headingTwo" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                <h4 class="panel-title">DP Status</h4>
+                                            </a>
+                                            <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo" aria-expanded="false" style="height: 0px;">
+                                                <div class="panel-body">
+                                                    <h3>Result: DP</h3>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="panel">
+                                            <a class="panel-heading collapsed" role="tab" id="headingThree" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                                <h4 class="panel-title">Class Record</h4>
+                                            </a>
+                                            <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree" aria-expanded="false" style="height: 0px;">
+                                                <div class="panel-body">
+                                                    <h3>Result: 80</h3>
+                                                    <br>
+                                                    <h5>Marks Breakdown:</h5>
+                                                    <table class="table table-bordered">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>Name</th>
+                                                            <th>Marks</th>
+                                                            <th>Out Of</th>
+                                                            <th>Weighting</th>
+                                                            <th>Weighted Marks</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr>
+                                                            <td scope="row">Test</td>
+                                                            <td>80</td>
+                                                            <td>100</td>
+                                                            <td>35</td>
+                                                            <td>28</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td scope="row">Assignments</td>
+                                                            <td>95</td>
+                                                            <td>100</td>
+                                                            <td>50</td>
+                                                            <td>47.5</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td scope="row">Prac Tests</td>
+                                                            <td>100</td>
+                                                            <td>100</td>
+                                                            <td>15</td>
+                                                            <td>15</td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="panel">
+                                            <a class="panel-heading collapsed" role="tab" id="headingFour" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                                <h4 class="panel-title">Assignments</h4>
+                                            </a>
+                                            <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour" aria-expanded="false" style="height: 0px;">
+                                                <div class="panel-body">
+                                                    <h3>Result: 95</h3>
+                                                    <br>
+                                                    <h5>Marks Breakdown:</h5>
+                                                    <table class="table table-bordered">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>Name</th>
+                                                            <th>Marks</th>
+                                                            <th>Out Of</th>
+                                                            <th>Weighting</th>
+                                                            <th>Weighted Marks</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr>
+                                                            <td scope="row">Assignment 1</td>
+                                                            <td>100</td>
+                                                            <td>100</td>
+                                                            <td>20</td>
+                                                            <td>20</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td scope="row">Assignment 2</td>
+                                                            <td>75</td>
+                                                            <td>100</td>
+                                                            <td>20</td>
+                                                            <td>15</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td scope="row">Assignment 3</td>
+                                                            <td>100</td>
+                                                            <td>100</td>
+                                                            <td>20</td>
+                                                            <td>20</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td scope="row">Assignment 4</td>
+                                                            <td>100</td>
+                                                            <td>100</td>
+                                                            <td>20</td>
+                                                            <td>20</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td scope="row">Assignment 5</td>
+                                                            <td>100</td>
+                                                            <td>100</td>
+                                                            <td>20</td>
+                                                            <td>20</td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+--}}
