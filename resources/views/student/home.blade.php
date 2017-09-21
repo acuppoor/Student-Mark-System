@@ -1,55 +1,15 @@
-{{--
-@extends('layouts.dashboard.main')
-
-@section('title')
-    My Marks
-@endsection
-
-@section('nav_title')
-    View Marks
-@endsection
-
-@section('content')
-<div class="wrapper">
---}}
-{{--    @include('include.dashboard.sidepanel')--}}{{--
-
-
-    <div class="sidebar" data-background-color="black" data-active-color="danger">
-        <div class="sidebar-wrapper">
-            <div class="logo">
-                <a href="/" class="simple-text">
-                    <img src="{{url('images/uct.png')}}" style="width: 50px; height: 50px">
-                    &nbsp;
-                    Mark System
-                </a>
-            </div>
-            <ul class="nav">
-                <li class="active">
-                    <a href="/student">
-                        <i class="ti-panel"></i>
-                        <p>My Marks</p>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
-    @include('include.dashboard.marksbody')
-</div>
-@endsection
---}}
-@extends('dashboard.main')
+@extends('include_home.main')
 @section('page_title')
     Home
 @endsection
 @section('sidebar')
-    @include('dashboard.student_sidebar')
+    @include('include_home.student_sidebar')
 @endsection
 
 @section('navbar_title')
     <ul class="nav navbar-nav navbar-left">
         <li class="">
-            <a href="{{url('/student')}}" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            <a href="{{route("home")}}" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                 <h4><i class="fa fa-home"></i>&nbsp;Home</h4>
             </a>
         </li>

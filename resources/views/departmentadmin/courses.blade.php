@@ -16,7 +16,7 @@
 <div class="container body">
     <div class="main_container">
 
-    @include('dashboard.dept_admin_sidebar')
+    @include('include_home.dept_admin_sidebar')
     @section('navbar_title')
         <ul class="nav navbar-nav navbar-left">
             <li class="">

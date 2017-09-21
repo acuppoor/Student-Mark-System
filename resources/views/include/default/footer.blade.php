@@ -23,7 +23,7 @@
             <ul class="list-inline">
                 <li class="list-inline-item">
                     <a href="/">
-                        UCT
+                        FAQs
                     </a>
                 </li>
                 <li class="list-inline-item">

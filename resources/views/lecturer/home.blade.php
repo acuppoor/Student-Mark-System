@@ -1,9 +1,9 @@
-@extends('dashboard.main')
+@extends('include_home.main')
 @section('page_title')
     Home
 @endsection
 @section('sidebar')
-    @include('dashboard.lecturer_sidebar')
+    @include('include_home.lecturer_sidebar')
 @endsection
 
 @section('navbar_title')

@@ -15,7 +15,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'firstName', 'lastName', 'studentNumber', 'employeeID', 'email', 'password'
+        'firstName', 'lastName', 'studentNumber', 'employeeID', 'email', 'password', 'approve', 'role_id'
     ];
 
     /**
@@ -27,7 +27,11 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public function userRoleMap(){
-        return $this->hasMany('App\UserRoleMap');
+    public function role(){
+        return $this->hasOne('App\Role');
+    }
+
+    public function marks(){
+        return $this->hasMany('App\SubcourseworkUserMarkMap');
     }
 }

@@ -1,23 +1,38 @@
 <?php
+Route::get('/', function(){return view('menu');});
+Route::get('/contact', 'ContactController@index')->name('contact');
+
+Route::get('/home', 'PagesController@home')->name("home");
+
+Route::get('/mymarks', 'PagesController@myMarks')->name("my_marks");
+Route::get('/tacourses', 'PagesController@taCourses')->name("ta_courses");
+
+Route::get('/conveningcourses', 'PagesController@conveningCourses')->name("convening_courses");
+Route::get('/courses', 'PagesController@courses')->name("courses");
+
+Route::get('/searchmarks', 'PagesController@searchMarks')->name("search_marks");
+
+Route::get('/admin', 'PagesController@admin')->name("admin");
+Route::get('/faculties&departments', 'PagesController@admin')->name("faculties");
+
+Route::get('/courseconvenor/courseedit', function(){return view('lecturer.courseedit');});
+
+Route::get('/faqs', function(){return view('faq');})->name('FAQs');
+Route::get('/privacypolicy', function(){return view('privacypolicy');})->name('privacy_policy');
+Route::get('/termsandconditions', function(){return view('termsandcondition');})->name('terms_and_conditions');
+
+Auth::routes();
+
 
 /*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
-Route::get('/', function () {
-    return view('menu');
-});
-Route::get('/test', function () {
+ *
+ *
+ *
+ * */
+/*Route::get('/test', function () {
     return view('main');
 });
-Route::get('/systemadmin', function(){return view('systemadmin.home');});
+Route::get('/systemadmin', 'HomeController@home');//function(){return view('systemadmin.home');});
 Route::get('/systemadmin/admin', function(){return view('systemadmin.system_admin');});
 Route::get('/systemadmin/faculties', function(){return view('systemadmin.faculties_departments');});
 Route::get('/systemadmin/courses', function(){return view('systemadmin.courses');});
@@ -35,7 +50,7 @@ Route::get('/courseconvenor/search', function(){return view('courseconvenor.sear
 Route::get('/courseconvenor/courseedit', function(){return view('courseconvenor.courseedit');});
 Route::get('/courseconvenor/courseworkedit', function(){return view('courseconvenor.coursework_cat');});
 
-/*Route::get('/course/details', function(){return view('course.coursedetails');});
+Route::get('/course/details', function(){return view('course.coursedetails');});
 Route::get('/course/participants', function(){return view('course.participants');});
 Route::get('/course/coursework', function(){return view('course.coursework');});
 Route::get('/course/marks', function(){return view('course.marks');});
@@ -43,7 +58,7 @@ Route::get('/course/export', function(){return view('course.export');});
 Route::get('/course/courseworkedit', function(){return view('course.cwedit');});
 Route::get('/course/subminimum', function(){return view('course.subminimum');});
 Route::get('/course/tests', function(){return view('course.tests');});*/
-
+/*
 Route::get('/lecturer', function(){return view('lecturer.home');});
 Route::get('/lecturer/courses', function(){return view('lecturer.courses');});
 Route::get('/lecturer/search', function(){return view('lecturer.searchmarks');});
@@ -58,10 +73,10 @@ Route::get('/student/mymarks', function(){return view('student.mymarks');});
 
 Route::get('/login', function (){return view('auth.login');});
 
-Route::get('/contact', 'ContactController@index');
+
 
 Route::get('/home', function(){return view('menu');});
 
-Auth::routes();
 
-Route::get('/', function(){return view('menu');});
+
+Route::get('/', function(){return view('menu');});*/

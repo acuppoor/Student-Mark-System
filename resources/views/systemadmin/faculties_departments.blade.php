@@ -1,9 +1,9 @@
-@extends('dashboard.main')
+@extends('include_home.main')
 @section('page_title')
     Faculties
 @endsection
 @section('sidebar')
-    @include('dashboard.sys_admin_sidebar')
+    @include('include_home.sys_admin_sidebar')
 @endsection
 
 @section('navbar_title')

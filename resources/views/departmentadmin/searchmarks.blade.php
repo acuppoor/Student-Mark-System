@@ -1,9 +1,9 @@
-@extends('dashboard.main')
+@extends('include_home.main')
 @section('page_title')
     Search Marks
 @endsection
 @section('sidebar')
-    @include('dashboard.dept_admin_sidebar')
+    @include('include_home.dept_admin_sidebar')
 @endsection
 
 @section('navbar_title')
