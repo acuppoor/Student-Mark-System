@@ -1,10 +1,21 @@
 <?php
+
+
+
 Route::get('/', function(){return view('menu');});
 Route::get('/contact', 'ContactController@index')->name('contact');
 
 Route::get('/home', 'PagesController@home')->name("home");
 
 Route::get('/mymarks', 'PagesController@myMarks')->name("my_marks");
+Route::post('/mymarks/xyz', 'PagesController@myMarksFilter'
+    /*function(){
+        if(\Illuminate\Http\Request::ajax){
+            return \Illuminate\Http\Response::json(\Illuminate\Http\Request::input('courseCode'));
+        }
+    }*/
+
+    );
 Route::get('/tacourses', 'PagesController@taCourses')->name("ta_courses");
 
 Route::get('/conveningcourses', 'PagesController@conveningCourses')->name("convening_courses");
@@ -20,6 +31,7 @@ Route::get('/courseconvenor/courseedit', function(){return view('lecturer.course
 Route::get('/faqs', function(){return view('faq');})->name('FAQs');
 Route::get('/privacypolicy', function(){return view('privacypolicy');})->name('privacy_policy');
 Route::get('/termsandconditions', function(){return view('termsandcondition');})->name('terms_and_conditions');
+
 
 Auth::routes();
 

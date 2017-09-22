@@ -16,4 +16,12 @@ class Course extends Model
     public function courseworks(){
         return $this->hasMany('App\Coursework');
     }
+
+    public function type(){
+        return $this->hasOne('App\CourseType');
+    }
+
+    public function department(){
+        return $this->belongsTo('App\Department');
+    }
 }

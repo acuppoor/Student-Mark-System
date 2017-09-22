@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class PagesController extends Controller
@@ -63,6 +64,20 @@ class PagesController extends Controller
         switch ($roleID){
             case 1 || 2:
                 return app('App\Http\Controllers\StudentController')->index();
+            default:
+                return view('student.access_denied');
+        }
+    }
+
+    public function myMarksFilter(Request $request){
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login');
+        }
+        $roleID = Auth::user()->role_id;
+        switch ($roleID){
+            case 1 || 2:
+                return app('App\Http\Controllers\StudentController')->filter($request);
             default:
                 return view('student.access_denied');
         }

@@ -59,6 +59,7 @@
 </div>
 
 @include('scripts.dashboard')
+@yield('scripts')
 {{--
 <!-- Flot -->
 <script>
