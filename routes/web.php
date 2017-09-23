@@ -14,7 +14,15 @@ Route::post('/tacourses/filter', 'PagesController@taCoursesFilter');
 Route::get('tacourses/{courseId}', 'PagesController@getTaCourse');
 
 Route::get('/conveningcourses', 'PagesController@conveningCourses')->name("convening_courses");
-Route::get('/courses', 'PagesController@courses')->name("courses");
+Route::post('/conveningcourses/filter', 'PagesController@conveningCourses');
+Route::get('/conveningcourses/{courseId}', 'PagesController@conveningCourses');
+Route::get('/lecturingcourses', 'PagesController@lecturerCourses')->name("lecturer_courses");
+Route::post('/lecturingcourses/filter', 'PagesController@lecturerCourses');
+Route::get('/lecturingcourses/{courseId}', 'PagesController@lecturerCourses');
+Route::get('/courses', 'PagesController@otherCourses')->name("other_courses");
+Route::post('/courses/filter', 'PagesController@otherCourses');
+Route::get('/courses/{courseId}', 'PagesController@otherCourses');
+
 
 Route::get('/searchmarks', 'PagesController@searchMarks')->name("search_marks");
 Route::post('/searchmarks/search', 'PagesController@getMarks');

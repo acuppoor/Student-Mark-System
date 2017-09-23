@@ -32,4 +32,8 @@ class Course extends Model
     public function teachingAssistants(){
         return $this->hasMany('App\TACourseMap');
     }
+
+    public function lecturer(){
+        return $this->hasMany('App\LecturerCourseMap');
+    }
 }

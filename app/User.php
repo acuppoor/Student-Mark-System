@@ -42,4 +42,16 @@ class User extends Authenticatable
     public function courseTAMaps(){
         return $this->hasMany('App\TACourseMap');
     }
+
+    public function lecturerCourseMaps(){
+        return $this->hasMany('App\LecturerCourseMap');
+    }
+
+    public function convenorCourseMaps(){
+        return $this->hasMany('App\ConvenorCourseMap');
+    }
+
+    public function departmentMaps(){
+        return $this->hasMany('App\UserDepartmentMap')   ;
+    }
 }

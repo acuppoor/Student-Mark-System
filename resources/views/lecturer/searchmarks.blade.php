@@ -19,6 +19,7 @@
 @section('content')
     <div class="right_col" role="main">
         <div class="row">
+            <h2>Same As That Of Teaching Assistant!</h2>
         </div>
     </div>
 @endsection

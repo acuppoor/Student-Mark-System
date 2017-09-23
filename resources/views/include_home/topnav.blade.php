@@ -10,13 +10,12 @@
             <ul class="nav navbar-nav navbar-right">
                 <li class="">
                     <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                        {{ Auth::check()?Auth::user()->firstName." ".Auth::user()->lastName: 'Not Logged In!' }}
+                        {{ Auth::check()?Auth::user()->first_name." ".Auth::user()->last_name: 'Not Logged In!' }}
                         <span class=" fa fa-angle-down"></span>
                     </a>
                     <ul class="dropdown-menu dropdown-usermenu pull-right">
                         <li><a href="javascript:;"><span class="fa fa-user"></span> Profile</a></li>
                         <li><a href="javascript:;">Help</a></li>
-                        <li><a href="javascript:;">Query</a></li>
                         <hr>
                         <li>
                             <a href="{{ route('logout') }}"
@@ -29,6 +28,7 @@
                             </form>
                         </li>
                     </ul>
+                    @yield('additional_nav_contents')
                 </li>
             </ul>
         </nav>

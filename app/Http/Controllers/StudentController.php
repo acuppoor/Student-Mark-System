@@ -98,11 +98,12 @@ class StudentController extends Controller
         return $courses;
     }
 
+
     private function isSimilar($wordOne, $wordTwo){
         return true;
     }
 
-    private function getCourses($courseCode=null, $year = null, $type=null, $department=null){
+    private function getCourses($courseCode=null, $year = null, $type=null, $department=null){ // student
         if(!$year){
             $year = (int) date("Y");
         }
@@ -125,7 +126,7 @@ class StudentController extends Controller
             }
             $classRecord = 0;
             $result = [];
-            $result['courseName'] = $course->name;
+            $result['courseName'] = $course->code;
             $result['year'] = $courseYear;
             $courseworks = [];
             $cwrks = $course->courseworks;

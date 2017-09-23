@@ -104,7 +104,7 @@ class PagesController extends Controller
         }
     }
 
-    public function courses(){
+    public function lecturerCourses(Request $request=null){
         if(Auth::user()->approved != 1){
             Auth::logout();
             return view('auth.login');
@@ -116,11 +116,49 @@ class PagesController extends Controller
                 return view('student.access_denied');
             case 3:
             case 4:
-                return view('lecturer.courses');
+                return view('lecturer.lecturing_courses')->with('courses', app('App\Http\Controllers\LecturerController')->getLecturerCourses($request));
             case 5:
                 return view('departmentadmin.courses');
             case 6:
                 return view('systemadmin.courses');
+        }
+    }
+    public function conveningCourses(Request $request=null){
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login');
+        }
+        $roleID = Auth::user()->role_id;
+        switch ($roleID){
+            case 1:
+            case 2:
+                return view('student.access_denied');
+            case 3:
+            case 4:
+                return view('lecturer.convening_courses')->with('courses', app('App\Http\Controllers\LecturerController')->getConveningCourses($request));
+            case 5:
+                return view('departmentadmin.courses');
+            case 6:
+                return view('systemadmin.courses');
+        }
+    }
+    public function otherCourses(Request $request=null){
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login');
+        }
+        $roleID = Auth::user()->role_id;
+        switch ($roleID){
+            case 1:
+            case 2:
+                return view('student.access_denied');
+            case 3:
+            case 4:
+                return view('lecturer.other_courses')->with('courses', app('App\Http\Controllers\LecturerController')->getOtherCourses($request));
+            case 5:
+                return view('departmentadmin.courses')->with('courses', app('App\Http\Controllers\LecturerController')->getOtherCourses($request));
+            case 6:
+                return view('systemadmin.courses')->with('courses', app('App\Http\Controllers\LecturerController')->getOtherCourses($request));
         }
     }
 
@@ -181,25 +219,6 @@ class PagesController extends Controller
         }
     }
 
-    public function conveningCourses(){
-        if(Auth::user()->approved != 1){
-            Auth::logout();
-            return view('auth.login');
-        }
-        $roleID = Auth::user()->role_id;
-        switch ($roleID){
-            case 1:
-            case 2:
-                return view('student.access_denied');
-            case 3:
-                return view('lecturer.access_denied');
-            case 4:
-                return view('lecturer.convening_courses');
-            case 5:
-            case 6:
-                return redirect()->route('courses');
-        }
-    }
 
     public function admin(){
         if(Auth::user()->approved != 1){

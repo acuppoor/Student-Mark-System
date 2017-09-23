@@ -10,7 +10,10 @@
             </li>
         @endif
         <li>
-            <a href="{{route('courses')}}"><i class="fa fa-book"></i> Courses</a>
+            <a href="{{route('lecturer_courses')}}"><i class="fa fa-book"></i> Lecturing Courses</a>
+        </li>
+        <li>
+            <a href="{{route('other_courses')}}"><i class="fa fa-book"></i> Other Courses</a>
         </li>
         <li>
             <a href="{{route('search_marks')}}"><i class="fa fa-search"></i> Search Marks</a>
