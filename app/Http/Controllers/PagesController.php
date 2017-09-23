@@ -44,7 +44,28 @@ class PagesController extends Controller
             case 1:
                 return view('student.access_denied');
             case 2:
-                return view('student.searchmarks');
+                return view('student.searchmarks')->with('courses', array());
+            case 3:
+            case 4:
+                return view('lecturer.searchmarks');
+            case 5:
+                return view('departmentadmin.searchmarks');
+            case 6:
+                return view('systemadmin.searchmarks');
+        }
+    }
+
+    public function getMarks(Request $request){
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login');
+        }
+        $roleID = Auth::user()->role_id;
+        switch ($roleID){
+            case 1:
+                return view('student.access_denied');
+            case 2:
+                return view('student.searchmarks')->with('courses', app('App\Http\Controllers\StudentController')->getMarks($request));
             case 3:
             case 4:
                 return view('lecturer.searchmarks');
@@ -63,7 +84,7 @@ class PagesController extends Controller
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1 || 2:
-                return app('App\Http\Controllers\StudentController')->index();
+                return app('App\Http\Controllers\StudentController')->studentHome();
             default:
                 return view('student.access_denied');
         }
@@ -77,7 +98,7 @@ class PagesController extends Controller
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1 || 2:
-                return app('App\Http\Controllers\StudentController')->filter($request);
+                return app('App\Http\Controllers\StudentController')->marksfilter($request);
             default:
                 return view('student.access_denied');
         }
@@ -113,7 +134,45 @@ class PagesController extends Controller
             case 1:
                 return view('student.access_denied');
             case 2:
-                return view('student.ta_courses');
+                return app('App\Http\Controllers\StudentController')->taFilter(null);
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+                return redirect()->route('courses');
+        }
+    }
+
+    public function getTaCourse($courseId){
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login');
+        }
+        $roleID = Auth::user()->role_id;
+        switch ($roleID){
+            case 1:
+                return view('student.access_denied');
+            case 2:
+                return app('App\Http\Controllers\StudentController')->getTaCourse($courseId);
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+                return redirect()->route('courses');
+        }
+    }
+
+    public function taCoursesFilter(Request $request){
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login');
+        }
+        $roleID = Auth::user()->role_id;
+        switch ($roleID){
+            case 1:
+                return view('student.access_denied');
+            case 2:
+                return app('App\Http\Controllers\StudentController')->taFilter($request);
             case 3:
             case 4:
             case 5:

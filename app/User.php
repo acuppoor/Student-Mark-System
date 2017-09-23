@@ -34,4 +34,12 @@ class User extends Authenticatable
     public function subCourseworkMarks(){
         return $this->hasMany('App\SubCourseworkUserMarkMap', 'user_id', 'id');
     }
+
+    public function courseMaps(){
+        return $this->hasMany('App\UserCourseMap');
+    }
+
+    public function courseTAMaps(){
+        return $this->hasMany('App\TACourseMap');
+    }
 }

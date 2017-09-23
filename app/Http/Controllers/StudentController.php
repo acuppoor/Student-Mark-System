@@ -13,17 +13,89 @@ use Illuminate\Support\Facades\Response;
 
 class StudentController extends Controller
 {
-    public function index(){
+    public function studentHome(){
         return view('student.my_marks')->with('courses', $this->getCourses(null, null, null, null));
     }
 
-    public function filter(Request $request){
-        return Response::json($this->getCourses(
+    public function marksFilter(Request $request){
+        /*return Response::json($this->getCourses(
             $request->input('courseCode'),
             $request->input('courseYear'),
             $request->input('courseType'),
             $request->input('courseDepartment')
-        ));
+        ));*/
+        return view('student.my_marks')
+            ->with(array('courses'=> $this->getCourses(
+                    $request->input('courseCode'),
+                    $request->input('courseYear'),
+                    $request->input('courseType'),
+                    $request->input('courseDepartment')),
+                'request'=> ""
+            ));
+    }
+
+    public function taFilter($request){
+        $courses = [];
+        foreach (Auth::user()->courseTAMaps as $courseMap){
+            $crs = $courseMap->course;
+            $course = [];
+            $course['year'] = explode('-', $crs->start_date)[0];
+            $course['type'] = $crs->type->name;
+
+            if($request && (
+                ($request->input('courseCode') && !$this->isSimilar($crs->name, $request->input('courseCode'))) ||
+                ($request->input('courseDepartment') && $crs->department->code.' - '.$crs->department->name != $request->input('courseDepartment')) ||
+                ($request->input('courseYear') && $course['year'] != $request->input('courseYear')) ||
+                ($request->input('courseType') && $course['type'] != $request->input('courseType'))
+                )){
+                continue;
+            }
+            $course['id'] = $crs->id;
+            $course['name'] = $crs->name;
+            $course['description'] = $crs->description;
+            $course['code'] = $crs->code;
+            $course['term_number'] = $crs->term_number;
+            $course['start_date'] = $crs->start_date;
+            $course['end_date'] = $crs->end_date;
+            $course['department'] = $crs->department->name;
+            $course['faculty'] = $crs->department->faculty->name;
+            $courses[] = $course;
+        }
+        return view('student.ta_courses')->with('courses', $courses);
+//        return Response::json($courses);
+    }
+
+    public function getTaCourse($courseId){
+
+    }
+
+    public function getMarks(Request $request){
+        $studentNumber = $request->input('studentNumber');
+        $courseYear = $request->input('courseYear');
+        $courseCode = $request->input('courseCode');
+
+        $user = User::where('student_number', $studentNumber)->first();
+        if(!$user || ($user->role_id != 1 && $user->role_id != 2)){
+            return array();
+        }
+
+        $courses = [];
+        foreach ($user->courseMaps as $courseMap) {
+            $crs = $courseMap->course;
+            if(explode('-', $crs['start_date'])[0] != $courseYear ||
+                ($courseCode && !$this->isSimilar($crs['code'], $courseCode))
+            ){
+                continue;
+            }
+
+            $course = [];
+            $course['code'] = $crs->code;
+            $course['year'] = explode('-', $crs['start_date'])[0];
+            // get the marks for the student. will follow same approach as student viewing their own marks.
+            // once students' marks are optimised, then this one can be completed.
+            $courses[] = $course;
+        }
+        return $courses;
     }
 
     private function isSimilar($wordOne, $wordTwo){
@@ -34,17 +106,11 @@ class StudentController extends Controller
         if(!$year){
             $year = (int) date("Y");
         }
-        $courses = [];
-        $user = Auth::user();
-        $subCourseworksMarks = $user->subCourseworkmarks;
 
-        foreach ($subCourseworksMarks as $i){
-            $subCoursework = $i->subcoursework;
-            $coursework = $subCoursework->coursework;
-            $course = $coursework->course;
-            $courses[] = $course;
+        $courses = [];
+        foreach (Auth::user()->courseMaps as $courseMap) {
+            $courses[] = $courseMap->course;
         }
-        $courses = array_unique($courses);
 
         $results = [];
         foreach ($courses as $course){
@@ -53,7 +119,7 @@ class StudentController extends Controller
                 $courseYear != $year ||
                 ($courseCode && !$this->isSimilar($courseCode, $course->code)) ||
                 ($type && $course->type->name != $type) ||
-                ($department && $course->department->name != $department)
+                ($department && ($course->department->code . ' - ' . $course->department->name) != $department)
             ){
                 continue;
             }
@@ -89,7 +155,6 @@ class StudentController extends Controller
                     $subCoursework['sections'] = $sections;
                     $subCourseworks[] = $subCoursework;
                 }
-//                print_r($s); die();
                 $temp['name'] = $cwrk->name;
                 $temp['contents'] = $subCourseworks;
                 $temp['total'] = $totalCourseworkMarks;

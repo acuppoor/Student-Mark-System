@@ -15,10 +15,11 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('firstName');
-            $table->string('lastName');
-            $table->string('studentNumber');
-            $table->string('employeeID');
+            $table->string('first_name');
+            $table->string('last_name');
+            $table->string('student_number');
+            $table->string('employee_id');
+            $table->string('academic_program');
             $table->string('email')->unique();
             $table->string('password');
             $table->boolean('approved');
@@ -29,10 +30,11 @@ class CreateUsersTable extends Migration
 
         DB::table('users')->insert(
             array(
-                'firstName' => 'Kushal',
-                'lastName' => 'Cuppoor',
-                'studentNumber' => 'cppkus001',
-                'employeeID' => 1234567,
+                'first_name' => 'Kushal',
+                'last_name' => 'Cuppoor',
+                'student_number' => 'cppkus001',
+                'employee_id' => 1234567,
+                'academic_program' => 'EB805',
                 'email' => 'cppkus001@myuct.ac.za',
                 'password' => bcrypt('1234567'),
                 'role_id' => 6,

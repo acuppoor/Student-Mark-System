@@ -18,10 +18,18 @@ class Course extends Model
     }
 
     public function type(){
-        return $this->hasOne('App\CourseType');
+        return $this->hasOne('App\CourseType', 'id', 'type_id');
     }
 
     public function department(){
-        return $this->belongsTo('App\Department');
+        return $this->hasOne('App\Department', 'id', 'department_id');
+    }
+
+    public function students(){
+        return $this->hasMany('App\UserCourseMap');
+    }
+
+    public function teachingAssistants(){
+        return $this->hasMany('App\TACourseMap');
     }
 }

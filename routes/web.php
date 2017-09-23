@@ -8,20 +8,16 @@ Route::get('/contact', 'ContactController@index')->name('contact');
 Route::get('/home', 'PagesController@home')->name("home");
 
 Route::get('/mymarks', 'PagesController@myMarks')->name("my_marks");
-Route::post('/mymarks/xyz', 'PagesController@myMarksFilter'
-    /*function(){
-        if(\Illuminate\Http\Request::ajax){
-            return \Illuminate\Http\Response::json(\Illuminate\Http\Request::input('courseCode'));
-        }
-    }*/
-
-    );
+Route::post('/mymarks/filter', 'PagesController@myMarksFilter');
 Route::get('/tacourses', 'PagesController@taCourses')->name("ta_courses");
+Route::post('/tacourses/filter', 'PagesController@taCoursesFilter');
+Route::get('tacourses/{courseId}', 'PagesController@getTaCourse');
 
 Route::get('/conveningcourses', 'PagesController@conveningCourses')->name("convening_courses");
 Route::get('/courses', 'PagesController@courses')->name("courses");
 
 Route::get('/searchmarks', 'PagesController@searchMarks')->name("search_marks");
+Route::post('/searchmarks/search', 'PagesController@getMarks');
 
 Route::get('/admin', 'PagesController@admin')->name("admin");
 Route::get('/faculties&departments', 'PagesController@admin')->name("faculties");

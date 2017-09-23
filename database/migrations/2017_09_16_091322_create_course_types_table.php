@@ -26,7 +26,7 @@ class CreateCourseTypesTable extends Migration
                 array('name' => 'Half Year Course'),
                 array('name' => 'Whole Year Course'),
                 array('name' => 'Summer School'),
-                array('name' => 'Winter')
+                array('name' => 'Winter School')
             )
         );
     }

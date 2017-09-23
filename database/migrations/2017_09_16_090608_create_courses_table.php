@@ -18,6 +18,7 @@ class CreateCoursesTable extends Migration
             $table->string('name');
             $table->string('code');
             $table->text('description');
+            $table->integer('term_number');
             $table->date('start_date');
             $table->date('end_date');
             $table->integer('type_id');
@@ -30,6 +31,7 @@ class CreateCoursesTable extends Migration
                 'name' => 'CSC1016S',
                 'code' => 'CSC1016S',
                 'description' => 'Computer Science',
+                'term_number' => 1171,
                 'start_date' => \Carbon\Carbon::create(2017, 8, 16),
                 'end_date' => \Carbon\Carbon::create(2017, 11, 11),
                 'type_id' => 2,
