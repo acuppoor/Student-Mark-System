@@ -15,7 +15,13 @@ Route::get('tacourses/{courseId}', 'PagesController@getTaCourse');
 
 Route::get('/conveningcourses', 'PagesController@conveningCourses')->name("convening_courses");
 Route::post('/conveningcourses/filter', 'PagesController@conveningCourses');
-Route::get('/conveningcourses/{courseId}', 'PagesController@conveningCourses');
+Route::get('/conveningcourses/{courseId}', 'PagesController@getCourseDetails');
+Route::post('/conveningcourses/{courseId}/update', 'PagesController@updateCourseInfo');
+Route::post('/conveningcourses/{courseId}/addconvenor', 'PagesController@addCourseConvenor');
+Route::post('/conveningcourses/{courseId}/addlecturer', 'PagesController@addLecturer');
+Route::post('/conveningcourses/{courseId}/addta', 'PagesController@addTA');
+Route::post('/participantslist', 'PagesController@participantsList');
+
 Route::get('/lecturingcourses', 'PagesController@lecturerCourses')->name("lecturer_courses");
 Route::post('/lecturingcourses/filter', 'PagesController@lecturerCourses');
 Route::get('/lecturingcourses/{courseId}', 'PagesController@lecturerCourses');

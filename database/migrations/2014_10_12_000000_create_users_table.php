@@ -15,15 +15,16 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('first_name');
-            $table->string('last_name');
-            $table->string('student_number');
-            $table->string('employee_id');
-            $table->string('academic_program');
+            $table->string('first_name')->default('undefined');
+            $table->string('last_name')->default('undefined');
+            $table->string('student_number')->default('undefined');
+            $table->string('employee_id')->default('undefined');
+            $table->string('academic_program')->default('undefined');
             $table->string('email')->unique();
-            $table->string('password');
-            $table->boolean('approved');
-            $table->integer("role_id");
+            $table->string('password')->default(bcrypt('1234567'));
+            $table->boolean('approved')->default(0);
+            $table->boolean('account_registered')->default(0);
+            $table->integer("role_id")->default(1);
             $table->rememberToken();
             $table->timestamps();
         });
@@ -37,6 +38,7 @@ class CreateUsersTable extends Migration
                 'academic_program' => 'EB805',
                 'email' => 'cppkus001@myuct.ac.za',
                 'password' => bcrypt('1234567'),
+                'account_registered' => 1,
                 'role_id' => 6,
                 'approved' => '1'
             )

@@ -11,3 +11,5 @@
 
 <!-- Custom Theme Style -->
 <link href="{{asset('gentelella/build/css/custom.min.css')}}" rel="stylesheet">
+
+<link href="{{asset('custom_css/custom.css')}}" rel="stylesheet">

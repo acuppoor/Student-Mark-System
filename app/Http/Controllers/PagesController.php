@@ -142,6 +142,127 @@ class PagesController extends Controller
                 return view('systemadmin.courses');
         }
     }
+
+
+    public function getCourseDetails($courseId){
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login');
+        }
+        $roleID = Auth::user()->role_id;
+        switch ($roleID){
+            case 1:
+            case 2:
+                return view('student.access_denied');
+            case 3:
+            case 4:
+                return view('lecturer.course_details_convenor')->with('course', app('App\Http\Controllers\LecturerController')->getCourseDetails($courseId));
+            case 5:
+                return view('departmentadmin.courses');
+            case 6:
+                return view('systemadmin.courses');
+        }
+    }
+
+    public function updateCourseInfo(Request $request, $courseId){
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login');
+        }
+        $roleID = Auth::user()->role_id;
+        switch ($roleID){
+            case 1:
+            case 2:
+                return view('student.access_denied');
+            case 3:
+            case 4:
+                return app('App\Http\Controllers\LecturerController')->updateCourseInfo($request, $courseId);
+            case 5:
+                return view('departmentadmin.courses');
+            case 6:
+                return view('systemadmin.courses');
+        }
+    }
+
+    public function addCourseConvenor(Request $request, $courseId){
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login');
+        }
+        $roleID = Auth::user()->role_id;
+        switch ($roleID){
+            case 1:
+            case 2:
+                return view('student.access_denied');
+            case 3:
+            case 4:
+                return app('App\Http\Controllers\LecturerController')->addCourseConvenor($request, $courseId);
+            case 5:
+                return view('departmentadmin.courses');
+            case 6:
+                return view('systemadmin.courses');
+        }
+    }
+
+    public function addLecturer(Request $request, $courseId){
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login');
+        }
+        $roleID = Auth::user()->role_id;
+        switch ($roleID){
+            case 1:
+            case 2:
+                return view('student.access_denied');
+            case 3:
+            case 4:
+                return app('App\Http\Controllers\LecturerController')->addLecturer($request, $courseId);
+            case 5:
+                return view('departmentadmin.courses');
+            case 6:
+                return view('systemadmin.courses');
+        }
+    }
+    public function addTA(Request $request, $courseId){
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login');
+        }
+        $roleID = Auth::user()->role_id;
+        switch ($roleID){
+            case 1:
+            case 2:
+                return view('student.access_denied');
+            case 3:
+            case 4:
+                return app('App\Http\Controllers\LecturerController')->addTA($request, $courseId);
+            case 5:
+                return view('departmentadmin.courses');
+            case 6:
+                return view('systemadmin.courses');
+        }
+    }
+
+    public function participantsList(Request $request){
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login');
+        }
+        $roleID = Auth::user()->role_id;
+        switch ($roleID){
+            case 1:
+            case 2:
+                return view('student.access_denied');
+            case 3:
+            case 4:
+                return app('App\Http\Controllers\LecturerController')->participantsList($request);
+            case 5:
+                return view('departmentadmin.courses');
+            case 6:
+                return view('systemadmin.courses');
+        }
+    }
+
     public function otherCourses(Request $request=null){
         if(Auth::user()->approved != 1){
             Auth::logout();
