@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\ConvenorCourseMap;
 use App\Course;
 use App\CourseType;
+use App\CourseworkType;
 use App\LecturerCourseMap;
 use App\TACourseMap;
 use App\User;
@@ -22,7 +23,7 @@ class LecturerController extends Controller
 
     private function getCourseInfo($courseId){
         $course = Course::where('id', $courseId)->first();
-        return array(
+        $courseDetails =  array(
             'id' => $courseId,
             'name' => $course->name,
             'code' => $course->code,
@@ -33,6 +34,45 @@ class LecturerController extends Controller
             'description' => $course->description,
             'year' => explode('-', $course->start_date)[0]
         );
+        $crswrks = $course->courseworks;
+        $courseworks = [];
+
+        foreach($crswrks as $crswrk){
+            $coursework = [];
+            $coursework['name'] = $crswrk->name;
+            $coursework['type'] = CourseworkType::where('id', $crswrk->coursework_type_id)->first()->name;
+            $coursework['display_to_students'] = $crswrk->display_to_students;
+            $coursework['include_in_classrecord'] = $crswrk->include_in_classrecord;
+            $coursework['weighting'] = $crswrk->weighting_in_classrecord;
+
+            $subcrswrks = $crswrk->subcourseworks;
+            $subcourseworks = [];
+
+            foreach ($subcrswrks as $subcrswrk){
+                $subcoursework = [];
+                $subcoursework['name'] = $subcrswrk->name;
+                $subcoursework['display_to_students'] = $subcrswrk->display_to_students;
+                $subcoursework['display_marks'] = $subcrswrk->display_marks;
+                $subcoursework['display_percentage'] = $subcrswrk->display_percentage;
+                $subcoursework['include_in_coursework'] = $subcrswrk->include_in_coursework;
+                $subcoursework['weighting'] = $subcrswrk->weighting_in_coursework;
+                $subcoursework['max_marks'] = $subcrswrk->max_marks;
+
+                $sections = [];
+                foreach($subcrswrk->sections as $sctn){
+                    $section = [];
+                    $section['name'] = $sctn->name;
+                    $section['max_marks'] = $sctn->max_marks;
+                    $sections[] = $section;
+                }
+                $subcoursework['sections'] = $sections;
+                $subcourseworks[] = $subcoursework;
+            }
+            $coursework['subcourseworks'] = $subcourseworks;
+            $courseworks[] = $coursework;
+        }
+        $courseDetails['courseworks'] = $courseworks;
+        return $courseDetails;
     }
 
 

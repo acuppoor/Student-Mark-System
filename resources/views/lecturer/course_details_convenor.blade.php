@@ -492,338 +492,242 @@
                                                 <div class="clearfix"></div>
                                             </div>
                                             <div class="x_content" style="display: none;">
-                                                <div class="row">
-                                                    <div id="wizard_verticle" class="form_wizard wizard_verticle">
-                                                        <ul class="list-unstyled wizard_steps anchor">
-                                                            <li>
-                                                                <a href="#step-11" class="selected" isdone="1" rel="1">
-                                                                    <span class="step_no">1</span>
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="#step-22" class="disabled" isdone="0" rel="2">
-                                                                    <span class="step_no">2</span>
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="#step-33" class="disabled" isdone="0" rel="3">
-                                                                    <span class="step_no">3</span>
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="#step-44" class="disabled" isdone="0" rel="4">
-                                                                    <span class="step_no">4</span>
-                                                                </a>
-                                                            </li>
-                                                        </ul>
+                                                <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
+                                                    @php($count = 0)
+                                                    @foreach($course['courseworks'] as $coursework)
+                                                        @php($count++)
 
-                                                        <div class="stepContainer" style="height: 377px;">
-                                                            <div id="step-11" class="content" style="display: block;">
-                                                                <h2 class="StepTitle">Step 1 Content</h2>
-                                                                <form class="form-horizontal form-label-left">
-
-                                                                    <span class="section">Personal Info</span>
-
-                                                                    <div class="form-group">
-                                                                        <label class="control-label col-md-3 col-sm-3" for="first-name">First Name <span class="required">*</span>
-                                                                        </label>
-                                                                        <div class="col-md-6 col-sm-6">
-                                                                            <input type="text" id="first-name2" required="required" class="form-control col-md-7 col-xs-12">
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="form-group">
-                                                                        <label class="control-label col-md-3 col-sm-3" for="last-name">Last Name <span class="required">*</span>
-                                                                        </label>
-                                                                        <div class="col-md-6 col-sm-6">
-                                                                            <input type="text" id="last-name2" name="last-name" required="required" class="form-control col-md-7 col-xs-12">
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="form-group">
-                                                                        <label for="middle-name" class="control-label col-md-3 col-sm-3">Middle Name / Initial</label>
-                                                                        <div class="col-md-6 col-sm-6">
-                                                                            <input id="middle-name2" class="form-control col-md-7 col-xs-12" type="text" name="middle-name">
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="form-group">
-                                                                        <label class="control-label col-md-3 col-sm-3">Gender</label>
-                                                                        <div class="col-md-6 col-sm-6">
-                                                                            <div id="gender2" class="btn-group" data-toggle="buttons">
-                                                                                <label class="btn btn-default" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
-                                                                                    <input type="radio" name="gender" value="male"> &nbsp; Male &nbsp;
-                                                                                </label>
-                                                                                <label class="btn btn-primary" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
-                                                                                    <input type="radio" name="gender" value="female" checked=""> Female
-                                                                                </label>
+                                                        <div class="panel">
+                                                            <a class="panel-heading collapsed" role="tab" id="headingTwo{{$count.''.$count}}" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo{{$count.''.$count}}" aria-expanded="false" aria-controls="collapseTwo{{$count.''.$count}}">
+                                                                <h4 class="panel-title">{{$count.'. '.$coursework['name']}}</h4>
+                                                            </a>
+                                                            <div id="collapseTwo{{$count.''.$count}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo{{$count.''.$count}}" aria-expanded="false" style="height: 0px;">
+                                                                <div class="panel-body">
+                                                                    @php($subcount = 0)
+                                                                    @foreach($coursework['subcourseworks'] as $subcoursework)
+                                                                        @php($subcount++)
+                                                                        <div class="row">
+                                                                            <div class="col md-1">
+                                                                                <h4>{{$count.'.'.$subcount.'. '.$subcoursework['name']}}</h4>
+                                                                                <ul class="nav child_menu" style="display: block;">
+                                                                                    @foreach($subcoursework['sections'] as $section)
+                                                                                        <li>
+                                                                                            <a href="" style="color: black">{{$section['name']}}</a>
+                                                                                        </li>
+                                                                                    @endforeach
+                                                                                </ul>
                                                                             </div>
                                                                         </div>
-                                                                    </div>
-                                                                    <div class="form-group">
-                                                                        <label class="control-label col-md-3 col-sm-3">Date Of Birth <span class="required">*</span>
-                                                                        </label>
-                                                                        <div class="col-md-6 col-sm-6">
-                                                                            <input id="birthday2" class="date-picker form-control col-md-7 col-xs-12" required="required" type="text">
-                                                                        </div>
-                                                                    </div>
-
-                                                                </form>
+                                                                    @endforeach
+                                                                </div>
                                                             </div>
-                                                            <div id="step-22" class="content" style="display: none;">
-                                                                <h2 class="StepTitle">Step 2 Content</h2>
-                                                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                                                                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                                                                </p>
-                                                                <p>
-                                                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                                                                    in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                                                                </p>
-                                                                <p>
-                                                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                                                                    in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                                                                </p>
-                                                                <p>
-                                                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                                                                    in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                                                                </p>
-                                                                <p>
-                                                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                                                                    in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                                                                </p>
-                                                            </div>
-                                                            <div id="step-33" class="content" style="display: none;">
-                                                                <h2 class="StepTitle">Step 3 Content</h2>
-                                                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                                                                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                                                                </p>
-                                                                <p>
-                                                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                                                                    in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                                                                </p>
-                                                            </div>
-                                                            <div id="step-44" class="content" style="display: none;">
-                                                                <h2 class="StepTitle">Step 4 Content</h2>
-                                                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                                                                    Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                                                                </p>
-                                                                <p>
-                                                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                                                                    in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                                                                </p>
-                                                                <p>
-                                                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                                                                    in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                                                                </p>
-                                                            </div></div>
-                                                        <div class="actionBar">
-                                                            <div class="msgBox">
-                                                                <div class="content"></div>
-                                                                <a href="#" class="close">X</a></div>
-                                                            <div class="loader">Loading</div>
-                                                            <a href="#" class="buttonFinish buttonDisabled btn btn-default">Finish</a>
-                                                            <a href="#" class="buttonNext btn btn-success">Next</a>
-                                                            <a href="#" class="buttonPrevious buttonDisabled btn btn-primary">Previous</a></div>
-                                                    </div>
+                                                        </div>
 
 
-                                                    <ul class="nav side-menu" style="">
-                                                        <li>
-                                                            <ul class="nav child_menu" style="display: block;">
-                                                                <li>
-                                                                    <div class="row">
-                                                                        <div class="col-md-12">
-                                                                            <div class="panel">
-                                                                                <a class="panel-heading collapsed" role="tab" id="headingTwo3" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo3" aria-expanded="false" aria-controls="collapseTwo3">
-                                                                                    <div class="row panel-title">
-                                                                                        <div class="col-md-5">
-                                                                                            <h4 class="panel-title">
-                                                                                                <a>Exam</a>
-                                                                                            </h4>
-                                                                                        </div>
-                                                                                        <div class="col-md-7" style="text-align: right">
-                                                                                            <button class="btn btn-round btn-dark">
-                                                                                                <span class="glyphicon glyphicon-floppy-save"></span>
-                                                                                                Save
-                                                                                            </button>
-                                                                                            <button class="btn btn-round btn-dark">
-                                                                                                <span class="glyphicon glyphicon-trash"></span>
-                                                                                                Delete
-                                                                                            </button>
-                                                                                            <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                                                                                        </div>
 
-                                                                                    </div>
-                                                                                </a>
-                                                                                <div id="collapseTwo3" class="panel-collapse" role="tabpanel" aria-labelledby="headingTwo3" aria-expanded="false" style="height: 0px;">
-                                                                                    <div class="panel-body">
-                                                                                        <div class="row">
-                                                                                            <div class="col-md-4">
-                                                                                                <div class="icheckbox_flat-green" style="position: relative;">
-                                                                                                    <input type="checkbox" id="check-all" class="flat" style="position: absolute; opacity: 0;">
-                                                                                                    <ins class="iCheck-helper" style="position: absolute"></ins>
-                                                                                                </div>
-                                                                                                Display Percentage
-                                                                                            </div>
-                                                                                            <div class="col-md-4">
-                                                                                                <div class="icheckbox_flat-green" style="position: relative;">
-                                                                                                    <input type="checkbox" id="check-all" class="flat" style="position: absolute; opacity: 0;">
-                                                                                                    <ins class="iCheck-helper" style="position: absolute"></ins>
-                                                                                                </div>
-                                                                                                Display Marks
-                                                                                            </div>
-                                                                                            <div class="col-md-4">
-                                                                                                <div class="icheckbox_flat-green" style="position: relative;">
-                                                                                                    <input type="checkbox" id="check-all" class="flat" style="position: absolute; opacity: 0;">
-                                                                                                    <ins class="iCheck-helper" style="position: absolute"></ins>
-                                                                                                </div>
-                                                                                                Display To Students
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <br>
-                                                                                        <div class="row">
-                                                                                            <div class="col-md-3">
-                                                                                                <div class="col-md-10">
-                                                                                                    <label class="control-label">Include In Class Mark:</label>
-                                                                                                </div>
-                                                                                                <div class="col-md-2">
-                                                                                                    <div class="icheckbox_flat-green" style="position: relative;">
-                                                                                                        <input type="checkbox" id="check-all" class="flat" style="position: absolute; opacity: 0;">
-                                                                                                        <ins class="iCheck-helper" style="position: absolute"></ins>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <div class="col-md-1"></div>
-                                                                                            <div class="col-md-3">
-                                                                                                <div class="col-md-4">
-                                                                                                    <label class="control-label">Weighting:</label>
-                                                                                                </div>
-                                                                                                <div class="col-md-8">
-                                                                                                    <input class="form-control">
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <br>
-                                                                                        <div class="row">
-                                                                                            <div class="col-md-3">
-                                                                                                <div class="col-md-10">
-                                                                                                    <label class="control-label">Include In Year Mark:</label>
-                                                                                                </div>
-                                                                                                <div class="col-md-2">
-                                                                                                    <div class="icheckbox_flat-green" style="position: relative;">
-                                                                                                        <input type="checkbox" id="check-all" class="flat" style="position: absolute; opacity: 0;">
-                                                                                                        <ins class="iCheck-helper" style="position: absolute"></ins>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <div class="col-md-1"></div>
-                                                                                            <div class="col-md-3">
-                                                                                                <div class="col-md-4">
-                                                                                                    <label class="control-label">Weighting:</label>
-                                                                                                </div>
-                                                                                                <div class="col-md-8">
-                                                                                                    <input class="form-control">
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <hr>
-                                                                                        <div class="row">
-                                                                                            <div class="col-md-1"></div>
-                                                                                            <div class="col-md-4">
-                                                                                                <h5>
-                                                                                                    <label for="">Subcategories</label>
-                                                                                                </h5>
+
+                                                        {{--<ul class="nav side-menu" style="">
+                                                            <li>
+                                                                <ul class="nav child_menu" style="display: block;">
+                                                                    <li>
+                                                                        <div class="row">
+                                                                            <div class="col-md-12">
+                                                                                <div class="panel">
+                                                                                    <a class="panel-heading collapsed" role="tab" id="headingTwo{{$count.''.$count}}" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo{{$count.''.$count}}" aria-expanded="false" aria-controls="collapseTwo{{$count.''.$count}}">
+                                                                                        <div class="row panel-title">
+                                                                                            <div class="col-md-5">
+                                                                                                <h4>{{$coursework['name']}}</h4>
+                                                                                                --}}{{--<h4 class="panel-title">
+                                                                                                    <a>Exam</a>
+                                                                                                </h4>--}}{{--
                                                                                             </div>
                                                                                             <div class="col-md-7" style="text-align: right">
-                                                                                                <button class="btn btn-dark btn-round">
-                                                                                                    <span class="glyphicon glyphicon-plus"></span>
-                                                                                                    New Subcat
+                                                                                                <button class="btn btn-round btn-dark">
+                                                                                                    <span class="glyphicon glyphicon-floppy-save"></span>
+                                                                                                    Save
+                                                                                                </button>
+                                                                                                <button class="btn btn-round btn-dark">
+                                                                                                    <span class="glyphicon glyphicon-trash"></span>
+                                                                                                    Delete
                                                                                                 </button>
                                                                                                 <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                                                                                             </div>
+
                                                                                         </div>
-                                                                                        <br>
-                                                                                        <div class="row">
-                                                                                            <div class="col-md-1"></div>
-                                                                                            <div class="col-md-11">
-                                                                                                <ul class="nav child_menu" style="display: block;">
-                                                                                                    <li class="sub_menu current-page">
-                                                                                                        <div class="row panel-title" style="border-bottom: 1px solid black;">
-                                                                                                            <div class="col-md-5">
-                                                                                                                <h3 class="panel-title">
-                                                                                                                Default
-                                                                                                                </h3>
+                                                                                    </a>
+                                                                                    <div id="collapseTwo3" class="panel-collapse" role="tabpanel" aria-labelledby="headingTwo3" aria-expanded="false" style="height: 0px;">
+                                                                                        <div class="panel-body">
+                                                                                            <div class="row">
+                                                                                                <div class="col-md-4">
+                                                                                                    <div class="icheckbox_flat-green" style="position: relative;">
+                                                                                                        <input type="checkbox" id="check-all" class="flat" style="position: absolute; opacity: 0;">
+                                                                                                        <ins class="iCheck-helper" style="position: absolute"></ins>
+                                                                                                    </div>
+                                                                                                    Display Percentage
+                                                                                                </div>
+                                                                                                <div class="col-md-4">
+                                                                                                    <div class="icheckbox_flat-green" style="position: relative;">
+                                                                                                        <input type="checkbox" id="check-all" class="flat" style="position: absolute; opacity: 0;">
+                                                                                                        <ins class="iCheck-helper" style="position: absolute"></ins>
+                                                                                                    </div>
+                                                                                                    Display Marks
+                                                                                                </div>
+                                                                                                <div class="col-md-4">
+                                                                                                    <div class="icheckbox_flat-green" style="position: relative;">
+                                                                                                        <input type="checkbox" id="check-all" class="flat" style="position: absolute; opacity: 0;">
+                                                                                                        <ins class="iCheck-helper" style="position: absolute"></ins>
+                                                                                                    </div>
+                                                                                                    Display To Students
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <br>
+                                                                                            <div class="row">
+                                                                                                <div class="col-md-3">
+                                                                                                    <div class="col-md-10">
+                                                                                                        <label class="control-label">Include In Class Mark:</label>
+                                                                                                    </div>
+                                                                                                    <div class="col-md-2">
+                                                                                                        <div class="icheckbox_flat-green" style="position: relative;">
+                                                                                                            <input type="checkbox" id="check-all" class="flat" style="position: absolute; opacity: 0;">
+                                                                                                            <ins class="iCheck-helper" style="position: absolute"></ins>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="col-md-1"></div>
+                                                                                                <div class="col-md-3">
+                                                                                                    <div class="col-md-4">
+                                                                                                        <label class="control-label">Weighting:</label>
+                                                                                                    </div>
+                                                                                                    <div class="col-md-8">
+                                                                                                        <input class="form-control">
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <br>
+                                                                                            <div class="row">
+                                                                                                <div class="col-md-3">
+                                                                                                    <div class="col-md-10">
+                                                                                                        <label class="control-label">Include In Year Mark:</label>
+                                                                                                    </div>
+                                                                                                    <div class="col-md-2">
+                                                                                                        <div class="icheckbox_flat-green" style="position: relative;">
+                                                                                                            <input type="checkbox" id="check-all" class="flat" style="position: absolute; opacity: 0;">
+                                                                                                            <ins class="iCheck-helper" style="position: absolute"></ins>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="col-md-1"></div>
+                                                                                                <div class="col-md-3">
+                                                                                                    <div class="col-md-4">
+                                                                                                        <label class="control-label">Weighting:</label>
+                                                                                                    </div>
+                                                                                                    <div class="col-md-8">
+                                                                                                        <input class="form-control">
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <hr>
+                                                                                            <div class="row">
+                                                                                                <div class="col-md-1"></div>
+                                                                                                <div class="col-md-4">
+                                                                                                    <h5>
+                                                                                                        <label for="">Subcategories</label>
+                                                                                                    </h5>
+                                                                                                </div>
+                                                                                                <div class="col-md-7" style="text-align: right">
+                                                                                                    <button class="btn btn-dark btn-round">
+                                                                                                        <span class="glyphicon glyphicon-plus"></span>
+                                                                                                        New Subcat
+                                                                                                    </button>
+                                                                                                    <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <br>
+                                                                                            <div class="row">
+                                                                                                <div class="col-md-1"></div>
+                                                                                                <div class="col-md-11">
+                                                                                                    <ul class="nav child_menu" style="display: block;">
+                                                                                                        <li class="sub_menu current-page">
+                                                                                                            <div class="row panel-title" style="border-bottom: 1px solid black;">
+                                                                                                                <div class="col-md-5">
+                                                                                                                    <h3 class="panel-title">
+                                                                                                                    Default
+                                                                                                                    </h3>
+                                                                                                                </div>
+                                                                                                                <div class="col-md-7" style="text-align: right">
+                                                                                                                    <button class="btn btn-round btn-dark">
+                                                                                                                        <span class="glyphicon glyphicon-floppy-save"></span>
+                                                                                                                        Save
+                                                                                                                    </button>
+                                                                                                                    <button class="btn btn-round btn-dark">
+                                                                                                                        <span class="glyphicon glyphicon-trash"></span>
+                                                                                                                        Delete
+                                                                                                                    </button>
+                                                                                                                    <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                                                                                                </div>
+
                                                                                                             </div>
-                                                                                                            <div class="col-md-7" style="text-align: right">
-                                                                                                                <button class="btn btn-round btn-dark">
-                                                                                                                    <span class="glyphicon glyphicon-floppy-save"></span>
-                                                                                                                    Save
-                                                                                                                </button>
+                                                                                                            <br>
+                                                                                                            --}}{{--<h2 class="title">
+                                                                                                                Default
                                                                                                                 <button class="btn btn-round btn-dark">
                                                                                                                     <span class="glyphicon glyphicon-trash"></span>
                                                                                                                     Delete
                                                                                                                 </button>
-                                                                                                                <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                                                                                                            </div>
-
-                                                                                                        </div>
-                                                                                                        <br>
-                                                                                                        {{--<h2 class="title">
-                                                                                                            Default
-                                                                                                            <button class="btn btn-round btn-dark">
-                                                                                                                <span class="glyphicon glyphicon-trash"></span>
-                                                                                                                Delete
-                                                                                                            </button>
-                                                                                                        </h2>--}}
-                                                                                                        <div class="row">
-                                                                                                            <div class="col-md-4">
-                                                                                                                <div class="icheckbox_flat-green" style="position: relative;">
-                                                                                                                    <input type="checkbox" id="check-all" class="flat" style="position: absolute; opacity: 0;">
-                                                                                                                    <ins class="iCheck-helper" style="position: absolute"></ins>
+                                                                                                            </h2>--}}{{--
+                                                                                                            <div class="row">
+                                                                                                                <div class="col-md-4">
+                                                                                                                    <div class="icheckbox_flat-green" style="position: relative;">
+                                                                                                                        <input type="checkbox" id="check-all" class="flat" style="position: absolute; opacity: 0;">
+                                                                                                                        <ins class="iCheck-helper" style="position: absolute"></ins>
+                                                                                                                    </div>
+                                                                                                                    Display To Students
                                                                                                                 </div>
-                                                                                                                Display To Students
-                                                                                                            </div>
-                                                                                                            <div class="col-md-4">
-                                                                                                                <div class="icheckbox_flat-green" style="position: relative;">
-                                                                                                                    <input type="checkbox" id="check-all" class="flat" style="position: absolute; opacity: 0;">
-                                                                                                                    <ins class="iCheck-helper" style="position: absolute"></ins>
+                                                                                                                <div class="col-md-4">
+                                                                                                                    <div class="icheckbox_flat-green" style="position: relative;">
+                                                                                                                        <input type="checkbox" id="check-all" class="flat" style="position: absolute; opacity: 0;">
+                                                                                                                        <ins class="iCheck-helper" style="position: absolute"></ins>
+                                                                                                                    </div>
+                                                                                                                    Include In Coursework
                                                                                                                 </div>
-                                                                                                                Include In Coursework
+                                                                                                                <div class="col-md-3">
+                                                                                                                    <div class="col-md-5">
+                                                                                                                        <label class="control-label">Weighting:</label>
+                                                                                                                    </div>
+                                                                                                                    <div class="col-md-7">
+                                                                                                                        <input class="form-control" value="100">
+                                                                                                                    </div>
+                                                                                                                </div>
                                                                                                             </div>
-                                                                                                            <div class="col-md-3">
+                                                                                                            <div class="row">
+                                                                                                                <div class="col-md-4">
+                                                                                                                    <label for="">Max Points:</label>
+                                                                                                                    <input type="text" class="form-control" value="100">
+                                                                                                                </div>
                                                                                                                 <div class="col-md-5">
-                                                                                                                    <label class="control-label">Weighting:</label>
+                                                                                                                    <label for="studentFile">Marks File:</label>
+                                                                                                                    <input id="studentFile" type="text" class="form-control">
                                                                                                                 </div>
-                                                                                                                <div class="col-md-7">
-                                                                                                                    <input class="form-control" value="100">
+                                                                                                                <div class="col-md-3">
+                                                                                                                    <p>&nbsp;</p>
+                                                                                                                    <button class="btn btn-dark btn-round">Browse</button>
+                                                                                                                    <button class="btn btn-dark btn-round">Add</button>
                                                                                                                 </div>
                                                                                                             </div>
-                                                                                                        </div>
-                                                                                                        <div class="row">
-                                                                                                            <div class="col-md-4">
-                                                                                                                <label for="">Max Points:</label>
-                                                                                                                <input type="text" class="form-control" value="100">
-                                                                                                            </div>
-                                                                                                            <div class="col-md-5">
-                                                                                                                <label for="studentFile">Marks File:</label>
-                                                                                                                <input id="studentFile" type="text" class="form-control">
-                                                                                                            </div>
-                                                                                                            <div class="col-md-3">
-                                                                                                                <p>&nbsp;</p>
-                                                                                                                <button class="btn btn-dark btn-round">Browse</button>
-                                                                                                                <button class="btn btn-dark btn-round">Add</button>
-                                                                                                            </div>
-                                                                                                        </div>
-                                                                                                    </li>
-                                                                                                </ul>
+                                                                                                        </li>
+                                                                                                    </ul>
+                                                                                                </div>
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                    </div>
-                                                                </li>
-                                                            </ul>
-                                                        </li>
-                                                    </ul>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                        </ul>--}}
+                                                    @endforeach
                                                 </div>
                                             </div>
                                         </div>
