@@ -30,6 +30,7 @@ class LecturerController extends Controller
         $course = Course::where('id', $courseId)->first();
         $courseDetails =  array(
             'id' => $courseId,
+            'students_count' => UserCourseMap::where('course_id', $courseId)->count(),
             'name' => $course->name,
             'code' => $course->code,
             'term' => $course->term_number,
@@ -162,18 +163,24 @@ class LecturerController extends Controller
         $studentNumber = $request->input('studentNumber');
         $courseId = $request->input('courseId');
         $limit = 30;
-        $offset = $request->input('offset')*$limit;
+        $offsetRaw = $request->input('offset');
+        $offset = $offsetRaw*$limit;
 
         $students = [];
         if($studentNumber){
-            $userId = User::where('student_number', $studentNumber)->first()->id;
-            if($userId) {
-                $students = UserCourseMap::where('user_id', userId)
-                                            ->where('course_id', courseId)->first()->user;
+            $usr = User::where('student_number', $studentNumber)->first();
+            if($usr) {
+                $students[] = UserCourseMap::where('user_id', $usr->id)
+                                            ->where('course_id', $courseId)->first()->user;
             }
         } else {
-            $users = UserCourseMap::where('course_id', $courseId)
-                ->limit($limit)->offset($offset)->get();
+            $users = [];
+            if($offsetRaw == -1){
+                $users = UserCourseMap::where('course_id', $courseId)->first();
+            } else {
+                $users = UserCourseMap::where('course_id', $courseId)
+                    ->limit($limit)->offset($offset)->get();
+            }
             foreach($users as $user){
                 $students[] = $user->user;
             }
@@ -199,11 +206,10 @@ class LecturerController extends Controller
                     $courseworkTotalMark = 0.0;
 
                     foreach ($coursework->subcourseworks as $subcoursework) {
-                        $markReleased = strtotime($subcoursework->display_to_students) >= time();
+                        $markReleased = $subcoursework->display_to_students <= (date('Y').'-'.date('m').'-'.date('d'));
                         $inCourseWork = $subcoursework->weighting_in_coursework > 0;
 
-//                        print_r($markReleased); die();
-                        if($inCourseWork){
+                        if($inCourseWork && $markReleased){
                             $subcourseworkWeighting = $subcoursework->weighting_in_coursework;
                             $subcourseworkN = 0.0;
                             $subcourseworkD = 0.0;
@@ -413,7 +419,6 @@ class LecturerController extends Controller
         return Response::json("Success");
     }
 
-
     public function participantsList(Request $request){
         $email = $request->input('emailAddress');
         $studentNumber = $request->input('studentNumber');
@@ -427,7 +432,21 @@ class LecturerController extends Controller
             $users = User::where('student_number', $studentNumber)->get();
         } else {
             // must select al the students in the course
+            $users = [];
+            foreach (UserCourseMap::all() as $usr) {
+                $users[] = $usr->user;
+            }
+            foreach (TACourseMap::all() as $usr) {
+                $users[] = $usr->user;
+            }
+            foreach (LecturerCourseMap::all() as $usr) {
+                $users[] = $usr->lecturer;
+            }
+            foreach (ConvenorCourseMap::all() as $usr) {
+                $users[] = $usr->user;
+            }
         }
+        $users = array_unique($users);
         $results=[];
         if($users){
             foreach ($users as $user){

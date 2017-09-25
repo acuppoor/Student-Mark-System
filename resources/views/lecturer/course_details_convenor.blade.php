@@ -25,6 +25,44 @@
             </button>
         </a>
     </li>
+
+    <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true" id="subminimumModal" style="display: none;">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">New Subminimum</h4>
+                </div>
+                <form method="" action="">
+                    <div class="modal-body">
+
+                        {{csrf_field()}}
+                        <label for="subminimumName">Name*:</label>
+                        <input type="text" id="subminimumName" class="form-control" name="subminimumName" required="">
+                        <br/>
+                        <label for="subminimumThreshold">Threshold*:</label>
+                        <input type="integer" id="subminimumThreshold" class="form-control" name="subminimumThreshold" required="">
+                        <br/>
+                        <label for="subminimumType">Type*:</label>
+                        <select id="subminimumType" class="form-control">
+                            <option value="1">DP</option>
+                            <option value="0">Final Grade</option>
+                        </select>
+                        <br/>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-dark btn-round" id="createSubminimumButton" type="button">Create</button>
+                        <button type="button" class="btn btn-default btn-round" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+{{--    @if(Auth::user()->role_id == 5)--}}
     <li class="">
         <a>
             <button class="btn btn-dark btn-round" data-toggle="modal" data-target="#courseworkModal">
@@ -85,42 +123,7 @@
             </div>
         </div>
     </div>
-
-    <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true" id="subminimumModal" style="display: none;">
-        <div class="modal-dialog modal-sm">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
-                    </button>
-                    <h4 class="modal-title" id="myModalLabel">New Subminimum</h4>
-                </div>
-                <form method="" action="">
-                    <div class="modal-body">
-
-                        {{csrf_field()}}
-                        <label for="subminimumName">Name*:</label>
-                        <input type="text" id="subminimumName" class="form-control" name="subminimumName" required="">
-                        <br/>
-                        <label for="subminimumThreshold">Threshold*:</label>
-                        <input type="integer" id="subminimumThreshold" class="form-control" name="subminimumThreshold" required="">
-                        <br/>
-                        <label for="subminimumType">Type*:</label>
-                        <select id="subminimumType" class="form-control">
-                            <option value="1">DP</option>
-                            <option value="0">Final Grade</option>
-                        </select>
-                        <br/>
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-dark btn-round" id="createSubminimumButton" type="button">Create</button>
-                        <button type="button" class="btn btn-default btn-round" data-dismiss="modal">Close</button>
-                    </div>
-                </form>
-
-            </div>
-        </div>
-    </div>
+    {{--@endif--}}
 @endsection
 
 @section('content')
@@ -877,6 +880,15 @@
                                                         <input id="searchStudentNumber" type="text" class="form-control">
                                                     </div>
                                                     <div class="col-md-3">
+                                                        <label for="searchStudentNumber">Page #:</label>
+                                                        <select id="searchResultsPageOffset" class="form-control">
+                                                            <option>Max</option>
+                                                            @for($i = 1; $i < ($course['students_count']/30)+1; $i++)
+                                                                <option {{$i == 1?'selected':''}}>{{$i}}</option>
+                                                            @endfor
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-3">
                                                         <p>&nbsp;</p>
                                                         <button class="btn btn-dark btn-round" type="button" id="searchMarkButton" >Search</button>
                                                         <button class="btn btn-dark btn-round">Export</button>
@@ -900,29 +912,8 @@
                                                                 </tr>
                                                             </thead>
 
-                                                            <tbody id="searchMarkResultsBody">
-                                                                <tr class="even pointer">
-                                                                    <td class=" ">stdtes001</td>
-                                                                    <td class=" ">7654321</td>
-                                                                    <td class=" ">95{{--<input type="text" class="form-control" value="95">--}}</td>
-                                                                    <td class=" ">85{{--<input type="text" class="form-control" value="85">--}}</td>
-                                                                    <td class=" ">
-                                                                        <select name="" id="" class="form-control">
-                                                                            <option value="">DP</option>
-                                                                            <option value="">DPR</option>
-                                                                        </select>
-                                                                    </td>
-                                                                    <td class=" ">
-                                                                        <select name="" id="" class="form-control">
-                                                                            <option value="">85</option>
-                                                                            <option value="">OSS</option>
-                                                                            <option value="">FS</option>
-                                                                        </select>
-                                                                    </td>
-                                                                </tr>
-                                                            </tbody>
+                                                            <tbody id="searchMarkResultsBody"></tbody>
                                                         </table>
-                                                        <button class="btn btn-dark btn-round">Update</button>
                                                     </div>
                                                 </div>
                                                 </div>
@@ -1193,7 +1184,7 @@
             $('#searchMarkButton').click(function(){
                 var studentNumber = $('#searchStudentNumber').val();
                 var courseId = $('#courseId').val();
-                var offset = 0;
+                var offset = ($('#searchResultsPageOffset').val()=='Max'?-1:$('#searchResultsPageOffset').val()-1);
 
                 $.ajax({
                     type: 'POST',

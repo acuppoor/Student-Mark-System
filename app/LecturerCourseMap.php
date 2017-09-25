@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class LecturerCourseMap extends Model
 {
     public function lecturer(){
-        return $this->hasOne('App\User');
+        return $this->hasOne('App\User', 'id', 'user_id');
     }
 
     public function course(){
