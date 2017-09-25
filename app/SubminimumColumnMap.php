@@ -6,19 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class SubminimumColumnMap extends Model
 {
-   /* public function subminimum(){
-        return $this->belongsTo('Subminimum');
+    public function subminimum(){
+        return $this->belongsTo('App\Subminimum');
     }
 
     public function coursework(){
-        return $this->hasOne('Coursework');
+        return $this->hasOne('App\Coursework');
     }
 
     public function subcoursework(){
-        return $this->hasOne('SubCoursework');
+        return $this->hasOne('App\SubCoursework');
     }
-
-    public function section(){
-        return $this->hasOne('Section');
-    }*/
 }

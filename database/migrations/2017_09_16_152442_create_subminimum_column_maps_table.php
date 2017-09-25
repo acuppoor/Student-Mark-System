@@ -15,12 +15,21 @@ class CreateSubminimumColumnMapsTable extends Migration
     {
         Schema::create('subminimum_column_maps', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('subminimum_id');
             $table->integer('coursework_id');
-            $table->integer('subcoursework_id');
-            $table->integer('section_id');
+            $table->integer('subcoursework_id')->default(-1);
             $table->double('weighting');
             $table->timestamps();
         });
+
+        DB::table('subminimum_column_maps')->insert(
+            array(
+                'subminimum_id' => 1,
+                'coursework_id' => 1,
+                'subcoursework_id' => "1",
+                'weighting' => 1
+            )
+        );
     }
 
     /**

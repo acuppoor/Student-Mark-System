@@ -6,13 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Course extends Model
 {
-    /*public function courseType(){
-        return $this->hasOne('CourseType');
-    }
-    public function department(){
-        return $this->belongsTo('Department');
-    }*/
-
     public function courseworks(){
         return $this->hasMany('App\Coursework');
     }
@@ -35,5 +28,9 @@ class Course extends Model
 
     public function lecturer(){
         return $this->hasMany('App\LecturerCourseMap');
+    }
+
+    public function subminimums(){
+        return $this->hasMany('App\Subminimum');
     }
 }

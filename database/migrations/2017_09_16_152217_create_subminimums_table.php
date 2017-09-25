@@ -17,10 +17,19 @@ class CreateSubminimumsTable extends Migration
             $table->increments('id');
             $table->integer('course_id');
             $table->string('name');
-            $table->boolean('for_DP?');
+            $table->boolean('for_dp');
             $table->double('threshold');
             $table->timestamps();
         });
+
+        DB::table('subminimums')->insert(
+            array(
+                'course_id' => 1,
+                'name' => "Subminimum 1",
+                'for_dp' => 1,
+                'threshold' => 95.0
+            )
+        );
     }
 
     /**

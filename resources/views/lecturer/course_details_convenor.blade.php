@@ -42,31 +42,81 @@
                     </button>
                     <h4 class="modal-title" id="myModalLabel">New Coursework</h4>
                 </div>
-                <div class="modal-body">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-dark btn-round" id="createCourseworkButton">Create</button>
-                    <button type="button" class="btn btn-default btn-round" data-dismiss="modal">Close</button>
-                </div>
+                <form method="" action="">
+                    <div class="modal-body">
 
+                            {{csrf_field()}}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="courseworkName">Name*:</label>
+                                    <input type="text" id="courseworkName" class="form-control" name="courseworkName" required="">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="courseworkType">Type*:</label>
+                                        <select class="form-control" id="courseworkType">
+                                            @foreach(\App\CourseworkType::all() as $type)
+                                                <option value="{{$type->id}}">{{$type->name}}</option>
+                                            @endforeach
+                                        </select>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label for="courseEndDate">Weighting in Class Record:</label>
+                                    <input type="integer" id="courseworkClassWeighting" class="form-control" name="courseworkClassWeighting" required="">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="courseEndDate">Weighting in Class:</label>
+                                    <input type="integer" id="courseworkYearWeighting" class="form-control" name="courseworkYearWeighting" required="">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="courseworkReleaseDate">Release Date*:</label>
+                                    <input type="date" id="courseworkReleaseDate" class="date-picker form-control" value="{{date('Y').'-'.date('m').'-'.date('d')}}">
+                                </div>
+                            </div>
+                            <br/>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-dark btn-round" id="createCourseworkButton" type="button">Create</button>
+                        <button type="button" class="btn btn-default btn-round" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 
-    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="subminimumModal" style="display: none;">
-        <div class="modal-dialog modal-md">
+    <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true" id="subminimumModal" style="display: none;">
+        <div class="modal-dialog modal-sm">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
                     </button>
-                    <h4 class="modal-title" id="myModalLabel">New Coursework</h4>
+                    <h4 class="modal-title" id="myModalLabel">New Subminimum</h4>
                 </div>
-                <div class="modal-body">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary btn-dark btn-round" id="createCourseworkButton">Create</button>
-                    <button type="button" class="btn btn-default btn-round" data-dismiss="modal">Close</button>
-                </div>
+                <form method="" action="">
+                    <div class="modal-body">
+
+                        {{csrf_field()}}
+                        <label for="subminimumName">Name*:</label>
+                        <input type="text" id="subminimumName" class="form-control" name="subminimumName" required="">
+                        <br/>
+                        <label for="subminimumThreshold">Threshold*:</label>
+                        <input type="integer" id="subminimumThreshold" class="form-control" name="subminimumThreshold" required="">
+                        <br/>
+                        <label for="subminimumType">Type*:</label>
+                        <select id="subminimumType" class="form-control">
+                            <option value="1">DP</option>
+                            <option value="0">Final Grade</option>
+                        </select>
+                        <br/>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-dark btn-round" id="createSubminimumButton" type="button">Create</button>
+                        <button type="button" class="btn btn-default btn-round" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
 
             </div>
         </div>
@@ -483,7 +533,7 @@
                                     <div class="col-md-12">
                                         <div class="x_panel" style="height: auto;">
                                             <div class="x_title">
-                                                <h2>List</h2>
+                                                <h2>Coursework</h2>
                                                 <ul class="nav navbar-right panel_toolbox">
 
                                                     <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a>
@@ -496,237 +546,145 @@
                                                     @php($count = 0)
                                                     @foreach($course['courseworks'] as $coursework)
                                                         @php($count++)
-
                                                         <div class="panel">
                                                             <a class="panel-heading collapsed" role="tab" id="headingTwo{{$count.''.$count}}" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo{{$count.''.$count}}" aria-expanded="false" aria-controls="collapseTwo{{$count.''.$count}}">
-                                                                <h4 class="panel-title">{{$count.'. '.$coursework['name']}}</h4>
+                                                                <h4 class="panel-title">
+                                                                    <div class="row">
+                                                                        <div class="col-md-5">
+                                                                            {{$count.'. '}}<input type="text" {{--class="inline form-control"--}} value="{{$coursework['name']}}">
+                                                                        </div>
+                                                                        <div class="col-md-7" style="text-align: right">
+                                                                            <button class="btn btn-dark btn-round"><i class="fa fa-plus"></i> New Subcoursework</button>
+                                                                            <button class="btn btn-dark btn-round"><i class="fa fa-save"></i> Save</button>
+                                                                            <button class="btn btn-dark btn-round"><i class="fa fa-trash"></i> Delete</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </h4>
                                                             </a>
+
                                                             <div id="collapseTwo{{$count.''.$count}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo{{$count.''.$count}}" aria-expanded="false" style="height: 0px;">
                                                                 <div class="panel-body">
-                                                                    @php($subcount = 0)
-                                                                    @foreach($coursework['subcourseworks'] as $subcoursework)
-                                                                        @php($subcount++)
-                                                                        <div class="row">
-                                                                            <div class="col md-1">
-                                                                                <h4>{{$count.'.'.$subcount.'. '.$subcoursework['name']}}</h4>
-                                                                                <ul class="nav child_menu" style="display: block;">
-                                                                                    @foreach($subcoursework['sections'] as $section)
-                                                                                        <li>
-                                                                                            <a href="" style="color: black">{{$section['name']}}</a>
-                                                                                        </li>
+                                                                    <table class="table table-striped jambo_table bulk_action">
+                                                                        <tbody>
+                                                                        <tr class="even pointer">
+                                                                            <td>Type:</td>
+                                                                            <td>
+                                                                                <select name="" id="" class="form-control">
+                                                                                    @foreach(\App\CourseworkType::all() as $courseworkType)
+                                                                                        <option {{$courseworkType->name==$coursework['type']?'selected':''}}>{{$courseworkType->name}}</option>
                                                                                     @endforeach
-                                                                                </ul>
-                                                                            </div>
+                                                                                </select>
+                                                                            </td>
+                                                                            <td></td><td></td><td></td>
+                                                                            <td>Display To Students:</td>
+                                                                            <td><input type="date" class="calendar-date form-control" value="{{$coursework['display_to_students']}}"></td>
+                                                                        </tr>
+                                                                        <tr class="even pointer">
+                                                                            <td>Weighting in Class Record:</td>
+                                                                            <td><input type="integer" class="form-control" value="{{$coursework['weighting_in_classrecord']}}"></td>
+                                                                            <td></td><td></td><td></td>
+                                                                            <td>Weighting in Year Mark:</td>
+                                                                            <td><input type="integer" class="form-control" value="{{$coursework['weighting_in_yearmark']}}"></td>
+                                                                        </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                    <br>
+                                                                    <div class="row">
+                                                                        <div class="col-md-12">
+
+                                                                            <table class="table table-striped jambo_table">
+                                                                                <thead>
+                                                                                <tr class="headings">
+                                                                                    <th class="column-title">Subcoursework</th>
+                                                                                    <th class="column-title">Settings</th>
+                                                                                    <th class="column-title">Sections</th>
+                                                                                    {{--<th class="column-title">Delete</th>--}}
+                                                                                </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                @php($subcount = 0)
+                                                                                @foreach($coursework['subcourseworks'] as $subcoursework)
+                                                                                    @php($subcount++)
+                                                                                    <tr class="even pointer">
+                                                                                        <td>
+                                                                                            <h4><input type="text" value="{{$subcoursework['name']}}"></h4><button class="btn btn-dark btn-round"><i class="fa fa-trash"></i> Delete</button>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <div class="panel">
+                                                                                                <a class="panel-heading collapsed" role="tab" id="headingTwo{{$count.''.$count.$subcoursework['id']}}" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo{{$count.''.$count.$subcoursework['id']}}" aria-expanded="false" aria-controls="collapseTwo{{$count.''.$count.$subcoursework['id']}}">
+                                                                                                    <h4 class="panel-title">Settings</h4>
+                                                                                                </a>
+                                                                                                <div id="collapseTwo{{$count.''.$count.$subcoursework['id']}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo{{$count.''.$count.$subcoursework['id']}}" aria-expanded="false" style="height: 0px;">
+                                                                                                    <div class="panel-body">
+                                                                                                        <table class="table table-striped jambo_table bulk_action">
+                                                                                                            <tbody>
+                                                                                                            <tr class="even pointer">
+                                                                                                                <td>Display To Student:</td>
+                                                                                                                <td><input type="date"  {{--style="width:125px"--}}  class="calendar-date form-control" value="{{$subcoursework['display_to_students']}}"></td>
+                                                                                                            </tr>
+                                                                                                            <tr class="even pointer">
+                                                                                                                <td>Display Percentage:</td>
+                                                                                                                <td><input type="checkbox" {{$subcoursework['display_percentage']==1?'checked':''}}  style="width:125px" ></td>
+                                                                                                            </tr>
+                                                                                                            <tr>
+                                                                                                                <td>Display Marks:</td>
+                                                                                                                <td><input type="checkbox" {{$subcoursework['display_marks']==1?'checked':''}}  style="width:125px" ></td>
+                                                                                                            </tr>
+                                                                                                            <tr class="even pointer">
+                                                                                                                <td>Max Marks:</td>
+                                                                                                                <td><input type="integer" class="form-control" style="width:125px" value="{{$subcoursework['max_marks']}}"></td>
+                                                                                                            </tr>
+                                                                                                            <tr class="even pointer">
+                                                                                                                <td>Weighting in Coursework:</td>
+                                                                                                                <td><input type="integer" class="form-control"  style="width:125px" value="{{$subcoursework['weighting']}}"></td>
+                                                                                                            </tr>
+                                                                                                            </tbody>
+                                                                                                        </table>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <div class="panel">
+                                                                                                <a class="panel-heading collapsed" role="tab" id="headingTwo{{$count.''.$count.$subcoursework['id'].$subcount}}" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo{{$count.''.$count.$subcoursework['id'].$subcount}}" aria-expanded="false" aria-controls="collapseTwo{{$count.''.$count.$subcoursework['id'].$subcount}}">
+                                                                                                    <h4 class="panel-title">Sections</h4>
+                                                                                                </a>
+                                                                                                <div id="collapseTwo{{$count.''.$count.$subcoursework['id'].$subcount}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo{{$count.''.$count.$subcoursework['id'].$subcount}}" aria-expanded="false" style="height: 0px;">
+                                                                                                    <div class="panel-body">
+                                                                                                        @foreach($subcoursework['sections'] as $section)
+                                                                                                            <table class="table table-striped jambo_table bulk_action">
+                                                                                                                <tbody>
+                                                                                                                <tr class="even pointer">
+                                                                                                                    <td>Name:</td>
+                                                                                                                    <td><input type="text" value="{{$section['name']}}" class="form-control" style="width:125px" ></td>
+                                                                                                                    <td></td>
+                                                                                                                    <td>Display Marks:</td>
+                                                                                                                    <td><input type="integer" value="{{$section['max_marks']}}" class="form-control"  style="width:50px" ></td>
+                                                                                                                    <td><button class="btn btn-dark btn-round"><i class="fa fa-trash"></i></button></td>
+                                                                                                                </tr>
+                                                                                                                </tbody>
+                                                                                                            </table>
+                                                                                                        @endforeach
+                                                                                                        <button class="btn btn-dark btn-round"><i class="fa fa-plus"></i> New Section</button>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </td>
+                                                                                        {{--<td>
+                                                                                            <button class="btn btn-dark btn-round"><i class="fa fa-trash"></i> Delete Subcoursework</button>
+                                                                                        </td>--}}
+                                                                                    </tr>
+                                                                                @endforeach
+
+                                                                                </tbody>
+                                                                            </table>
+
+
                                                                         </div>
-                                                                    @endforeach
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-
-
-
-
-                                                        {{--<ul class="nav side-menu" style="">
-                                                            <li>
-                                                                <ul class="nav child_menu" style="display: block;">
-                                                                    <li>
-                                                                        <div class="row">
-                                                                            <div class="col-md-12">
-                                                                                <div class="panel">
-                                                                                    <a class="panel-heading collapsed" role="tab" id="headingTwo{{$count.''.$count}}" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo{{$count.''.$count}}" aria-expanded="false" aria-controls="collapseTwo{{$count.''.$count}}">
-                                                                                        <div class="row panel-title">
-                                                                                            <div class="col-md-5">
-                                                                                                <h4>{{$coursework['name']}}</h4>
-                                                                                                --}}{{--<h4 class="panel-title">
-                                                                                                    <a>Exam</a>
-                                                                                                </h4>--}}{{--
-                                                                                            </div>
-                                                                                            <div class="col-md-7" style="text-align: right">
-                                                                                                <button class="btn btn-round btn-dark">
-                                                                                                    <span class="glyphicon glyphicon-floppy-save"></span>
-                                                                                                    Save
-                                                                                                </button>
-                                                                                                <button class="btn btn-round btn-dark">
-                                                                                                    <span class="glyphicon glyphicon-trash"></span>
-                                                                                                    Delete
-                                                                                                </button>
-                                                                                                <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                                                                                            </div>
-
-                                                                                        </div>
-                                                                                    </a>
-                                                                                    <div id="collapseTwo3" class="panel-collapse" role="tabpanel" aria-labelledby="headingTwo3" aria-expanded="false" style="height: 0px;">
-                                                                                        <div class="panel-body">
-                                                                                            <div class="row">
-                                                                                                <div class="col-md-4">
-                                                                                                    <div class="icheckbox_flat-green" style="position: relative;">
-                                                                                                        <input type="checkbox" id="check-all" class="flat" style="position: absolute; opacity: 0;">
-                                                                                                        <ins class="iCheck-helper" style="position: absolute"></ins>
-                                                                                                    </div>
-                                                                                                    Display Percentage
-                                                                                                </div>
-                                                                                                <div class="col-md-4">
-                                                                                                    <div class="icheckbox_flat-green" style="position: relative;">
-                                                                                                        <input type="checkbox" id="check-all" class="flat" style="position: absolute; opacity: 0;">
-                                                                                                        <ins class="iCheck-helper" style="position: absolute"></ins>
-                                                                                                    </div>
-                                                                                                    Display Marks
-                                                                                                </div>
-                                                                                                <div class="col-md-4">
-                                                                                                    <div class="icheckbox_flat-green" style="position: relative;">
-                                                                                                        <input type="checkbox" id="check-all" class="flat" style="position: absolute; opacity: 0;">
-                                                                                                        <ins class="iCheck-helper" style="position: absolute"></ins>
-                                                                                                    </div>
-                                                                                                    Display To Students
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <br>
-                                                                                            <div class="row">
-                                                                                                <div class="col-md-3">
-                                                                                                    <div class="col-md-10">
-                                                                                                        <label class="control-label">Include In Class Mark:</label>
-                                                                                                    </div>
-                                                                                                    <div class="col-md-2">
-                                                                                                        <div class="icheckbox_flat-green" style="position: relative;">
-                                                                                                            <input type="checkbox" id="check-all" class="flat" style="position: absolute; opacity: 0;">
-                                                                                                            <ins class="iCheck-helper" style="position: absolute"></ins>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                                <div class="col-md-1"></div>
-                                                                                                <div class="col-md-3">
-                                                                                                    <div class="col-md-4">
-                                                                                                        <label class="control-label">Weighting:</label>
-                                                                                                    </div>
-                                                                                                    <div class="col-md-8">
-                                                                                                        <input class="form-control">
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <br>
-                                                                                            <div class="row">
-                                                                                                <div class="col-md-3">
-                                                                                                    <div class="col-md-10">
-                                                                                                        <label class="control-label">Include In Year Mark:</label>
-                                                                                                    </div>
-                                                                                                    <div class="col-md-2">
-                                                                                                        <div class="icheckbox_flat-green" style="position: relative;">
-                                                                                                            <input type="checkbox" id="check-all" class="flat" style="position: absolute; opacity: 0;">
-                                                                                                            <ins class="iCheck-helper" style="position: absolute"></ins>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                                <div class="col-md-1"></div>
-                                                                                                <div class="col-md-3">
-                                                                                                    <div class="col-md-4">
-                                                                                                        <label class="control-label">Weighting:</label>
-                                                                                                    </div>
-                                                                                                    <div class="col-md-8">
-                                                                                                        <input class="form-control">
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <hr>
-                                                                                            <div class="row">
-                                                                                                <div class="col-md-1"></div>
-                                                                                                <div class="col-md-4">
-                                                                                                    <h5>
-                                                                                                        <label for="">Subcategories</label>
-                                                                                                    </h5>
-                                                                                                </div>
-                                                                                                <div class="col-md-7" style="text-align: right">
-                                                                                                    <button class="btn btn-dark btn-round">
-                                                                                                        <span class="glyphicon glyphicon-plus"></span>
-                                                                                                        New Subcat
-                                                                                                    </button>
-                                                                                                    <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <br>
-                                                                                            <div class="row">
-                                                                                                <div class="col-md-1"></div>
-                                                                                                <div class="col-md-11">
-                                                                                                    <ul class="nav child_menu" style="display: block;">
-                                                                                                        <li class="sub_menu current-page">
-                                                                                                            <div class="row panel-title" style="border-bottom: 1px solid black;">
-                                                                                                                <div class="col-md-5">
-                                                                                                                    <h3 class="panel-title">
-                                                                                                                    Default
-                                                                                                                    </h3>
-                                                                                                                </div>
-                                                                                                                <div class="col-md-7" style="text-align: right">
-                                                                                                                    <button class="btn btn-round btn-dark">
-                                                                                                                        <span class="glyphicon glyphicon-floppy-save"></span>
-                                                                                                                        Save
-                                                                                                                    </button>
-                                                                                                                    <button class="btn btn-round btn-dark">
-                                                                                                                        <span class="glyphicon glyphicon-trash"></span>
-                                                                                                                        Delete
-                                                                                                                    </button>
-                                                                                                                    <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                                                                                                                </div>
-
-                                                                                                            </div>
-                                                                                                            <br>
-                                                                                                            --}}{{--<h2 class="title">
-                                                                                                                Default
-                                                                                                                <button class="btn btn-round btn-dark">
-                                                                                                                    <span class="glyphicon glyphicon-trash"></span>
-                                                                                                                    Delete
-                                                                                                                </button>
-                                                                                                            </h2>--}}{{--
-                                                                                                            <div class="row">
-                                                                                                                <div class="col-md-4">
-                                                                                                                    <div class="icheckbox_flat-green" style="position: relative;">
-                                                                                                                        <input type="checkbox" id="check-all" class="flat" style="position: absolute; opacity: 0;">
-                                                                                                                        <ins class="iCheck-helper" style="position: absolute"></ins>
-                                                                                                                    </div>
-                                                                                                                    Display To Students
-                                                                                                                </div>
-                                                                                                                <div class="col-md-4">
-                                                                                                                    <div class="icheckbox_flat-green" style="position: relative;">
-                                                                                                                        <input type="checkbox" id="check-all" class="flat" style="position: absolute; opacity: 0;">
-                                                                                                                        <ins class="iCheck-helper" style="position: absolute"></ins>
-                                                                                                                    </div>
-                                                                                                                    Include In Coursework
-                                                                                                                </div>
-                                                                                                                <div class="col-md-3">
-                                                                                                                    <div class="col-md-5">
-                                                                                                                        <label class="control-label">Weighting:</label>
-                                                                                                                    </div>
-                                                                                                                    <div class="col-md-7">
-                                                                                                                        <input class="form-control" value="100">
-                                                                                                                    </div>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                            <div class="row">
-                                                                                                                <div class="col-md-4">
-                                                                                                                    <label for="">Max Points:</label>
-                                                                                                                    <input type="text" class="form-control" value="100">
-                                                                                                                </div>
-                                                                                                                <div class="col-md-5">
-                                                                                                                    <label for="studentFile">Marks File:</label>
-                                                                                                                    <input id="studentFile" type="text" class="form-control">
-                                                                                                                </div>
-                                                                                                                <div class="col-md-3">
-                                                                                                                    <p>&nbsp;</p>
-                                                                                                                    <button class="btn btn-dark btn-round">Browse</button>
-                                                                                                                    <button class="btn btn-dark btn-round">Add</button>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </li>
-                                                                                                    </ul>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </li>
-                                                                </ul>
-                                                            </li>
-                                                        </ul>--}}
                                                     @endforeach
                                                 </div>
                                             </div>
@@ -738,128 +696,106 @@
                                     <div class="col-md-12">
                                         <div class="x_panel" style="height: auto;">
                                             <div class="x_title">
-                                                <div class="row">
-                                                    <div class="col-md-4">
-                                                        <h2>Subminimum</h2>
-                                                    </div>
-                                                    <div class="col-md-8" style="text-align: right">
-                                                        <ul class="nav navbar-right panel_toolbox">
-                                                            <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
+                                                <h2>Subminimum</h2>
+                                                <ul class="nav navbar-right panel_toolbox">
+
+                                                    <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a>
+                                                    </li>
+                                                </ul>
                                                 <div class="clearfix"></div>
                                             </div>
-                                            <div class="x_content collapse" style="display: none;">
-                                                <div class="row">
-                                                    <ul class="nav side-menu" style="">
-                                                        <li>
-                                                            <ul class="nav child_menu" style="display: block;">
-                                                                <li>
+                                            <div class="x_content" style="display: none;">
+                                                <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
+                                                    @php($count = 0)
+                                                    @foreach($course['subminimums'] as $subminimum)
+                                                        @php($count++)
+                                                        <div class="panel">
+                                                            <a class="panel-heading collapsed" role="tab" id="{{$count.''.$count}}headingTwo{{$count.''.$count}}" data-toggle="collapse" data-parent="#accordion" href="#{{$count.''.$count}}collapseTwo{{$count.''.$count}}" aria-expanded="false" aria-controls="{{$count.''.$count}}collapseTwo{{$count.''.$count}}">
+                                                                <h4 class="panel-title">
                                                                     <div class="row">
-                                                                        <div class="col-md-12">
-                                                                            <div class="panel">
-                                                                                <a class="panel-heading collapsed" role="tab" id="headingTwo3" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo3" aria-expanded="false" aria-controls="collapseTwo3">
-                                                                                    <div class="row">
-                                                                                        <div class="col-md-4">
-                                                                                            <h4 class="panel-title">
-                                                                                                <a>1. Subminimum 1</a>
-                                                                                            </h4>
-                                                                                        </div>
-                                                                                        <div class="col-md-8" style="text-align: right">
-                                                                                            <h4 class="panel-title">
-                                                                                                <button class="btn btn-round btn-dark">
-                                                                                                    <span class="glyphicon glyphicon-plus"></span>
-                                                                                                    Add Row
-                                                                                                </button>
-                                                                                                <button class="btn btn-round btn-dark">
-                                                                                                    <span class="glyphicon glyphicon-floppy-save"></span>
-                                                                                                    Save
-                                                                                                </button>
-                                                                                                <button class="btn btn-round btn-dark">
-                                                                                                    <span class="glyphicon glyphicon-trash"></span>
-                                                                                                    Delete
-                                                                                                </button>
-                                                                                                <span class="fa fa-chevron-up"></span>
-                                                                                            </h4>
-                                                                                        </div>
-                                                                                    </div>
-
-
-
-
-                                                                                </a>
-                                                                                <div id="collapseTwo3" class="panel-collapse" role="tabpanel" aria-labelledby="headingTwo3" aria-expanded="false" style="height: 0px;">
-                                                                                    <div class="panel-body">
-                                                                                        <div class="row">
-                                                                                            <div class="col-md-4">
-                                                                                                <div id="Type" class="btn-group" data-toggle="buttons">
-                                                                                                    <label class="btn btn-default" data-toggle-class="btn-dark" data-toggle-passive-class="btn-default">
-                                                                                                        <input type="radio" name="dp" value="DP" data-parsley-multiple="gender" data-parsley-id="12"> &nbsp; DP &nbsp;
-                                                                                                    </label>
-                                                                                                    <label class="btn btn-dark active" data-toggle-class="btn-dark" data-toggle-passive-class="btn-default">
-                                                                                                        <input type="radio" name="" value="final" data-parsley-multiple="gender"> Final Grade
-                                                                                                    </label>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <div class="col-md-3">
-                                                                                                <div class="col-md-4">
-                                                                                                    <label class="control-label">Threshold:</label>
-                                                                                                </div>
-                                                                                                <div class="col-md-8">
-                                                                                                    <input class="form-control" value="45">
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <br>
-                                                                                        <h4>Subminimum Breakdown:</h4>
-                                                                                        <div class="row">
-                                                                                            <div class="col-md-12">
-                                                                                                <table class="table table-striped jambo_table bulk_action">
-                                                                                                    <thead>
-                                                                                                    <tr class="headings">
-                                                                                                        <th>
-                                                                                                            <div class="icheckbox_flat-green" style="position: relative;"><input type="checkbox" id="check-all" class="flat" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute"></ins></div>
-                                                                                                        </th>
-                                                                                                        <th class="column-title">Coursework</th>
-                                                                                                        <th class="column-title">Subcategory</th>
-                                                                                                        <th class="column-title">Percentage</th>
-                                                                                                    </tr>
-                                                                                                    </thead>
-
-                                                                                                    <tbody>
-                                                                                                    <tr class="even pointer">
-                                                                                                        <td class="a-center ">
-                                                                                                            <div class="icheckbox_flat-green" style="position: relative;"><input type="checkbox" id="check-all" class="flat" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute"></ins></div>
-                                                                                                        </td>
-                                                                                                        <td class=" ">
-                                                                                                            <select name="" id="" class="form-control">
-                                                                                                                <option value="">Exam</option>
-                                                                                                            </select>
-                                                                                                        </td>
-                                                                                                        <td class=" ">
-                                                                                                            <select name="" id="" class="form-control">
-                                                                                                                <option value="">Default</option>
-                                                                                                            </select>
-                                                                                                        </td>
-                                                                                                        <td class=" ">
-                                                                                                            <input type="text" class="form-control" value="100"></td>
-                                                                                                    </tr>
-                                                                                                    </tbody>
-                                                                                                </table>
-                                                                                                <button class="btn btn-dark btn-round">Remove Selected</button>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
+                                                                        <div class="col-md-5">
+                                                                            {{$count.'. '}}<input type="text" {{--class="inline form-control"--}} value="{{$subminimum['name']}}">
+                                                                        </div>
+                                                                        <div class="col-md-7" style="text-align: right">
+                                                                            <button class="btn btn-dark btn-round"><i class="fa fa-plus"></i> New Row</button>
+                                                                            <button class="btn btn-dark btn-round"><i class="fa fa-save"></i> Save</button>
+                                                                            <button class="btn btn-dark btn-round"><i class="fa fa-trash"></i> Delete</button>
                                                                         </div>
                                                                     </div>
-                                                                </li>
-                                                            </ul>
-                                                        </li>
-                                                    </ul>
+                                                                </h4>
+                                                            </a>
+
+                                                            <div id="{{$count.''.$count}}collapseTwo{{$count.''.$count}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="{{$count.''.$count}}headingTwo{{$count.''.$count}}" aria-expanded="false" style="height: 0px;">
+                                                                <div class="panel-body">
+                                                                    <table class="table table-striped jambo_table bulk_action">
+                                                                        <tbody>
+                                                                        <tr class="even pointer">
+                                                                            <td>Type:</td>
+                                                                            <td>
+                                                                                <select name="" id="" class="form-control">
+                                                                                    <option {{$subminimum['for_dp'] == 1?'selected':''}}>DP</option>
+                                                                                    <option {{$subminimum['for_dp'] == 1?'':'selected'}}>Final Grade</option>
+                                                                                </select>
+                                                                            </td>
+                                                                            <td></td><td></td><td></td>
+                                                                            <td>Threshold:</td>
+                                                                            <td><input type="integer" class="form-control" value="{{$subminimum['threshold']}}"></td>
+                                                                        </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                    <br>
+                                                                    <div class="row">
+                                                                        <div class="col-md-12">
+
+                                                                            <table class="table table-striped jambo_table">
+                                                                                <thead>
+                                                                                <tr class="headings">
+                                                                                    <th class="column-title">Coursework</th>
+                                                                                    <th class="column-title">Subcoursework</th>
+                                                                                    <th class="column-title">Weighting</th>
+                                                                                    <th class="column-title"></th>
+                                                                                </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                @php($subcount = 0)
+                                                                                @foreach($subminimum['rows'] as $row)
+                                                                                    <tr class="even pointer">
+                                                                                        <td>
+                                                                                            <select class="form-control">
+                                                                                                @foreach($course['courseworks'] as $coursework)
+                                                                                                    <option {{$row['coursework']==$coursework['name']?'selected':''}}>{{$coursework['name']}}</option>
+                                                                                                @endforeach
+                                                                                            </select>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <select class="form-control">
+                                                                                                <option></option>
+                                                                                                @foreach($course['courseworks'] as $coursework)
+                                                                                                    @foreach($coursework['subcourseworks'] as $subcoursework)
+                                                                                                        <option {{$row['subcoursework']==$subcoursework['name']?'selected':''}}>{{$subcoursework['name']}}</option>
+                                                                                                    @endforeach
+                                                                                                @endforeach
+                                                                                            </select>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <input type="integer" class="form-control" value="{{$row['weighting']}}">
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <button class="btn btn-dark btn-round"><i class="fa fa-trash"></i></button>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                @endforeach
+
+                                                                                </tbody>
+                                                                            </table>
+
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    @endforeach
                                                 </div>
                                             </div>
                                         </div>
@@ -883,27 +819,40 @@
                                             </div>
                                             <div class="x_content collapse" style="display: none;">
                                                 <div class="row">
-                                                    <div class="col-md-3">
-                                                        <label for="studentFile">Coursework:</label>
-                                                        <select name="" id="" class="form-control">
-                                                            <option>Exam</option>
+                                                    <div class="col-md-2">
+                                                        <label for="studentFile">Coursework*:</label>
+                                                        <select name="" id="uploadCourseworkDropdown" class="form-control">
+                                                            <option></option>
+                                                            @foreach($course['courseworks'] as $coursework)
+                                                                <option>{{$coursework['name']}}</option>
+                                                            @endforeach
                                                         </select>
                                                     </div>
-                                                    <div class="col-md-3">
-                                                        <label for="studentFile">Subcategory:</label>
-                                                        <select name="" id="" class="form-control">
-                                                            <option>Default</option>
+                                                    <div class="col-md-2">
+                                                        <label for="studentFile">Subcoursework*:</label>
+                                                        <select name="" id="uploadSubcourseworkDropdown" class="form-control">
+                                                            <option></option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label for="studentFile">Section*:</label>
+                                                        <select name="" id="uploadSectionDropdown" class="form-control">
+                                                            <option></option>
                                                         </select>
                                                     </div>
                                                     <div class="col-md-3">
                                                         <label for="studentFile">Marks File:</label>
-                                                        <input id="studentFile" type="text" class="form-control">
+                                                        <input id="studentFile" type="file" class="form-control-file">
                                                     </div>
                                                     <div class="col-md-3">
+                                                        <label>&nbsp;</label><br>
+                                                        <button class="btn btn-dark btn-round">Upload</button>
+                                                    </div>
+                                                    {{--<div class="col-md-3">
                                                         <p>&nbsp;</p>
                                                         <button class="btn btn-dark btn-round">Browse</button>
                                                         <button class="btn btn-dark btn-round">Add</button>
-                                                    </div>
+                                                    </div>--}}
                                                 </div>
                                             </div>
                                         </div>
@@ -914,7 +863,7 @@
                                     <div class="col-md-12">
                                         <div class="x_panel" style="height: auto;">
                                             <div class="x_title">
-                                                <h2>Search</h2>
+                                                <h2>General Search/View</h2>
                                                 <ul class="nav navbar-right panel_toolbox">
                                                     <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a>
                                                     </li>
@@ -924,73 +873,58 @@
                                             <div class="x_content collapse" style="display: none;">
                                                 <div class="row">
                                                     <div class="col-md-3">
-                                                        <label for="studentFile">Student/Employee #:</label>
-                                                        <input id="studentFile" type="text" class="form-control">
+                                                        <label for="searchStudentNumber">Student/Employee #:</label>
+                                                        <input id="searchStudentNumber" type="text" class="form-control">
                                                     </div>
-                                                    <div class="col-md-3">
-                                                        <label for="studentFile">Coursework:</label>
-                                                        <select name="" id="" class="form-control">
-                                                            <option>All</option>
-                                                            <option>Exam</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <label for="studentFile">Subcategory:</label>
-                                                        <select name="" id="" class="form-control">
-                                                            <option></option>
-                                                            <option>Default</option>
-                                                        </select>
-                                                    </div>
-
                                                     <div class="col-md-3">
                                                         <p>&nbsp;</p>
-                                                        <button class="btn btn-dark btn-round">Search</button>
+                                                        <button class="btn btn-dark btn-round" type="button" id="searchMarkButton" >Search</button>
                                                         <button class="btn btn-dark btn-round">Export</button>
                                                     </div>
                                                     <hr>
                                                 </div>
                                                 <br>
+                                                <div class="div" id="searchResultsBody" hidden>
                                                 <h4>Results:</h4>
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <table class="table table-striped jambo_table bulk_action">
                                                             <thead>
-                                                            <tr class="headings">
-                                                                <th class="column-title">Student #</th>
-                                                                <th class="column-title">Employee #</th>
-                                                                <th class="column-title">Exam</th>
-                                                                <th class="column-title">Class Mark</th>
-                                                                <th class="column-title">Year Mark</th>
-                                                                <th class="column-title">DP</th>
-                                                                <th class="column-title">Grade</th>
-                                                            </tr>
+                                                                <tr class="headings">
+                                                                    <th class="column-title">Student #</th>
+                                                                    <th class="column-title">Employee #</th>
+                                                                    <th class="column-title">Class Mark</th>
+                                                                    <th class="column-title">Year Mark</th>
+                                                                    <th class="column-title">DP</th>
+                                                                    <th class="column-title">Final Grade</th>
+                                                                </tr>
                                                             </thead>
 
-                                                            <tbody>
-                                                            <tr class="even pointer">
-                                                                <td class=" ">stdtes001</td>
-                                                                <td class=" ">7654321</td>
-                                                                <td class=" ">75{{--<input type="text" class="form-control" value="75">--}}</td>
-                                                                <td class=" ">95{{--<input type="text" class="form-control" value="95">--}}</td>
-                                                                <td class=" ">85{{--<input type="text" class="form-control" value="85">--}}</td>
-                                                                <td class=" ">
-                                                                    <select name="" id="" class="form-control">
-                                                                        <option value="">DP</option>
-                                                                        <option value="">DPR</option>
-                                                                    </select>
-                                                                </td>
-                                                                <td class=" ">
-                                                                    <select name="" id="" class="form-control">
-                                                                        <option value="">85</option>
-                                                                        <option value="">OSS</option>
-                                                                        <option value="">FS</option>
-                                                                    </select>
-                                                                </td>
-                                                            </tr>
+                                                            <tbody id="searchMarkResultsBody">
+                                                                <tr class="even pointer">
+                                                                    <td class=" ">stdtes001</td>
+                                                                    <td class=" ">7654321</td>
+                                                                    <td class=" ">95{{--<input type="text" class="form-control" value="95">--}}</td>
+                                                                    <td class=" ">85{{--<input type="text" class="form-control" value="85">--}}</td>
+                                                                    <td class=" ">
+                                                                        <select name="" id="" class="form-control">
+                                                                            <option value="">DP</option>
+                                                                            <option value="">DPR</option>
+                                                                        </select>
+                                                                    </td>
+                                                                    <td class=" ">
+                                                                        <select name="" id="" class="form-control">
+                                                                            <option value="">85</option>
+                                                                            <option value="">OSS</option>
+                                                                            <option value="">FS</option>
+                                                                        </select>
+                                                                    </td>
+                                                                </tr>
                                                             </tbody>
                                                         </table>
                                                         <button class="btn btn-dark btn-round">Update</button>
                                                     </div>
+                                                </div>
                                                 </div>
 
                                             </div>
@@ -1255,6 +1189,147 @@
             }
         });
         $(document).ready(function(){
+
+            $('#searchMarkButton').click(function(){
+                var studentNumber = $('#searchStudentNumber').val();
+                var courseId = $('#courseId').val();
+                var offset = 0;
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/getstudentsmarks',
+                    data:{
+                        courseId: courseId,
+                        studentNumber: studentNumber,
+                        offset: offset
+                    },
+                    success:function(data){
+//                        console.log(data);
+                        var dataString = '<tbody id="searchMarkResultsBody">';
+                        for(var i = 0; i < data.length; i++){
+                            dataString += '<tr class="even pointer">';
+                            dataString +=  '<td>'+data[i].student_number+'</td>';
+                            dataString +=  '<td>'+data[i].employee_id+'</td>';
+                            dataString +=  '<td>'+data[i].class_mark+'</td>';
+                            dataString +=  '<td>'+data[i].year_mark+'</td>';
+                            dataString +=  '<td>DP</td>';
+                            dataString +=  '<td>'+data[i].year_mark+'</td>';
+                            dataString +=  '</tr>';
+                        }
+                        dataString += '</tbody>';
+
+                        $('#searchMarkResultsBody').replaceWith(dataString);
+                    }
+                });
+
+                $('#searchResultsBody').show();
+            });
+
+
+            $('#uploadSubcourseworkDropdown').change(function(){
+                var sectionDropdown = $('#uploadSectionDropdown').empty();
+                var selectedSubcoursework = $(this).val();
+                var token = $('#_token').val();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/getsections',
+                    data:{
+                        _token:token,
+                        subcoursework: selectedSubcoursework
+                    },
+                    success:function(data){
+                        var option = document.createElement('option');
+                        option.text = "";
+                        sectionDropdown.append(option);
+                        for(var i = 0; i < data.length; i++){
+                            var option = document.createElement('option');
+                            option.text = data[i];
+                            sectionDropdown.append(option);
+                        }
+                    }
+                });
+            });
+
+            $('#uploadCourseworkDropdown').change(function(){
+                var subcourseworkDropdown = $('#uploadSubcourseworkDropdown').empty();
+                var selectedCoursework = $(this).val();
+                var courseId = $('#courseId').val();
+                var token = $('#_token').val();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/getsubcourseworks',
+                    data:{
+                        _token:token,
+                        coursework: selectedCoursework,
+                        courseId: courseId
+                    },
+                    success:function(data){
+                        var option = document.createElement('option');
+                        option.text = "";
+                        subcourseworkDropdown.append(option);
+
+                        for(var i = 0; i < data.length; i++){
+                            var option = document.createElement('option');
+                            option.text = data[i];
+                            subcourseworkDropdown.append(option);
+                        }
+                    }
+                });
+            });
+
+
+            $('#createSubminimumButton').click(function(){
+                var courseId = $('#courseId').val();
+                var token = $('#_token').val();
+                var name = $('#subminimumName').val();
+                var type = $('#subminimumType').val();
+                var threshold = $('#subminimumThreshold').val();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/createsubminimum',
+                    data:{
+                        _token:token,
+                        name: name,
+                        type: type,
+                        threshold: threshold,
+                        courseId: courseId
+                    },
+                    success:function(data){
+
+                    }
+                });
+            });
+
+            $('#createCourseworkButton').click(function(){
+                var name = $('#courseworkName').val();
+                var type = $('#courseworkType').val();
+                var releaseDate = $('#courseworkReleaseDate').val();
+                var classWeighting = $('#courseworkClassWeighting').val();
+                var yearWeighting = $('#courseworkYearWeighting').val();
+                var courseId = $('#courseId').val();
+                var token = $('#_token').val();
+
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/createcoursework',
+                    data:{
+                        _token:token,
+                        name: name,
+                        type: type,
+                        releaseDate:releaseDate,
+                        classWeighting: classWeighting,
+                        yearWeighting: yearWeighting,
+                        courseId: courseId
+                    },
+                    success:function(data){
+
+                    }
+                });
+            });
 
             $('#searchParticipantsButton').click(function(){
                 var studentNumber = $('#participantsStudentNumber').val();

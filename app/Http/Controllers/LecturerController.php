@@ -5,8 +5,13 @@ namespace App\Http\Controllers;
 use App\ConvenorCourseMap;
 use App\Course;
 use App\CourseType;
+use App\Coursework;
 use App\CourseworkType;
 use App\LecturerCourseMap;
+use App\Section;
+use App\SectionUserMarkMap;
+use App\SubCoursework;
+use App\Subminimum;
 use App\TACourseMap;
 use App\User;
 use App\UserCourseMap;
@@ -34,27 +39,27 @@ class LecturerController extends Controller
             'description' => $course->description,
             'year' => explode('-', $course->start_date)[0]
         );
+
         $crswrks = $course->courseworks;
         $courseworks = [];
-
         foreach($crswrks as $crswrk){
             $coursework = [];
             $coursework['name'] = $crswrk->name;
             $coursework['type'] = CourseworkType::where('id', $crswrk->coursework_type_id)->first()->name;
             $coursework['display_to_students'] = $crswrk->display_to_students;
-            $coursework['include_in_classrecord'] = $crswrk->include_in_classrecord;
-            $coursework['weighting'] = $crswrk->weighting_in_classrecord;
+            $coursework['weighting_in_classrecord'] = $crswrk->weighting_in_classrecord;
+            $coursework['weighting_in_yearmark'] = $crswrk->weighting_in_yearmark;
 
             $subcrswrks = $crswrk->subcourseworks;
             $subcourseworks = [];
 
             foreach ($subcrswrks as $subcrswrk){
                 $subcoursework = [];
+                $subcoursework['id'] = $subcrswrk->id;
                 $subcoursework['name'] = $subcrswrk->name;
                 $subcoursework['display_to_students'] = $subcrswrk->display_to_students;
                 $subcoursework['display_marks'] = $subcrswrk->display_marks;
                 $subcoursework['display_percentage'] = $subcrswrk->display_percentage;
-                $subcoursework['include_in_coursework'] = $subcrswrk->include_in_coursework;
                 $subcoursework['weighting'] = $subcrswrk->weighting_in_coursework;
                 $subcoursework['max_marks'] = $subcrswrk->max_marks;
 
@@ -72,9 +77,159 @@ class LecturerController extends Controller
             $courseworks[] = $coursework;
         }
         $courseDetails['courseworks'] = $courseworks;
+
+        $subminimums = [];
+        foreach($course->subminimums as $subm){
+            $submininum = [];
+            $subminimum['name'] = $subm->name;
+            $subminimum['for_dp'] = $subm->for_dp;
+            $subminimum['threshold'] = $subm->threshold;
+
+            $rows = [];
+            foreach ($subm->subminimumRows as $rw){
+                $row = [];
+                $row['id'] = $rw->id;
+                $row['coursework'] = Coursework::where('id', $rw->coursework_id)->first()->name;
+                $subcwrk = SubCoursework::where('id', $rw->subcoursework_id)->first();
+                $row['subcoursework'] = $subcwrk? $subcwrk->name : '';
+                $row['weighting'] = $rw->weighting;
+                $rows[] = $row;
+            }
+            $subminimum['rows'] = $rows;
+            $subminimums[] = $subminimum;
+        }
+        $courseDetails['subminimums'] = $subminimums;
         return $courseDetails;
     }
 
+    public function createCoursework(Request $request){
+        $name = $request->input('name');
+        $type = $request->input('type');
+        $releaseDate = $request->input('releaseDate');
+        $classWeighting = $request->input('classWeighting');
+        $yearWeighting = $request->input('yearWeighting');
+        $courseId = $request->input('courseId');
+
+        $coursework = new Coursework();
+        $coursework->name = $name;
+        $coursework->coursework_type_id = $type;
+        $coursework->display_to_students = $releaseDate;
+        $coursework->weighting_in_classrecord = $classWeighting;
+        $coursework->weighting_in_yearmark = $yearWeighting;
+        $coursework->course_id = $courseId;
+        $coursework->save();
+    }
+
+    public function createSubminimum(Request $request){
+        $name = $request->input('name');
+        $type = $request->input('type');
+        $courseId = $request->input('courseId');
+        $threshold = $request->input('threshold');
+
+        $subminimum = new Subminimum();
+        $subminimum->name = $name;
+        $subminimum->for_dp = $type;
+        $subminimum->course_id = $courseId;
+        $subminimum->threshold = $threshold;
+        $subminimum->save();
+    }
+
+    public function getSubCourseworks(Request $request){
+        $courseworkId = Coursework::where('name', $request->input('coursework'))->first()->id;
+
+        $subcourseworks = SubCoursework::where('coursework_id', $courseworkId)->get();
+        $results=[];
+        foreach ($subcourseworks as $subcwrk){
+            $results[] = $subcwrk->name;
+        }
+
+        return Response::json($results);
+    }
+
+    public function getSections(Request $request){
+        $subcourseworkId = SubCoursework::where('name', $request->input('subcoursework'))->first()->id;
+
+        $sections = Section::where('subcoursework_id', $subcourseworkId)->get();
+        $results=[];
+        foreach ($sections as $sctn){
+            $results[] = $sctn->name;
+        }
+
+        return Response::json($results);
+    }
+
+    public function getStudentsMarks(Request $request){
+        $studentNumber = $request->input('studentNumber');
+        $courseId = $request->input('courseId');
+        $limit = 30;
+        $offset = $request->input('offset')*$limit;
+
+        $students = [];
+        if($studentNumber){
+            $userId = User::where('student_number', $studentNumber)->first()->id;
+            if($userId) {
+                $students = UserCourseMap::where('user_id', userId)
+                                            ->where('course_id', courseId)->first()->user;
+            }
+        } else {
+            $users = UserCourseMap::where('course_id', $courseId)
+                ->limit($limit)->offset($offset)->get();
+            foreach($users as $user){
+                $students[] = $user->user;
+            }
+        }
+
+        $course = Course::where('id', $courseId)->first();
+        $courseworks = $course->courseworks;
+        $results = [];
+        foreach ($students as $student){
+            $result = [];
+            $result['student_number'] = $student->student_number;
+            $result['employee_id'] = $student->employee_id;
+            $yearmark = 0.0;
+            $classmark = 0.0;
+
+            foreach ($courseworks as $coursework) {
+                $inClassMark = ($coursework->weighting_in_classrecord > 0);
+                $inYearMark = ($coursework->weighting_in_yearmark > 0);
+
+                if($inClassMark || $inYearMark){
+                    $classMarkWeighting = $coursework->weighting_in_classrecord;
+                    $yearMarkWeighting = $coursework->weighting_in_yearmark;
+                    $courseworkTotalMark = 0.0;
+
+                    foreach ($coursework->subcourseworks as $subcoursework) {
+                        $markReleased = strtotime($subcoursework->display_to_students) >= time();
+                        $inCourseWork = $subcoursework->weighting_in_coursework > 0;
+
+//                        print_r($markReleased); die();
+                        if($inCourseWork){
+                            $subcourseworkWeighting = $subcoursework->weighting_in_coursework;
+                            $subcourseworkN = 0.0;
+                            $subcourseworkD = 0.0;
+                            foreach ($subcoursework->sections as $section) {
+                                $subcourseworkD += $section->max_marks;
+                                $subcourseworkN += SectionUserMarkMap::where('user_id', $student->id)
+                                                    ->where('section_id', $section->id)->first()->marks;
+                            }
+                            $subcourseworkFinalMark = ($subcourseworkN*$subcourseworkWeighting)/$subcourseworkD;
+                            $courseworkTotalMark += $subcourseworkFinalMark;
+                        }
+                    }
+                    $courseworkFinalClassMark = ($courseworkTotalMark*$classMarkWeighting)/100.0;
+                    $courseworkFinalYearMark = ($courseworkTotalMark*$yearMarkWeighting)/100.0;
+
+                    $classmark += $courseworkFinalClassMark;
+                    $yearmark += $courseworkFinalYearMark;
+                }
+            }
+            $result['class_mark'] = $classmark;
+            $result['year_mark'] = $yearmark;
+            $results[] = $result;
+        }
+
+        return Response::json($results);
+    }
 
     public function getLecturerCourses(Request $request){
         $courseMaps = Auth::user()->lecturerCourseMaps;

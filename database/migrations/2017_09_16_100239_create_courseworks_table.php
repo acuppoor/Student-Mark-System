@@ -19,7 +19,7 @@ class CreateCourseworksTable extends Migration
             $table->string("name");
             $table->integer('coursework_type_id');
             $table->date('display_to_students');
-            $table->boolean('include_in_classrecord');
+            $table->double('weighting_in_yearmark');
             $table->double('weighting_in_classrecord');
             $table->timestamps();
         });
@@ -30,7 +30,7 @@ class CreateCourseworksTable extends Migration
                 'name' => 'Assignments',
                 'coursework_type_id' => 1,
                 'display_to_students' => "2017-08-16",
-                'include_in_classrecord' => '1',
+                'weighting_in_yearmark' => 17.5,
                 'weighting_in_classrecord' => 35.0
             )
         );
