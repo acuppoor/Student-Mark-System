@@ -105,7 +105,7 @@
                                     <input type="integer" id="courseworkClassWeighting" class="form-control" name="courseworkClassWeighting" required="">
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="courseEndDate">Weighting in Class:</label>
+                                    <label for="courseEndDate">Weighting in Year Record:</label>
                                     <input type="integer" id="courseworkYearWeighting" class="form-control" name="courseworkYearWeighting" required="">
                                 </div>
                                 <div class="col-md-4">

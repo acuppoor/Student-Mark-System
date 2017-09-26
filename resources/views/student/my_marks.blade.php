@@ -105,34 +105,29 @@
                                             </a>
                                             <div id="collapseOne{{$counter}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne{{$counter}}" aria-expanded="false" style="height: 0px;">
                                                 <div class="panel-body">
-                                                    <h3>Result: 84</h3>
+                                                    <h3>Result: {{$courses[$j]['final_mark']}}</h3>
                                                     <br>
                                                     <h5>Marks Breakdown:</h5>
                                                     <table class="table table-bordered">
                                                         <thead>
                                                         <tr>
-                                                            <th>Name</th>
+                                                            <th>Coursework</th>
                                                             <th>Marks</th>
-                                                            <th>Out Of</th>
-                                                            <th>Weighting</th>
+                                                            <th>Marks(%)</th>
+                                                            <th>Weighting(%)</th>
                                                             <th>Weighted Marks</th>
                                                         </tr>
                                                         </thead>
                                                         <tbody>
-                                                        <tr>
-                                                            <td scope="row">Class Record</td>
-                                                            <td>80</td>
-                                                            <td>100</td>
-                                                            <td>50</td>
-                                                            <td>40</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td scope="row">Exam</td>
-                                                            <td>70</td>
-                                                            <td>80</td>
-                                                            <td>50</td>
-                                                            <td>43.8</td>
-                                                        </tr>
+                                                            @foreach($courseworks as $coursework)
+                                                                <tr>
+                                                                    <td>{{$coursework['name']}}</td>
+                                                                    <td>{{$coursework['total_marks']}} / 100</td>
+                                                                    <td>{{$coursework['total_marks']}}</td>
+                                                                    <td>{{$coursework['weighting_yearmark']}}</td>
+                                                                    <td>{{$coursework['weighted_mark_year']}}</td>
+                                                                </tr>
+                                                            @endforeach
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -145,7 +140,7 @@
                                             </a>
                                             <div id="collapseTwo{{$counter}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo{{$counter}}" aria-expanded="false" style="height: 0px;">
                                                 <div class="panel-body">
-                                                    <h3>Result: DP</h3>
+                                                    <h3>Result: {{$courses[$j]['dp_status']}}</h3>
                                                 </div>
                                             </div>
                                         </div>
@@ -156,30 +151,29 @@
                                             </a>
                                             <div id="collapseThree{{$counter}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree{{$counter}}" aria-expanded="false" style="height: 0px;">
                                                 <div class="panel-body">
-                                                    <h3>Result: <?=$courses[$j]['classrecord']?></h3>
+                                                    <h3>Result: <?=$courses[$j]['class_mark']?></h3>
                                                     <br>
                                                     <h5>Marks Breakdown:</h5>
                                                     <table class="table table-bordered">
                                                         <thead>
                                                         <tr>
-                                                            <th>Name</th>
+                                                            <th>Coursework</th>
                                                             <th>Marks</th>
-                                                            <th>Out Of</th>
-                                                            <th>Weighting</th>
+                                                            <th>Marks(%)</th>
+                                                            <th>Weighting(%)</th>
                                                             <th>Weighted Marks</th>
                                                         </tr>
                                                         </thead>
                                                         <tbody>
-                                                        @foreach($courseworks as $key=>$coursework)
-                                                            <tr>
-                                                                <td scope="row"><?=$coursework['name']?></td>
-                                                                <td><?=$coursework['total']?></td>
-                                                                <td>100</td>
-                                                                <td><?=$coursework['weighting']?></td>
-                                                                <td><?=$coursework['weighted_marks']?></td>
-                                                            </tr>
-                                                        @endforeach
-
+                                                            @foreach($courseworks as $coursework)
+                                                                <tr>
+                                                                    <td>{{$coursework['name']}}</td>
+                                                                    <td>{{$coursework['total_marks']}} / 100</td>
+                                                                    <td>{{$coursework['total_marks']}}</td>
+                                                                    <td>{{$coursework['weighting_classrecord']}}</td>
+                                                                    <td>{{$coursework['weighted_mark_class']}}</td>
+                                                                </tr>
+                                                            @endforeach
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -193,7 +187,7 @@
                                                 </a>
                                                 <div id="collapseFour{{$counter.$coursework['name']}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour{{$counter.$coursework['name']}}" aria-expanded="false" style="height: 0px;">
                                                     <div class="panel-body">
-                                                        <h3>Result: <?=$coursework['total']?></h3>
+                                                        <h3>Result: <?=$coursework['total_marks']?></h3>
                                                         <br>
                                                         <h5>Marks Breakdown:</h5>
                                                         <table class="table table-bordered">
@@ -201,19 +195,17 @@
                                                             <tr>
                                                                 <th>Name</th>
                                                                 <th>Marks</th>
-                                                                <th>Out Of</th>
-                                                                <th>Weighting</th>
+                                                                <th>Weighting(%)</th>
                                                                 <th>Weighted Marks</th>
                                                             </tr>
                                                             </thead>
                                                             <tbody>
-                                                                @foreach($coursework['contents'] as $subcoursework)
+                                                                @foreach($coursework['subcourseworks'] as $subcoursework)
                                                                     <tr>
-                                                                        <td scope="row"><?=$subcoursework['name']?></td>
-                                                                        <td><?=$subcoursework['marks']?></td>
-                                                                        <td><?=$subcoursework['max_marks']?></td>
-                                                                        <td><?=$subcoursework['weighting']?></td>
-                                                                        <td><?=$subcoursework['weighted_marks']?></td>
+                                                                        <td scope="row">{{$subcoursework['name']}}</td>
+                                                                        <td>{{$subcoursework['numerator']}} / {{$subcoursework['denominator']}}</td>
+                                                                        <td>{{$subcoursework['weighting']}}</td>
+                                                                        <td>{{$subcoursework['weighted_marks']}}</td>
                                                                     </tr>
                                                                 @endforeach
                                                             </tbody>
@@ -241,33 +233,6 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-
-/*
-        $(document).ready(function(){
-            $('#searchButton').click(function(){
-                var courseCode = $('#courseCode').val();
-                var courseType = $('#courseType').val();
-                var courseYear = $('#courseYear').val();
-                var courseDepartment = $('#department').val();
-                var token = $('#_token').val();
-
-                $.ajax({
-                    type: 'POST',
-                    url: 'mymarks/filter',
-                    data: {
-                        _token: token,
-                        courseCode: courseCode,
-                        courseType: courseType,
-                        courseYear: courseYear,
-                        courseDepartment: courseDepartment
-                    },
-                    success: function (data) {
-                        loadContent(data);
-                    }
-                });
-
-            });
-        });*/
     </script>
 
 @endsection

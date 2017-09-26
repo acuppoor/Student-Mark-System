@@ -479,16 +479,30 @@ class LecturerController extends Controller
         $email = $request->input('emailAddress');
         $studentNumber = $request->input('studentNumber');
         $courseId = $request->input('courseId');
-        $users = null;
-        if($studentNumber && $email){
-            $users = User::where('email', $email)->where('student_number', $studentNumber)->get();
-        } else if ($email){
-            $users = User::where('email', $email)->get();
-        } else if ($studentNumber){
-            $users = User::where('student_number', $studentNumber)->get();
+        $users = [];
+        if($studentNumber || $email){
+            if($studentNumber && $email){
+                $usrs = User::where('employee_id', 'like', '%'.$studentNumber.'%')
+                              ->orWhere('student_number', 'like', '%'.$studentNumber.'%')->get();
+                $temp = [];
+                foreach($usrs as $usr){
+                     if($this->isSimilar($usr->email, $email)){
+                         $temp[] = $usr;
+                     }
+                }
+                $usrs = $temp;
+            } else if ($email){
+                $usrs = User::where('email', 'like', '%'.$email.'%')->get();
+            } else if ($studentNumber){
+                $usrs = User::where('student_number', 'like', '%'.$studentNumber.'%')
+                    ->orWhere('employee_id', 'like', '%'.$studentNumber.'%')
+                    ->get();
+            }
+            foreach ($usrs as $usr) {
+                $users[] = $usr;
+            }
         } else {
             // must select al the students in the course
-            $users = [];
             foreach (UserCourseMap::all() as $usr) {
                 $users[] = $usr->user;
             }
@@ -502,7 +516,8 @@ class LecturerController extends Controller
                 $users[] = $usr->user;
             }
         }
-        $users = array_unique($users);
+//        print_r($users); die();
+        $users = $users?array_unique($users):$users;
         $results=[];
         if($users){
             foreach ($users as $user){

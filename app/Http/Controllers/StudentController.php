@@ -124,48 +124,78 @@ class StudentController extends Controller
             ){
                 continue;
             }
-            $classRecord = 0;
+            $classMark = 0.0;
+            $yearMark = 0.0;
             $result = [];
             $result['courseName'] = $course->code;
             $result['year'] = $courseYear;
             $courseworks = [];
             $cwrks = $course->courseworks;
             foreach ($cwrks as $cwrk){
-                $totalCourseworkMarks = 0;
-                $subcwrks = $cwrk->subcourseworks;
-                $subCourseworks = [];
-                foreach ($subcwrks as $subcwrk){
-                    // todo: check puclish date first, and display marks or percentage
-                    $subCoursework = [];
-                    $subCoursework['name'] = $subcwrk->name;
-                    $subCoursework['max_marks'] = $subcwrk->max_marks;
-                    $subCoursework['marks'] = $subcwrk->userMarkMap->marks;
-                    $subCoursework['weighting'] = $subcwrk->weighting_in_coursework;
-                    $subCoursework['weighted_marks'] =
-                        ($subCoursework['marks']/(double)$subCoursework['max_marks'])*$subCoursework['weighting'];
-                    $totalCourseworkMarks += $subCoursework['weighted_marks'];
+                if($cwrk->display_to_students > (date('Y').'-'.date('m').'-'.date('d'))){
+                    continue;
+                }
+                $weightingYear = $cwrk->weighting_in_yearmark;
+                $weightingClass = $cwrk->weighting_in_classrecord;
 
-                    $sctns=$subcwrk->sections;
+                $courseworkTotalMark = 0;
+
+                $subcourseworks = [];
+
+                foreach ($cwrk->subcourseworks as $subcwrk) {
+                    if($subcwrk->display_to_students > (date('Y').'-'.date('m').'-'.date('d'))){
+                        continue;
+                    }
+
+                    $subcoursework = [];
+                    $subcoursework['name'] = $subcwrk->name;
+                    $subcoursework['max_marks'] = $subcwrk->max_marks;
+                    $subcoursework['weighting'] = $subcwrk->weighting_in_coursework;
+
+                    $subcourseworkFinalMark = 0.0;
+                    $subcourseworkMarkN = 0.0;
+                    $subcourseworkMarkD = 0.0;
+
                     $sections = [];
-                    foreach ($sctns as $sctn){
+                    foreach ($subcwrk->sections as $sctn){
+                        $mark = SectionUserMarkMap::where('section_id', $sctn->id)
+                                                    ->where('user_id', Auth::user()->id)->first();
+
+                        $mark = $mark? $mark->marks:0;
+
+                        $subcourseworkMarkD += $sctn->max_marks;
+                        $subcourseworkMarkN += $mark;
+
                         $section['name'] = $sctn->name;
-                        $section['marks'] = $sctn->userMarkMap->marks;
+                        $section['marks'] = $mark;
                         $section['max_marks'] = $sctn->max_marks;
                         $sections[] = $section;
                     }
-                    $subCoursework['sections'] = $sections;
-                    $subCourseworks[] = $subCoursework;
+                    $subcourseworkFinalMark = $subcourseworkMarkD==0?0:($subcourseworkMarkN/$subcourseworkMarkD)*$subcwrk->weighting_in_coursework;
+                    $subcoursework['numerator'] = $subcourseworkMarkN;
+                    $subcoursework['denominator'] = $subcourseworkMarkD;
+                    $subcoursework['weighted_marks'] = $subcourseworkFinalMark;
+                    $subcoursework['sections'] = $sections;
+                    $subcourseworks[] = $subcoursework;
+                    $courseworkTotalMark += $subcourseworkFinalMark;
                 }
-                $temp['name'] = $cwrk->name;
-                $temp['contents'] = $subCourseworks;
-                $temp['total'] = $totalCourseworkMarks;
-                $temp['weighting'] = $cwrk->weighting_in_classrecord;
-                $temp['weighted_marks'] = ((double)$temp['total'] * $temp['weighting'] / 100.0);
-                $classRecord += $temp['weighted_marks'];
-                $courseworks[] = $temp;
+
+                $coursework['name'] = $cwrk->name;
+                $coursework['subcourseworks'] = $subcourseworks;
+                $coursework['total_marks'] = $courseworkTotalMark;
+                $coursework['weighting_classrecord'] = $cwrk->weighting_in_classrecord;
+                $coursework['weighting_yearmark'] = $cwrk->weighting_in_yearmark;
+                $coursework['weighted_mark_class'] = $courseworkTotalMark * $weightingClass / 100.0;
+                $coursework['weighted_mark_year'] = $courseworkTotalMark * $weightingYear / 100.0;
+                $classMark += $coursework['weighted_mark_class'];
+                $yearMark += $coursework['weighted_mark_year'];
+                $courseworks[] = $coursework;
             }
             $result['courseworks'] = $courseworks;
-            $result['classrecord'] = $classRecord;
+            $result['class_mark'] = $classMark;
+            $result['year_mark'] = $yearMark;
+            $result['final_mark'] = $yearMark;
+            $result['dp_status'] = 'DP';
             $results[] = $result;
         }
         return $results;
