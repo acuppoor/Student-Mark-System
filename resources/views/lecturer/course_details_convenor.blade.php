@@ -805,20 +805,29 @@
                                                     @foreach($course['subminimums'] as $subminimum)
                                                         @php($count++)
                                                         <div class="panel">
-                                                            <a class="panel-heading collapsed" role="tab" id="{{$count.''.$count}}headingTwo{{$count.''.$count}}" data-toggle="collapse" data-parent="#accordion" href="#{{$count.''.$count}}collapseTwo{{$count.''.$count}}" aria-expanded="false" aria-controls="{{$count.''.$count}}collapseTwo{{$count.''.$count}}">
-                                                                <h4 class="panel-title">
-                                                                    <div class="row">
-                                                                        <div class="col-md-5">
-                                                                            {{$count.'. '}}<input type="text" {{--class="inline form-control"--}} value="{{$subminimum['name']}}">
-                                                                        </div>
-                                                                        <div class="col-md-7" style="text-align: right">
-                                                                            <button class="btn btn-dark btn-round"><i class="fa fa-plus"></i> New Row</button>
-                                                                            <button class="btn btn-dark btn-round"><i class="fa fa-save"></i> Save</button>
-                                                                            <button class="btn btn-dark btn-round"><i class="fa fa-trash"></i> Delete</button>
-                                                                        </div>
-                                                                    </div>
-                                                                </h4>
-                                                            </a>
+                                                            <div class="row panel-heading collapsed">
+                                                                <div class="col-md-8">
+                                                                    <a role="tab" id="{{$count.''.$count}}headingTwo{{$count.''.$count}}" data-toggle="collapse" data-parent="#accordion" href="#{{$count.''.$count}}collapseTwo{{$count.''.$count}}" aria-expanded="false" aria-controls="{{$count.''.$count}}collapseTwo{{$count.''.$count}}">
+                                                                        <h4 class="panel-title">
+                                                                            <table>
+                                                                                <tr>
+                                                                                    <td>
+                                                                                        {{$count.'. '}}
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <input type="text" class="form-control" value="{{$subminimum['name']}}">
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </table>
+                                                                        </h4>
+                                                                    </a>
+                                                                </div>
+                                                                <div class="col-md-4" style="text-align: right">
+                                                                    <button class="btn btn-dark btn-round"><i class="fa fa-plus"></i> New Row</button>
+                                                                    <button class="btn btn-dark btn-round"><i class="fa fa-save"></i> Save</button>
+                                                                    <button class="btn btn-dark btn-round"><i class="fa fa-trash"></i> Delete</button>
+                                                                </div>
+                                                            </div>
 
                                                             <div id="{{$count.''.$count}}collapseTwo{{$count.''.$count}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="{{$count.''.$count}}headingTwo{{$count.''.$count}}" aria-expanded="false" style="height: 0px;">
                                                                 <div class="panel-body">
@@ -958,7 +967,7 @@
                                     <div class="col-md-12">
                                         <div class="x_panel" style="height: auto;">
                                             <div class="x_title">
-                                                <h2>General Search/View</h2>
+                                                <h2>Classmark And Yearmark View</h2>
                                                 <ul class="nav navbar-right panel_toolbox">
                                                     <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a>
                                                     </li>
@@ -972,17 +981,23 @@
                                                         <input id="searchStudentNumber" type="text" class="form-control">
                                                     </div>
                                                     <div class="col-md-3">
+                                                        <label for="searchStudentNumber">Results Per Page:</label>
+                                                        <select id="searchResultsPageLimit" class="form-control">
+                                                            <option>30</option>
+                                                            <option>Max</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-3">
                                                         <label for="searchStudentNumber">Page #:</label>
                                                         <select id="searchResultsPageOffset" class="form-control">
-                                                            <option>Max</option>
                                                             @for($i = 1; $i < ($course['students_count']/30)+1; $i++)
                                                                 <option {{$i == 1?'selected':''}}>{{$i}}</option>
                                                             @endfor
                                                         </select>
                                                     </div>
                                                     <div class="col-md-3">
-                                                        <p>&nbsp;</p>
-                                                        <button class="btn btn-dark btn-round" type="button" id="searchMarkButton" >Search</button>
+                                                        <label for="">&nbsp;</label><br>
+                                                        <button class="btn btn-dark btn-round" type="button" id="searchMarkButton" ><i id="loadingWheelSearchMarkButton"></i>Search</button>
                                                         <button class="btn btn-dark btn-round">Export</button>
                                                     </div>
                                                     <hr>
@@ -1019,7 +1034,7 @@
                                     <div class="col-md-12">
                                         <div class="x_panel" style="height: auto;">
                                             <div class="x_title">
-                                                <h2>View</h2>
+                                                <h2>Coursework Marks View</h2>
                                                 <ul class="nav navbar-right panel_toolbox">
                                                     <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a>
                                                     </li>
@@ -1117,7 +1132,7 @@
                                     <div class="col-md-12">
                                         <div class="x_panel" style="height: auto;">
                                             <div class="x_title">
-                                                <h2>Edit</h2>
+                                                <h2>Subcoursework Marks View</h2>
                                                 <ul class="nav navbar-right panel_toolbox">
                                                     <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a>
                                                     </li>
@@ -1346,7 +1361,6 @@
                 var weighting = $('#subcourseworkWeighting').val();
                 var displayMarks = $('#subcourseworkDisplayMarks').is(':checked')?1:0;
                 var displayPercentage = $('#subcourseworkDisplayPercentage').is(':checked')? 1:0;
-                alert(displayMarks + " - " + displayPercentage);
 
                 $.ajax({
                     type: 'POST',
@@ -1373,9 +1387,13 @@
 
 
             $('#searchMarkButton').click(function(){
+                $('#loadingWheelSearchMarkButton').replaceWith(
+                    '<i class="fa fa-spinner fa-spin" id="loadingWheelSearchMarkButton" style="display: none;">&nbsp;</i>');
+                $('#loadingWheelSearchMarkButton').show();
+
                 var studentNumber = $('#searchStudentNumber').val();
                 var courseId = $('#courseId').val();
-                var offset = ($('#searchResultsPageOffset').val()=='Max'?-1:$('#searchResultsPageOffset').val()-1);
+                var offset = ($('#searchResultsPageLimit').val()=='Max'?-1:$('#searchResultsPageOffset').val()-1);
 
                 $.ajax({
                     type: 'POST',
@@ -1401,10 +1419,20 @@
                         dataString += '</tbody>';
 
                         $('#searchMarkResultsBody').replaceWith(dataString);
+                        $('#searchResultsBody').show();
+                        $('#loadingWheelSearchMarkButton').replaceWith(
+                            '<i class="fa fa-check-circle" id="loadingWheelSearchMarkButton" style="display: none;">&nbsp;</i>');
+                        $('#loadingWheelSearchMarkButton').show();
+                    },
+                    error: function(data){
+                        $('#searchResultsBody').hide();
+                        $('#loadingWheelSearchMarkButton').replaceWith(
+                            '<i class="fa fa-times-circle" id="loadingWheelSearchMarkButton" style="display: none;">&nbsp;</i>');
+                        $('#loadingWheelSearchMarkButton').show();
                     }
                 });
 
-                $('#searchResultsBody').show();
+
             });
 
 
@@ -1435,6 +1463,7 @@
 
             $('#uploadCourseworkDropdown').change(function(){
                 var subcourseworkDropdown = $('#uploadSubcourseworkDropdown').empty();
+                $('#uploadSectionDropdown').empty();
                 var selectedCoursework = $(this).val();
                 var courseId = $('#courseId').val();
                 var token = $('#_token').val();
