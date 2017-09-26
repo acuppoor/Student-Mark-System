@@ -45,6 +45,7 @@ class LecturerController extends Controller
         $courseworks = [];
         foreach($crswrks as $crswrk){
             $coursework = [];
+            $coursework['id'] = $crswrk->id;
             $coursework['name'] = $crswrk->name;
             $coursework['type'] = CourseworkType::where('id', $crswrk->coursework_type_id)->first()->name;
             $coursework['display_to_students'] = $crswrk->display_to_students;
@@ -67,6 +68,7 @@ class LecturerController extends Controller
                 $sections = [];
                 foreach($subcrswrk->sections as $sctn){
                     $section = [];
+                    $section['id'] = $sctn->id;
                     $section['name'] = $sctn->name;
                     $section['max_marks'] = $sctn->max_marks;
                     $sections[] = $section;
@@ -121,6 +123,60 @@ class LecturerController extends Controller
         $coursework->save();
     }
 
+    public function deleteCoursework(Request $request){
+        $courseworkId = $request->input('courseworkId');
+        Coursework::destroy($courseworkId);
+    }
+
+    public function createSubcoursework(Request $request){
+        $courseworkId = $request->input('courseworkId');
+        $name = $request->input('name');
+        $releaseDate = $request->input('releaseDate');
+        $maxMarks = $request->input('maxMarks');
+        $weighting = $request->input('weighting');
+        $displayMarks = $request->input('displayMarks');
+        $displayPercentage = $request->input('displayPercentage');
+
+
+        $subcoursework = new SubCoursework();
+        $subcoursework->coursework_id = $courseworkId;
+        $subcoursework->name = $name;
+        $subcoursework->display_to_students = $releaseDate;
+        $subcoursework->display_marks = $displayMarks;
+        $subcoursework->display_percentage = $displayPercentage;
+        $subcoursework->weighting_in_coursework = $weighting;
+        $subcoursework->max_marks = $maxMarks;
+        $subcoursework->save();
+        return Response::json('success');
+    }
+
+    public function deleteSubcoursework(Request $request)
+    {
+        $subcourseworkId = $request->input('subcourseworkId');
+//        echo($subcourseworkId); die();
+        SubCoursework::destroy($subcourseworkId);
+    }
+
+    public function createSection(Request $request)
+    {
+        $subcourseworkId = $request->input('subcourseworkId');
+        $name = $request->input('name');
+        $maxMarks = $request->input('maxMarks');
+
+        $section = new Section();
+        $section->subcoursework_id = $subcourseworkId;
+        $section->name = $name;
+        $section->max_marks = $maxMarks;
+        $section->save();
+    }
+
+    public function deleteSection(Request $request)
+    {
+        $sectionId = $request->input('sectionId');
+//        echo($subcourseworkId); die();
+        Section::destroy($sectionId);
+    }
+
     public function createSubminimum(Request $request){
         $name = $request->input('name');
         $type = $request->input('type');
@@ -168,7 +224,8 @@ class LecturerController extends Controller
 
         $students = [];
         if($studentNumber){
-            $usr = User::where('student_number', $studentNumber)->first();
+            $usr = User::where('student_number', $studentNumber)
+                ->orWhere('employee_id', $studentNumber)->first();
             if($usr) {
                 $students[] = UserCourseMap::where('user_id', $usr->id)
                                             ->where('course_id', $courseId)->first()->user;
@@ -218,7 +275,7 @@ class LecturerController extends Controller
                                 $subcourseworkN += SectionUserMarkMap::where('user_id', $student->id)
                                                     ->where('section_id', $section->id)->first()->marks;
                             }
-                            $subcourseworkFinalMark = ($subcourseworkN*$subcourseworkWeighting)/$subcourseworkD;
+                            $subcourseworkFinalMark = $subcourseworkD!=0?($subcourseworkN*$subcourseworkWeighting)/$subcourseworkD:0;
                             $courseworkTotalMark += $subcourseworkFinalMark;
                         }
                     }
@@ -345,7 +402,6 @@ class LecturerController extends Controller
         }
         return $courses;
     }
-
 
     private function isSimilar($wordOne, $wordTwo){
         return true;

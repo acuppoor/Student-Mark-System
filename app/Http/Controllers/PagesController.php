@@ -282,6 +282,107 @@ class PagesController extends Controller
                 return view('systemadmin.courses');
         }
     }
+
+    public function deleteCoursework(Request $request){
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login');
+        }
+        $roleID = Auth::user()->role_id;
+        switch ($roleID){
+            case 1:
+            case 2:
+                return view('student.access_denied');
+            case 3:
+            case 4:
+                return app('App\Http\Controllers\LecturerController')->deleteCoursework($request);
+            case 5:
+                return view('departmentadmin.courses');
+            case 6:
+                return view('systemadmin.courses');
+        }
+    }
+
+    public function createSubcoursework(Request $request){
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login');
+        }
+        $roleID = Auth::user()->role_id;
+        switch ($roleID){
+            case 1:
+            case 2:
+                return view('student.access_denied');
+            case 3:
+            case 4:
+                return app('App\Http\Controllers\LecturerController')->createSubcoursework($request);
+            case 5:
+                return view('departmentadmin.courses');
+            case 6:
+                return view('systemadmin.courses');
+        }
+    }
+
+    public function deleteSubcoursework(Request $request){
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login');
+        }
+        $roleID = Auth::user()->role_id;
+        switch ($roleID){
+            case 1:
+            case 2:
+                return view('student.access_denied');
+            case 3:
+            case 4:
+                return app('App\Http\Controllers\LecturerController')->deleteSubcoursework($request);
+            case 5:
+                return view('departmentadmin.courses');
+            case 6:
+                return view('systemadmin.courses');
+        }
+    }
+
+    public function createSection(Request $request){
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login');
+        }
+        $roleID = Auth::user()->role_id;
+        switch ($roleID){
+            case 1:
+            case 2:
+                return view('student.access_denied');
+            case 3:
+            case 4:
+                return app('App\Http\Controllers\LecturerController')->createSection($request);
+            case 5:
+                return view('departmentadmin.courses');
+            case 6:
+                return view('systemadmin.courses');
+        }
+    }
+
+    public function deleteSection(Request $request){
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login');
+        }
+        $roleID = Auth::user()->role_id;
+        switch ($roleID){
+            case 1:
+            case 2:
+                return view('student.access_denied');
+            case 3:
+            case 4:
+                return app('App\Http\Controllers\LecturerController')->deleteSection($request);
+            case 5:
+                return view('departmentadmin.courses');
+            case 6:
+                return view('systemadmin.courses');
+        }
+    }
+
     public function createSubminimum(Request $request){
         if(Auth::user()->approved != 1){
             Auth::logout();

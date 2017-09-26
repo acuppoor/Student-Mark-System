@@ -22,6 +22,11 @@ Route::post('/conveningcourses/{courseId}/addlecturer', 'PagesController@addLect
 Route::post('/conveningcourses/{courseId}/addta', 'PagesController@addTA');
 Route::post('/participantslist', 'PagesController@participantsList');
 Route::post('/createcoursework', 'PagesController@createCoursework');
+Route::post('/deletecoursework', 'PagesController@deleteCoursework');
+Route::post('/createsubcoursework', 'PagesController@createSubcoursework');
+Route::post('/deletesubcoursework', 'PagesController@deleteSubcoursework');
+Route::post('/createsection', 'PagesController@createSection');
+Route::post('/deletesection', 'PagesController@deleteSection');
 Route::post('/createsubminimum', 'PagesController@createSubminimum');
 Route::post('/getsubcourseworks', 'PagesController@getSubCourseworks');
 Route::post('/getsections', 'PagesController@getSections');

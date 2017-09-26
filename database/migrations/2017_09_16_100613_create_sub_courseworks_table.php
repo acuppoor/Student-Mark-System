@@ -20,7 +20,6 @@ class CreateSubCourseworksTable extends Migration
             $table->date('display_to_students');
             $table->boolean('display_marks');
             $table->boolean('display_percentage');
-            $table->boolean('include_in_coursework');
             $table->double('weighting_in_coursework');
             $table->double('max_marks');
             $table->timestamps();
@@ -33,7 +32,6 @@ class CreateSubCourseworksTable extends Migration
                 'display_to_students' => "2017-08-16",
                 'display_marks' => '1',
                 'display_percentage' => "1",
-                'include_in_coursework' => '1',
                 'weighting_in_coursework' => 100.0,
                 'max_marks' => 100.0
             )

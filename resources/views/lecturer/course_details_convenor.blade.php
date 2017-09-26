@@ -124,6 +124,90 @@
         </div>
     </div>
     {{--@endif--}}
+
+    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="subcourseworkModal" style="display: none;">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">New Subcoursework</h4>
+                </div>
+                <form method="" action="">
+                    <div class="modal-body">
+                        {{csrf_field()}}
+                        <div class="row">
+                            <input type="hidden" id="modalCourseworkId">
+                            <div class="col-md-6">
+                                <label for="subcourseworkName">Name*:</label>
+                                <input type="text" id="subcourseworkName" class="form-control" name="subcourseworkName" required="">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="subcourseworkReleaseDate">Release Date*:</label>
+                                <input type="date" id="subcourseworkReleaseDate" class="date-picker form-control" value="{{date('Y').'-'.date('m').'-'.date('d')}}">
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="subcourseworkMaxMarks">Max Marks*:</label>
+                                <input type="integer" id="subcourseworkMaxMarks" class="form-control" name="subcourseworkMaxMarks" required="">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="subcourseworkWeighting">Weighting in Coursework:</label>
+                                <input type="integer" id="subcourseworkWeighting" class="form-control" name="subcourseworkWeighting" required="">
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="subcourseworkDisplayMarks">Display Marks:</label>
+                                <input type="checkbox" id="subcourseworkDisplayMarks" checked>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="subcourseworkDisplayPercentage">Display Percentage:</label>
+                                <input type="checkbox" id="subcourseworkDisplayPercentage">
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-dark btn-round" id="createSubcourseworkButtonModal" type="button">Create</button>
+                        <button type="button" class="btn btn-default btn-round" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="sectionModal" style="display: none;">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">New Section</h4>
+                </div>
+                <form method="" action="">
+                    <input type="hidden" id="subcourseworkId">
+                    <div class="modal-body">
+                        {{csrf_field()}}
+                        <label for="sectionName">Name*:</label>
+                        <input type="text" id="sectionName" class="form-control" name="sectionName" required="">
+                        <br>
+                        <label for="sectionMaxMarks">Max Marks*:</label>
+                        <input type="text" id="sectionMaxMarks" class="form-control" name="sectionMaxMarks" required="">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-dark btn-round" id="createSectionButtonModal" type="button">Create</button>
+                        <button type="button" class="btn btn-default btn-round" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('content')
@@ -550,20 +634,29 @@
                                                     @foreach($course['courseworks'] as $coursework)
                                                         @php($count++)
                                                         <div class="panel">
-                                                            <a class="panel-heading collapsed" role="tab" id="headingTwo{{$count.''.$count}}" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo{{$count.''.$count}}" aria-expanded="false" aria-controls="collapseTwo{{$count.''.$count}}">
-                                                                <h4 class="panel-title">
-                                                                    <div class="row">
-                                                                        <div class="col-md-5">
-                                                                            {{$count.'. '}}<input type="text" {{--class="inline form-control"--}} value="{{$coursework['name']}}">
-                                                                        </div>
-                                                                        <div class="col-md-7" style="text-align: right">
-                                                                            <button class="btn btn-dark btn-round"><i class="fa fa-plus"></i> New Subcoursework</button>
-                                                                            <button class="btn btn-dark btn-round"><i class="fa fa-save"></i> Save</button>
-                                                                            <button class="btn btn-dark btn-round"><i class="fa fa-trash"></i> Delete</button>
-                                                                        </div>
-                                                                    </div>
-                                                                </h4>
-                                                            </a>
+                                                            <div class="row panel-heading collapsed">
+                                                                <div class="col-md-7">
+                                                                    <a class="" role="tab" id="headingTwo{{$count.''.$count}}" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo{{$count.''.$count}}" aria-expanded="false" aria-controls="collapseTwo{{$count.''.$count}}">
+                                                                        <h4 class="panel-title">
+                                                                            <table>
+                                                                                <tr>
+                                                                                    <td>
+                                                                                        {{$count.'. '}}
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        <input type="text" class="form-control" value="{{$coursework['name']}}">
+                                                                                    </td>
+                                                                                </tr>
+                                                                            </table>
+                                                                        </h4>
+                                                                    </a>
+                                                                </div>
+                                                                <div class="col-md-5" style="text-align: right">
+                                                                    <button class="btn btn-dark btn-round createSubcourseworkButton" data-toggle="modal" type="button" data-target="#subcourseworkModal" data-courseworkid="{{$coursework['id']}}"><i class="fa fa-plus"></i> New Subcoursework</button>
+                                                                    <button class="btn btn-dark btn-round"><i class="fa fa-save"></i> Save</button>
+                                                                    <button class="btn btn-dark btn-round deleteCourseworkButton" data-courseworkid="{{$coursework['id']}}" type="button"><i class="fa fa-trash"></i> Delete</button>
+                                                                </div>
+                                                            </div>
 
                                                             <div id="collapseTwo{{$count.''.$count}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo{{$count.''.$count}}" aria-expanded="false" style="height: 0px;">
                                                                 <div class="panel-body">
@@ -579,7 +672,7 @@
                                                                                 </select>
                                                                             </td>
                                                                             <td></td><td></td><td></td>
-                                                                            <td>Display To Students:</td>
+                                                                            <td>Release Date:</td>
                                                                             <td><input type="date" class="calendar-date form-control" value="{{$coursework['display_to_students']}}"></td>
                                                                         </tr>
                                                                         <tr class="even pointer">
@@ -610,7 +703,9 @@
                                                                                     @php($subcount++)
                                                                                     <tr class="even pointer">
                                                                                         <td>
-                                                                                            <h4><input type="text" value="{{$subcoursework['name']}}"></h4><button class="btn btn-dark btn-round"><i class="fa fa-trash"></i> Delete</button>
+                                                                                            <h4><input type="text" value="{{$subcoursework['name']}}"></h4>
+                                                                                            <button class="btn btn-dark btn-round saveSubcoursework" type="button" data-subcourseworkid="{{$subcoursework['id']}}"><i class="fa fa-save"></i> Save</button>
+                                                                                            <button class="btn btn-dark btn-round deleteSubcoursework" type="button" data-subcourseworkid="{{$subcoursework['id']}}"><i class="fa fa-trash"></i> Delete</button>
                                                                                         </td>
                                                                                         <td>
                                                                                             <div class="panel">
@@ -622,7 +717,7 @@
                                                                                                         <table class="table table-striped jambo_table bulk_action">
                                                                                                             <tbody>
                                                                                                             <tr class="even pointer">
-                                                                                                                <td>Display To Student:</td>
+                                                                                                                <td>Release Date:</td>
                                                                                                                 <td><input type="date"  {{--style="width:125px"--}}  class="calendar-date form-control" value="{{$subcoursework['display_to_students']}}"></td>
                                                                                                             </tr>
                                                                                                             <tr class="even pointer">
@@ -663,19 +758,16 @@
                                                                                                                     <td></td>
                                                                                                                     <td>Display Marks:</td>
                                                                                                                     <td><input type="integer" value="{{$section['max_marks']}}" class="form-control"  style="width:50px" ></td>
-                                                                                                                    <td><button class="btn btn-dark btn-round"><i class="fa fa-trash"></i></button></td>
+                                                                                                                    <td><button class="btn btn-dark btn-round deleteSection" data-sectionid="{{$section['id']}}"><i class="fa fa-trash"></i></button></td>
                                                                                                                 </tr>
                                                                                                                 </tbody>
                                                                                                             </table>
                                                                                                         @endforeach
-                                                                                                        <button class="btn btn-dark btn-round"><i class="fa fa-plus"></i> New Section</button>
+                                                                                                        <button class="btn btn-dark btn-round newSectionButton" type="button" data-target="#sectionModal" data-toggle="modal" data-subcourseworkid="{{$subcoursework['id']}}"><i class="fa fa-plus"></i> New Section</button>
                                                                                                     </div>
                                                                                                 </div>
                                                                                             </div>
                                                                                         </td>
-                                                                                        {{--<td>
-                                                                                            <button class="btn btn-dark btn-round"><i class="fa fa-trash"></i> Delete Subcoursework</button>
-                                                                                        </td>--}}
                                                                                     </tr>
                                                                                 @endforeach
 
@@ -1164,7 +1256,6 @@
 
                             </div>
                         </div>
-
                 </div>
             </div>
         </div>
@@ -1180,6 +1271,106 @@
             }
         });
         $(document).ready(function(){
+
+            $('.deleteCourseworkButton').click(function(){
+                var courseworkid = $(this).data('courseworkid');
+                $.ajax({
+                    type: 'POST',
+                    url: '/deletecoursework',
+                    data:{
+                        courseworkId: courseworkid,
+                    },
+                    success:function(data){
+                        console.log(data);
+                    }
+                });
+            });
+
+            $('#createSectionButtonModal').click(function(){
+                var maxMarks = $('#sectionMaxMarks').val();
+                var name = $('#sectionName').val();
+                var subcourseworkId = $('#subcourseworkId').val();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/createsection',
+                    data:{
+                        name: name,
+                        maxMarks: maxMarks,
+                        subcourseworkId: subcourseworkId
+                    },
+                    success:function(data){
+                        console.log(data);
+                    }
+                });
+            });
+
+            $('.newSectionButton').click(function(){
+                alert($(this).data('subcourseworkid'));
+                $('#subcourseworkId').val($(this).data('subcourseworkid'));
+            });
+
+            $('.deleteSection').click(function(){
+                var sectionid = $(this).data('sectionid');
+                $.ajax({
+                    type: 'POST',
+                    url: '/deletesection',
+                    data:{
+                        sectionId: sectionid,
+                    },
+                    success:function(data){
+                        console.log(data);
+                    }
+                });
+            });
+
+            $('.deleteSubcoursework').click(function(){
+                var subcourseworkid = $(this).data('subcourseworkid');
+                $.ajax({
+                    type: 'POST',
+                    url: '/deletesubcoursework',
+                    data:{
+                        subcourseworkId: subcourseworkid,
+                    },
+                    success:function(data){
+                        console.log(data);
+                    }
+                });
+            });
+
+            $('#createSubcourseworkButtonModal').click(function(){
+                var courseworkId = $('#modalCourseworkId').val();
+                var name = $('#subcourseworkName').val();
+                var releaseDate = $('#subcourseworkReleaseDate').val();
+                var maxMarks = $('#subcourseworkMaxMarks').val();
+                var weighting = $('#subcourseworkWeighting').val();
+                var displayMarks = $('#subcourseworkDisplayMarks').is(':checked')?1:0;
+                var displayPercentage = $('#subcourseworkDisplayPercentage').is(':checked')? 1:0;
+                alert(displayMarks + " - " + displayPercentage);
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/createsubcoursework',
+                    data:{
+                        courseworkId: courseworkId,
+                        name: name,
+                        releaseDate: releaseDate,
+                        maxMarks: maxMarks,
+                        weighting: weighting,
+                        displayMarks: displayMarks,
+                        displayPercentage: displayPercentage
+                    },
+                    success:function(data){
+                        console.log(data);
+                    }
+                });
+            });
+
+            $('.createSubcourseworkButton').click(function(){
+                var courseworkId = $(this).data('courseworkid');
+                $('#modalCourseworkId').val(courseworkId);
+            });
+
 
             $('#searchMarkButton').click(function(){
                 var studentNumber = $('#searchStudentNumber').val();
