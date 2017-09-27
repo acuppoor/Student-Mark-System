@@ -62,7 +62,6 @@
         </div>
     </div>
 
-{{--    @if(Auth::user()->role_id == 5)--}}
     <li class="">
         <a>
             <button class="btn btn-dark btn-round" data-toggle="modal" data-target="#courseworkModal">
@@ -101,11 +100,11 @@
                             <br/>
                             <div class="row">
                                 <div class="col-md-4">
-                                    <label for="courseEndDate">Weighting in Class Record:</label>
+                                    <label for="courseEndDate">Weighting in Class Record*:</label>
                                     <input type="integer" id="courseworkClassWeighting" class="form-control" name="courseworkClassWeighting" required="">
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="courseEndDate">Weighting in Year Record:</label>
+                                    <label for="courseEndDate">Weighting in Year Record*:</label>
                                     <input type="integer" id="courseworkYearWeighting" class="form-control" name="courseworkYearWeighting" required="">
                                 </div>
                                 <div class="col-md-4">
@@ -123,7 +122,6 @@
             </div>
         </div>
     </div>
-    {{--@endif--}}
 
     <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="subcourseworkModal" style="display: none;">
         <div class="modal-dialog modal-md">
@@ -249,6 +247,7 @@
                 </div>
             </div>
         </div>
+
         <div class="row">
             <div class="row">
                 <div class="col-md-12">
@@ -310,9 +309,11 @@
                                                     <div class="row">
                                                         <div class="col-md-4"></div>
                                                         <div class="col-md-4" style="text-align: center">
-                                                            <button id="updateInfoButton" class="btn btn-round btn-dark" type="submit">
+                                                            <button id="updateInfoButton" class="btn btn-round btn-dark spinnerNeeded" type="button">
+                                                                <i id="updateInfoSpinner" class="spinnerPlaceholder"></i>
                                                                 <i id="updateInfoButtonIcon" class="fa fa-save"></i>
-                                                                Update</button>
+                                                                Save
+                                                            </button>
                                                         </div>
                                                     </div>
                                                 </form>
@@ -356,7 +357,9 @@
                                                                         <input id="convenorInvitationCheckbox" type="checkbox" checked>
                                                                     </div>
                                                                     <div class="col-md-2">
-                                                                        <button class="btn btn-dark btn-round" type="button" id="addConvenorButton">
+                                                                        <button class="btn btn-dark btn-round spinnerNeeded" type="button" id="addConvenorButton">
+                                                                            <i class="spinnerPlaceholder"></i>
+                                                                            <i class="fa fa-plus"></i>
                                                                             Add</button>
                                                                     </div>
                                                                 </form>
@@ -379,7 +382,10 @@
                                                                         <input id="lecturerInvitationCheckbox" type="checkbox" checked>
                                                                     </div>
                                                                     <div class="col-md-2">
-                                                                        <button class="btn btn-dark btn-round" id="addLecturerButton" type="button">Add</button>
+                                                                        <button class="btn btn-dark btn-round spinnerNeeded" id="addLecturerButton" type="button">
+                                                                            <i class="spinnerPlaceholder"></i>
+                                                                            <i class="fa fa-plus"></i>
+                                                                            Add</button>
                                                                     </div>
                                                                 </form>
                                                             </div>
@@ -400,8 +406,12 @@
                                                                             <input id="studentFile" type="file" class="form-control">
                                                                         </div>
                                                                         <div class="col-md-3">
-                                                                            <p>&nbsp;</p>
-                                                                            <button class="btn btn-dark btn-round" id="addStudentFileButton" type="button">Add</button>
+                                                                            <label>&nbsp;</label><br>
+                                                                            <button class="btn btn-dark btn-round spinnerNeeded" id="addStudentFileButton" type="button">
+                                                                                <i class="spinnerPlaceholder"></i>
+                                                                                <i class="fa fa-plus"></i>
+                                                                                Add
+                                                                            </button>
                                                                         </div>
                                                                     </form>
                                                                 </div>
@@ -424,7 +434,11 @@
                                                                         <input id="taInvitationCheckbox" type="checkbox" checked>
                                                                     </div>
                                                                     <div class="col-md-2">
-                                                                        <button class="btn btn-dark btn-round" type="button" id="addTAButton">Add</button>
+                                                                        <button class="btn btn-dark btn-round spinnerNeeded" type="button" id="addTAButton">
+                                                                            <i class="spinnerPlaceholder"></i>
+                                                                            <i class="fa fa-plus"></i>
+                                                                            Add
+                                                                        </button>
                                                                     </div>
                                                                 </form>
                                                             </div>
@@ -457,7 +471,11 @@
                                                         <input type="text" class="form-control" id="participantsEmail" placeholder="Email">
                                                     </div>
                                                     <div class="col-md-2">
-                                                        <button class="btn btn-dark btn-rounded btn-round" type="button" id="searchParticipantsButton">Search</button>
+                                                        <button class="btn btn-dark btn-rounded spinnerNeeded" type="button" id="searchParticipantsButton">
+                                                            <i class="spinnerPlaceholder"></i>
+                                                            <i class="fa fa-search"></i>
+                                                            Search
+                                                        </button>
                                                     </div>
                                                 </div>
                                                 <br>
@@ -474,10 +492,33 @@
                                                             <div class="clearfix"></div>
                                                         </div>
                                                         <div class="x_content" style="display: block;" id="searchParticipantsResults">
-                                                            <div id="participantsContents"></div>
+                                                            {{--<div id="participantsContents">
 
+                                                            </div>--}}
+                                                            <table class="table table-striped jambo_table bulk_action">
+                                                                <thead>
+                                                                    <tr class="headings">
+                                                                        <th>
+                                                                            <input type="checkbox" id="checkAllSearchParticipantsResults" data-name="searchParticipantsResultsCheckbox" class="checkall flat">
+                                                                        </th>
+                                                                        <th class="column-title">First Name</th>
+                                                                        <th class="column-title">Last Name</th>
+                                                                        <th class="column-title">Student #</th>
+                                                                        <th class="column-title">Employee #</th>
+                                                                        <th class="column-title">Email</th>
+                                                                        <th class="column-title">Role</th>
+                                                                        <th class="column-title">Status</th>
+                                                                        <th class="column-title">Approved?</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody id="searchParticipantsResultsBody">
+                                                                </tbody>
+                                                            </table>
 
-                                                            <button class="btn btn-dark btn-round">Approve Selected</button>
+                                                            <button class="btn btn-dark btn-round spinnerNeeded" type="button" id="approveParticipantsButton">
+                                                                <i class="spinnerPlaceholder"></i>
+                                                                Approve Selected
+                                                            </button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -507,11 +548,12 @@
                                                         </a>
                                                         <div id="collapseOne1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne1" aria-expanded="false" style="height: 0px;">
                                                             <div class="panel-body">
+                                                                <button type="button" class="btn btn-round btn-dark" id="refreshConvenorsList"><i class="glyphicon glyphicon-refresh"></i> Refresh</button>
                                                                 <table class="table table-striped jambo_table bulk_action">
                                                                     <thead>
                                                                     <tr class="headings">
                                                                         <th>
-                                                                            <div class="icheckbox_flat-green" style="position: relative;"><input type="checkbox" id="check-all" class="flat" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute"></ins></div>
+                                                                            <input type="checkbox" class="checkbox" id="checkAllConvenorsList">
                                                                         </th>
                                                                         <th class="column-title">First Name</th>
                                                                         <th class="column-title">Last Name</th>
@@ -519,25 +561,11 @@
                                                                         <th class="column-title">Employee #</th>
                                                                         <th class="column-title">Email</th>
                                                                         <th class="column-title">Access</th>
-                                                                        <th class="bulk-actions" colspan="7">
-                                                                            <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
-                                                                        </th>
                                                                     </tr>
                                                                     </thead>
 
-                                                                    <tbody>
-                                                                    <tr class="even pointer">
-                                                                        <td class="a-center ">
-                                                                            <div class="icheckbox_flat-green" style="position: relative;"><input type="checkbox" id="check-all" class="flat" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute"></ins></div>
-                                                                        </td>
-                                                                        <td class=" ">Test</td>
-                                                                        <td class=" ">Student</td>
-                                                                        <td class=" ">stdtes001</td>
-                                                                        <td class=" ">7654321</td>
-                                                                        <td class=" ">stdtes001@myuct.ac.za</td>
-                                                                        <td class=" ">Yes</td>
-                                                                        </td>
-                                                                    </tr>
+                                                                    <tbody id="convenorsListResultsBody">
+
                                                                     </tbody>
                                                                 </table>
                                                                 <button class="btn btn-dark btn-round">Grant Access To Selected</button>
@@ -756,7 +784,7 @@
                                                                                                                     <td>Name:</td>
                                                                                                                     <td><input type="text" value="{{$section['name']}}" class="form-control" style="width:125px" ></td>
                                                                                                                     <td></td>
-                                                                                                                    <td>Display Marks:</td>
+                                                                                                                    <td>Max Marks:</td>
                                                                                                                     <td><input type="integer" value="{{$section['max_marks']}}" class="form-control"  style="width:50px" ></td>
                                                                                                                     <td><button class="btn btn-dark btn-round deleteSection" data-sectionid="{{$section['id']}}"><i class="fa fa-trash"></i></button></td>
                                                                                                                 </tr>
@@ -997,7 +1025,10 @@
                                                     </div>
                                                     <div class="col-md-3">
                                                         <label for="">&nbsp;</label><br>
-                                                        <button class="btn btn-dark btn-round" type="button" id="searchMarkButton" ><i id="loadingWheelSearchMarkButton"></i>Search</button>
+                                                        <button class="btn btn-dark btn-round spinnerNeeded" type="button" id="searchMarkButton" >
+                                                            <i id="spinnerPlaceholder"></i>
+                                                            Search
+                                                        </button>
                                                         <button class="btn btn-dark btn-round">Export</button>
                                                     </div>
                                                     <hr>
@@ -1213,7 +1244,6 @@
 
                             </div>
 
-
                             <div role="tabpanel" class="tab-pane fade" id="tab_content_export" aria-labelledby="profile-tab">
 
                                 <div class="row">
@@ -1286,6 +1316,59 @@
             }
         });
         $(document).ready(function(){
+
+            /*$('#checkAllConvenorsList').change(function(){
+               var checkboxes = document.getElementsByClassName('convenorsListCheckbox');
+               for(var i = 0; i < checkboxes.length; i++){
+                   console.log(checkboxes[i]);
+               }
+            });*/
+            $('.convenorsListCheckbox').change(function(){
+                var checkboxes = document.getElementsByClassName('convenorsListCheckbox');
+                for(var i = 0; i < checkboxes.length; i++){
+                    console.log(checkboxes[i]);
+                }
+            });
+
+            $('#refreshConvenorsList').click(function(){
+                $(this).children('.glyphicon').replaceWith('<i class="glyphicon glyphicon-refresh fa-spin"></i>');
+                var courseId = $('#courseId').val();
+               $.ajax({
+                   type: 'POST',
+                   url: 'getconvenors',
+                   data:{
+                       courseId: courseId
+                   },
+                   success: function(data){
+                        var dataString = '<tbody id="convenorsListResultsBody">';
+                        for(var i = 0; i < data.length; i++){
+                            var element = data[i];
+                            dataString += '<tr class="even pointer">' +
+                                '<td class="a-center ">' +
+                                '<input type="checkbox" class="convenorsListCheckbox" data-userid='+element.id+'>' +
+                                '</td>' +
+                                '<td class=" ">' + element.first_name + '</td>' +
+                                '<td class=" ">' + element.last_name + '</td>' +
+                                '<td class=" ">' + element.staff_number + '</td>' +
+                                '<td class=" ">' + element.employee_id + '</td>' +
+                                '<td class=" ">' + element.email + '</td>' +
+                                '<td class=" ">' + element.access + '</td>' +
+                                '</tr>';
+                        }
+                        dataString += '</tbody>';
+                       $('#convenorsListResultsBody').replaceWith(dataString);
+                   },
+                   error: function(data){
+                    console.log(data);
+                   }
+               });
+                $(this).children('.glyphicon').replaceWith('<i class="glyphicon glyphicon-refresh"></i>');
+            });
+
+            $('.spinnerNeeded').click(function(){
+               $(this).children('.spinnerPlaceholder').replaceWith('<i class="spinnerPlaceholder fa fa-spinner fa-spin"></i>');
+
+            });
 
             $('.deleteCourseworkButton').click(function(){
                 var courseworkid = $(this).data('courseworkid');
@@ -1385,15 +1468,11 @@
                 $('#modalCourseworkId').val(courseworkId);
             });
 
-
             $('#searchMarkButton').click(function(){
-                $('#loadingWheelSearchMarkButton').replaceWith(
-                    '<i class="fa fa-spinner fa-spin" id="loadingWheelSearchMarkButton" style="display: none;">&nbsp;</i>');
-                $('#loadingWheelSearchMarkButton').show();
-
                 var studentNumber = $('#searchStudentNumber').val();
                 var courseId = $('#courseId').val();
                 var offset = ($('#searchResultsPageLimit').val()=='Max'?-1:$('#searchResultsPageOffset').val()-1);
+                var thisElement = $(this);
 
                 $.ajax({
                     type: 'POST',
@@ -1404,7 +1483,6 @@
                         offset: offset
                     },
                     success:function(data){
-//                        console.log(data);
                         var dataString = '<tbody id="searchMarkResultsBody">';
                         for(var i = 0; i < data.length; i++){
                             dataString += '<tr class="even pointer">';
@@ -1420,21 +1498,18 @@
 
                         $('#searchMarkResultsBody').replaceWith(dataString);
                         $('#searchResultsBody').show();
-                        $('#loadingWheelSearchMarkButton').replaceWith(
-                            '<i class="fa fa-check-circle" id="loadingWheelSearchMarkButton" style="display: none;">&nbsp;</i>');
-                        $('#loadingWheelSearchMarkButton').show();
+                        successOperation(thisElement);
+
                     },
                     error: function(data){
+                        failOperation(thisElement);
                         $('#searchResultsBody').hide();
-                        $('#loadingWheelSearchMarkButton').replaceWith(
-                            '<i class="fa fa-times-circle" id="loadingWheelSearchMarkButton" style="display: none;">&nbsp;</i>');
-                        $('#loadingWheelSearchMarkButton').show();
+
                     }
                 });
 
 
             });
-
 
             $('#uploadSubcourseworkDropdown').change(function(){
                 var sectionDropdown = $('#uploadSectionDropdown').empty();
@@ -1490,7 +1565,6 @@
                 });
             });
 
-
             $('#createSubminimumButton').click(function(){
                 var courseId = $('#courseId').val();
                 var token = $('#_token').val();
@@ -1522,6 +1596,7 @@
                 var yearWeighting = $('#courseworkYearWeighting').val();
                 var courseId = $('#courseId').val();
                 var token = $('#_token').val();
+                var thisElement = $(this);
 
 
                 $.ajax({
@@ -1537,7 +1612,10 @@
                         courseId: courseId
                     },
                     success:function(data){
-
+                        successOperation(thisElement);
+                    },
+                    error:function(data){
+                        failOperation(thisElement);
                     }
                 });
             });
@@ -1547,6 +1625,7 @@
                 var emailAddress = $('#participantsEmail').val();
                 var courseId = $('#courseId').val();
                 var token = $('#_token').val();
+                var thisElement = $(this);
 
                 $.ajax({
                     type: 'POST',
@@ -1558,46 +1637,31 @@
                         courseId: courseId
                     },
                     success: function (data) {
-                        console.log(data);
-                        var dataString =
-                            '<table class="table table-striped jambo_table bulk_action">'+
-                                '<thead>'+
-                                    '<tr class="headings">'+
-                                        '<th>'+
-                                            '<div class="icheckbox_flat-green" style="position: relative;"><input type="checkbox" id="check-all" class="flat" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute"></ins></div>'+
-                                        '</th>'+
-                                        '<th class="column-title">First Name</th>'+
-                                        '<th class="column-title">Last Name</th>'+
-                                        '<th class="column-title">Student #</th>'+
-                                        '<th class="column-title">Employee #</th>'+
-                                        '<th class="column-title">Email</th>'+
-                                        '<th class="column-title">Role</th>'+
-                                        '<th class="column-title">Status</th>'+
-                                        '<th class="column-title">Approved?</th>'+
-                                        '<th class="bulk-actions" colspan="7">'+
-                                            '<a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>'+
-                                        '</th>'+
-                                    '</tr>'+
-                                '</thead>'+
-                                '<tbody>';
-
-                        for(var i = 0; i < data.length; i++){
-                            dataString +=   '<tr class="even pointer">'+
-                                                '<td class="a-center ">'+
-                                                    '<div class="icheckbox_flat-green" style="position: relative;"><input type="checkbox" id="check-all" class="flat" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute"></ins></div>'+
-                                                '</td>'+
-                                                '<td class=" ">'+data[i].firstName+'</td>'+
-                                                '<td class=" ">'+data[i].lastName+'</td>'+
-                                                '<td class=" ">'+data[i].studentNumber+'</td>'+
-                                                '<td class=" ">'+data[i].employeeId+'</td>'+
-                                                '<td class=" ">'+data[i].email+'</td>'+
-                                                '<td class=" ">'+data[i].role+'</td>'+
-                                                '<td class=" ">'+data[i].status+'</td>'+
-                                                '<td class=" ">'+data[i].approved+'</td> </td>'+
-                                            '</tr>';
+                        var dataString ='<tbody id="searchParticipantsResultsBody">';
+                        for(var i = 0; i < data.length; i++) {
+                            if (data[i].firstName == 'undefined') {
+                                break;
+                            }
+                            dataString += '<tr class="even pointer">' +
+                                '<td class="a-center ">' +
+                                '<input type="checkbox" class="searchParticipantsResultsCheckbox" data-userid="' + data[i].id + '">' +
+                                '</td>' +
+                                '<td class=" ">' + data[i].firstName + '</td>' +
+                                '<td class=" ">' + data[i].lastName + '</td>' +
+                                '<td class=" ">' + data[i].studentNumber + '</td>' +
+                                '<td class=" ">' + data[i].employeeId + '</td>' +
+                                '<td class=" ">' + data[i].email + '</td>' +
+                                '<td class=" ">' + data[i].role + '</td>' +
+                                '<td class=" ">' + data[i].status + '</td>' +
+                                '<td class=" ">' + data[i].approved + '</td> </td>' +
+                                '</tr>';
                         }
-                        dataString += '</tbody></table>';
-                        $('#participantsContents').html(dataString);
+                        dataString += '</tbody>';
+                        $('#searchParticipantsResultsBody').replaceWith(dataString);
+                        successOperation(thisElement);
+                    },
+                    error: function(data){
+                        failOperation(thisElement);
                     }
                 });
 
@@ -1616,6 +1680,7 @@
                 var courseTerm = $('#courseTerm').val();
                 var courseId = $('#courseId').val();
                 var token = $('#_token').val();
+                var thisElement = $(this);
 
                 $.ajax({
                     type: 'POST',
@@ -1631,61 +1696,111 @@
                         term: courseTerm
                     },
                     success: function (data) {
-                        alert('success!');
+                        successOperation(thisElement);
+                    },
+                    error: function (data){
+                        failOperation(thisElement);
                     }
                 });
 
             });
 
+            function successOperation(element){
+                element.children('.spinnerPlaceholder').replaceWith('<i class="spinnerPlaceholder fa fa-check-circle"></i>');
+            }
+            function failOperation(element){
+                element.children('.spinnerPlaceholder').replaceWith('<i class="spinnerPlaceholder fa fa-times-circle"></i>');
+            }
+
             $('#addConvenorButton').click(function(){
                 var convenorEmailAddress = $('#convenorEmailAddress').val();
                 var courseId = $('#courseId').val();
                 var token = $('#_token').val();
+                var convenorInvitationCheckbox = $('#convenorInvitationCheckbox').is(':checked')?1:0;
+                var thisElement = $(this);
 
                 $.ajax({
                     type: 'POST',
                     url: courseId+'/addconvenor',
                     data: {
                         _token: token,
-                        email: convenorEmailAddress
+                        email: convenorEmailAddress,
+                        invitation: convenorInvitationCheckbox
                     },
                     success: function (data) {
-                        console.log(data);
+                        successOperation(thisElement);
+                    },
+                    error: function(data){
+                        failOperation(thisElement);
                     }
                 });
 
             });
+
             $('#addLecturerButton').click(function(){
                 var lecturerEmailAddress = $('#lecturerEmailAddress').val();
                 var courseId = $('#courseId').val();
-//                var lecturerInvitationCheckbox = $('#lecturerInvitationCheckbox').checked;
+                var lecturerInvitationCheckbox = $('#lecturerInvitationCheckbox').is(':checked')?1:0;
                 var token = $('#_token').val();
+                var thisElement = $(this);
 
                 $.ajax({
                     type: 'POST',
                     url: courseId+'/addlecturer',
                     data: {
                         _token: token,
-                        email: lecturerEmailAddress
+                        email: lecturerEmailAddress,
+                        invitation: lecturerInvitationCheckbox
                     },
                     success: function (data) {
-                        alert('success!');
+                        successOperation(thisElement);
+                    },
+                    error: function(data){
+                        failOperation(thisElement);
                     }
                 });
 
             });
+
+            $('#addTAButton').click(function(){
+                var taEmailAddress = $('#taEmailAddress').val();
+                var courseId = $('#courseId').val();
+                var taInvitationCheckbox = $('#taInvitationCheckbox').is(':checked')?1:0;
+                var token = $('#_token').val();
+                var thisElement = $(this);
+
+                $.ajax({
+                    type: 'POST',
+                    url: courseId+'/addta',
+                    data: {
+                        _token: token,
+                        email: taEmailAddress,
+                        invitation: taInvitationCheckbox
+                    },
+                    success: function (data) {
+                        successOperation(thisElement);
+                    },
+                    error: function(data){
+                        failOperation(thisElement);
+                    }
+                });
+
+            });
+
             $('#addStudentFileButton').click(function(){
-                var formData = new FormData($('#studentFileUploadForm')[0]);
-               console.log(formData);
+//                var formData = new FormData($('#studentFileUploadForm')[0]);
+                var thisElement = $(this);
                 $.ajax({
                     type: 'POST',
                     url: courseId+'/students',
-                    data: formData,
+                    data:{},
                     success: function (data) {
-                        alert('success!');
+                        successOperation(thisElement);
+                    },
+                    error: function(data){
+                        failOperation(thisElement);
                     }
                 });
-                alert('form_submitted');
             });
         });
     </script>

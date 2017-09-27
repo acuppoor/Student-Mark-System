@@ -546,6 +546,7 @@ class LecturerController extends Controller
                 }
                 if($status != -1){
                     $result = [];
+                    $result["id"] = $user->id;
                     $result["firstName"] = $user->first_name;
                     $result["lastName"] = $user->last_name;
                     $result["studentNumber"] = $user->student_number;
@@ -559,5 +560,24 @@ class LecturerController extends Controller
             }
         }
         return Response::json($results);
+    }
+
+    public function getConvenors(Request $request){
+        $courseId = $request->input('courseId');
+        $convenorMaps = ConvenorCourseMap::where('course_id', $courseId)->get();
+        $convenors = [];
+        foreach ($convenorMaps as $convenorMap) {
+            $convenor = [];
+            $user = $convenorMap->user;
+            $convenor['id'] = $user->id;
+            $convenor['staff_number'] = $user->student_number;
+            $convenor['employee_id'] = $user->employee_id;
+            $convenor['first_name'] = $user->first_name;
+            $convenor['last_name'] = $user->last_name;
+            $convenor['email'] = $user->email;
+            $convenor['access'] = $convenorMap->status==1?'Yes':'No';
+            $convenors[] = $convenor;
+        }
+        return $convenors;
     }
 }
