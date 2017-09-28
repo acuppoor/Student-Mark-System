@@ -576,8 +576,69 @@ class LecturerController extends Controller
             $convenor['last_name'] = $user->last_name;
             $convenor['email'] = $user->email;
             $convenor['access'] = $convenorMap->status==1?'Yes':'No';
+            $convenor['approved'] = $user->approved==1?'Yes':'No';
             $convenors[] = $convenor;
         }
         return $convenors;
+    }
+
+    public function getLecturers(Request $request){
+        $courseId = $request->input('courseId');
+        $lecturerMaps = LecturerCourseMap::where('course_id', $courseId)->get();
+        $lecturers = [];
+        foreach ($lecturerMaps as $lecturerMap) {
+            $lecturer = [];
+            $user = $lecturerMap->lecturer;
+            $lecturer['id'] = $user->id;
+            $lecturer['staff_number'] = $user->student_number;
+            $lecturer['employee_id'] = $user->employee_id;
+            $lecturer['first_name'] = $user->first_name;
+            $lecturer['last_name'] = $user->last_name;
+            $lecturer['email'] = $user->email;
+            $lecturer['access'] = $lecturerMap->status==1?'Yes':'No';
+            $lecturer['approved'] = $user->approved==1?'Yes':'No';
+            $lecturers[] = $lecturer;
+        }
+        return $lecturers;
+    }
+
+    public function getStudents(Request $request){
+        $courseId = $request->input('courseId');
+        $studentMaps = UserCourseMap::where('course_id', $courseId)->get();
+        $students = [];
+        foreach ($studentMaps as $studentMap) {
+            $student = [];
+            $user = $studentMap->user;
+            $student['id'] = $user->id;
+            $student['staff_number'] = $user->student_number;
+            $student['employee_id'] = $user->employee_id;
+            $student['first_name'] = $user->first_name;
+            $student['last_name'] = $user->last_name;
+            $student['email'] = $user->email;
+            $student['access'] = $studentMap->status==1?'Registered':'Deregistered';
+            $student['approved'] = $user->approved==1?'Yes':'No';
+            $students[] = $student;
+        }
+        return $students;
+    }
+
+    public function getTAs(Request $request){
+        $courseId = $request->input('courseId');
+        $taMaps = TACourseMap::where('course_id', $courseId)->get();
+        $tas = [];
+        foreach ($taMaps as $taMap) {
+            $ta = [];
+            $user = $taMap->user;
+            $ta['id'] = $user->id;
+            $ta['staff_number'] = $user->student_number;
+            $ta['employee_id'] = $user->employee_id;
+            $ta['first_name'] = $user->first_name;
+            $ta['last_name'] = $user->last_name;
+            $ta['email'] = $user->email;
+            $ta['access'] = $taMap->status==1?'Yes':'No';
+            $ta['approved'] = $user->approved==1?'Yes':'No';
+            $tas[] = $ta;
+        }
+        return $tas;
     }
 }

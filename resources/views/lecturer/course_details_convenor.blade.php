@@ -53,7 +53,10 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-dark btn-round" id="createSubminimumButton" type="button">Create</button>
+                        <button type="button" class="btn btn-dark btn-round spinnerNeeded" id="createSubminimumButton" type="button">
+                            <i class="spinnerPlaceholder"></i>
+                            Create
+                        </button>
                         <button type="button" class="btn btn-default btn-round" data-dismiss="modal">Close</button>
                     </div>
                 </form>
@@ -115,7 +118,10 @@
                             <br/>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-dark btn-round" id="createCourseworkButton" type="button">Create</button>
+                        <button type="button" class="btn btn-dark btn-round spinnerNeeded" id="createCourseworkButton" type="button">
+                            <i class="spinnerPlaceholder"></i>
+                            Create
+                        </button>
                         <button type="button" class="btn btn-default btn-round" data-dismiss="modal">Close</button>
                     </div>
                 </form>
@@ -171,7 +177,10 @@
                         <br>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-dark btn-round" id="createSubcourseworkButtonModal" type="button">Create</button>
+                        <button type="button" class="btn btn-dark btn-round spinnerNeeded" id="createSubcourseworkButtonModal" type="button">
+                            <i class="spinnerPlaceholder"></i>
+                            Create
+                        </button>
                         <button type="button" class="btn btn-default btn-round" data-dismiss="modal">Close</button>
                     </div>
                 </form>
@@ -199,7 +208,50 @@
                         <input type="text" id="sectionMaxMarks" class="form-control" name="sectionMaxMarks" required="">
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-dark btn-round" id="createSectionButtonModal" type="button">Create</button>
+                        <button type="button" class="btn btn-dark btn-round spinnerNeeded" id="createSectionButtonModal" type="button">
+                            <i class="spinnerPlaceholder"></i>
+                            Create
+                        </button>
+                        <button type="button" class="btn btn-default btn-round" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="newRowModal" style="display: none;">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">New Subminimum Row</h4>
+                </div>
+                <form method="" action="">
+                    <input type="hidden" id="subminimumId">
+                    <div class="modal-body">
+                        {{csrf_field()}}
+                        <label for="courseworkSubminimumDropdown">Coursework*:</label>
+                        <select name="" id="courseworkSubminimumDropdown" class="form-control">
+                            <option></option>
+                            @foreach(\App\Coursework::all() as $cwrk)
+                                <option value="{{$cwrk->id}}">{{$cwrk->name}}</option>
+                            @endforeach
+                        </select>
+                        <br>
+                        <label for="subcourseworkSubminimumDropdown">Subcoursework:</label>
+                        <select name="" id="subcourseworkSubminimumDropdown" class="form-control">
+                            <option></option>
+                        </select>
+                        <br>
+                        <label for="subminimumRowWeighting">Weighting:</label>
+                        <input type="integer" id="subminimumRowWeighting" class="form-control">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-dark btn-round spinnerNeeded" id="createSubminimumButtonModal" type="button">
+                            <i class="spinnerPlaceholder"></i>
+                            Create
+                        </button>
                         <button type="button" class="btn btn-default btn-round" data-dismiss="modal">Close</button>
                     </div>
                 </form>
@@ -385,7 +437,8 @@
                                                                         <button class="btn btn-dark btn-round spinnerNeeded" id="addLecturerButton" type="button">
                                                                             <i class="spinnerPlaceholder"></i>
                                                                             <i class="fa fa-plus"></i>
-                                                                            Add</button>
+                                                                            Add
+                                                                        </button>
                                                                     </div>
                                                                 </form>
                                                             </div>
@@ -486,20 +539,15 @@
                                                             <ul class="nav navbar-right panel_toolbox">
                                                                 <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a>
                                                                 </li>
-                                                                <li><a class="close-link"><i class="fa fa-close"></i></a>
-                                                                </li>
                                                             </ul>
                                                             <div class="clearfix"></div>
                                                         </div>
                                                         <div class="x_content" style="display: block;" id="searchParticipantsResults">
-                                                            {{--<div id="participantsContents">
-
-                                                            </div>--}}
                                                             <table class="table table-striped jambo_table bulk_action">
                                                                 <thead>
                                                                     <tr class="headings">
                                                                         <th>
-                                                                            <input type="checkbox" id="checkAllSearchParticipantsResults" data-name="searchParticipantsResultsCheckbox" class="checkall flat">
+                                                                            <input type="checkbox" id="checkAllSearchParticipantsResults">
                                                                         </th>
                                                                         <th class="column-title">First Name</th>
                                                                         <th class="column-title">Last Name</th>
@@ -548,7 +596,10 @@
                                                         </a>
                                                         <div id="collapseOne1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne1" aria-expanded="false" style="height: 0px;">
                                                             <div class="panel-body">
-                                                                <button type="button" class="btn btn-round btn-dark" id="refreshConvenorsList"><i class="glyphicon glyphicon-refresh"></i> Refresh</button>
+                                                                <button type="button" class="btn btn-round btn-dark refreshSpin" id="refreshConvenorsList">
+                                                                    <i class="glyphicon glyphicon-refresh" id="refreshPlaceholder"></i>
+                                                                    Refresh
+                                                                </button>
                                                                 <table class="table table-striped jambo_table bulk_action">
                                                                     <thead>
                                                                     <tr class="headings">
@@ -561,6 +612,7 @@
                                                                         <th class="column-title">Employee #</th>
                                                                         <th class="column-title">Email</th>
                                                                         <th class="column-title">Access</th>
+                                                                        <th class="column-title">Approved?</th>
                                                                     </tr>
                                                                     </thead>
 
@@ -580,25 +632,68 @@
                                                         </a>
                                                         <div id="collapseTwo1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo1" aria-expanded="false" style="height: 0px;">
                                                             <div class="panel-body">
+                                                                <button type="button" class="btn btn-round btn-dark refreshSpin" id="refreshLecturersList">
+                                                                    <i class="glyphicon glyphicon-refresh" id="refreshPlaceholder"></i>
+                                                                    Refresh
+                                                                </button>
+                                                                <button type="button" id="" class="btn btn-dark btn-round spinnerNeeded"><i class="spinnerPlaceholder"></i> Grant Access To Selected</button>
+                                                                <button type="button" class="btn btn-dark btn-round spinnerNeeded"><i class="spinnerPlaceholder"></i> Deny Access To Selected</button>
+                                                                <table class="table table-striped jambo_table bulk_action">
+                                                                    <thead>
+                                                                    <tr class="headings">
+                                                                        <th>
+                                                                            <input type="checkbox" class="checkbox" id="checkAllLecturersList">
+                                                                        </th>
+                                                                        <th class="column-title">First Name</th>
+                                                                        <th class="column-title">Last Name</th>
+                                                                        <th class="column-title">Staff #</th>
+                                                                        <th class="column-title">Employee #</th>
+                                                                        <th class="column-title">Email</th>
+                                                                        <th class="column-title">Access</th>
+                                                                        <th class="column-title">Approved?</th>
+                                                                    </tr>
+                                                                    </thead>
+
+                                                                    <tbody id="lecturersListResultsBody">
+
+                                                                    </tbody>
+                                                                </table>
                                                             </div>
                                                         </div>
                                                     </div>
+
                                                     <div class="panel">
                                                         <a class="panel-heading collapsed" role="tab" id="headingThree1" data-toggle="collapse" data-parent="#accordion" href="#collapseThree1" aria-expanded="false" aria-controls="collapseThree1">
                                                             <h4 class="panel-title">Students</h4>
                                                         </a>
                                                         <div id="collapseThree1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree1" aria-expanded="false" style="height: 0px;">
                                                             <div class="panel-body">
-                                                                <div class="btn-toolbar">
-                                                                    <div class="btn-group">
-                                                                        <button class="btn btn-dark" type="button"><<</button>
-                                                                        <button class="btn btn-dark" type="button">1</button>
-                                                                        <button class="btn btn-dark active" type="button">2</button>
-                                                                        <button class="btn btn-dark" type="button">3</button>
-                                                                        <button class="btn btn-dark" type="button">4</button>
-                                                                        <button class="btn btn-dark" type="button">>></button>
-                                                                    </div>
-                                                                </div>
+                                                                <button type="button" class="btn btn-round btn-dark refreshSpin" id="refreshStudentsList">
+                                                                    <i class="glyphicon glyphicon-refresh" id="refreshPlaceholder"></i>
+                                                                    Refresh
+                                                                </button>
+                                                                <button type="button" id="" class="btn btn-dark btn-round spinnerNeeded"><i class="spinnerPlaceholder"></i> Grant Access To Selected</button>
+                                                                <button type="button" class="btn btn-dark btn-round spinnerNeeded"><i class="spinnerPlaceholder"></i> Deny Access To Selected</button>
+                                                                <table class="table table-striped jambo_table bulk_action">
+                                                                    <thead>
+                                                                    <tr class="headings">
+                                                                        <th>
+                                                                            <input type="checkbox" class="checkbox" id="checkAllLecturersList">
+                                                                        </th>
+                                                                        <th class="column-title">First Name</th>
+                                                                        <th class="column-title">Last Name</th>
+                                                                        <th class="column-title">Student #</th>
+                                                                        <th class="column-title">Employee #</th>
+                                                                        <th class="column-title">Email</th>
+                                                                        <th class="column-title">Status</th>
+                                                                        <th class="column-title">Approved?</th>
+                                                                    </tr>
+                                                                    </thead>
+
+                                                                    <tbody id="studentsListResultsBody">
+
+                                                                    </tbody>
+                                                                </table>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -609,29 +704,32 @@
                                                         </a>
                                                         <div id="collapseFour1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour1" aria-expanded="false" style="height: 0px;">
                                                             <div class="panel-body">
+                                                                <button type="button" class="btn btn-round btn-dark refreshSpin" id="refreshTAsList">
+                                                                    <i class="glyphicon glyphicon-refresh" id="refreshPlaceholder"></i>
+                                                                    Refresh
+                                                                </button>
+                                                                <button type="button" id="" class="btn btn-dark btn-round spinnerNeeded"><i class="spinnerPlaceholder"></i> Grant Access To Selected</button>
+                                                                <button type="button" class="btn btn-dark btn-round spinnerNeeded"><i class="spinnerPlaceholder"></i> Deny Access To Selected</button>
+                                                                <table class="table table-striped jambo_table bulk_action">
+                                                                    <thead>
+                                                                    <tr class="headings">
+                                                                        <th>
+                                                                            <input type="checkbox" class="checkbox" id="checkAllTAsList">
+                                                                        </th>
+                                                                        <th class="column-title">First Name</th>
+                                                                        <th class="column-title">Last Name</th>
+                                                                        <th class="column-title">Student #</th>
+                                                                        <th class="column-title">Employee #</th>
+                                                                        <th class="column-title">Email</th>
+                                                                        <th class="column-title">Access</th>
+                                                                        <th class="column-title">Approved?</th>
+                                                                    </tr>
+                                                                    </thead>
 
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                                    <tbody id="TAsListResultsBody">
 
-                                                    <div class="panel">
-                                                        <a class="panel-heading collapsed" role="tab" id="headingFour1" data-toggle="collapse" data-parent="#accordion" href="#collapseFour1" aria-expanded="false" aria-controls="collapseFour1">
-                                                            <h4 class="panel-title">Unapproved Users</h4>
-                                                        </a>
-                                                        <div id="collapseFour1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour1" aria-expanded="false" style="height: 0px;">
-                                                            <div class="panel-body">
-
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="panel">
-                                                        <a class="panel-heading collapsed" role="tab" id="headingFour1" data-toggle="collapse" data-parent="#accordion" href="#collapseFour1" aria-expanded="false" aria-controls="collapseFour1">
-                                                            <h4 class="panel-title">Denied Users</h4>
-                                                        </a>
-                                                        <div id="collapseFour1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour1" aria-expanded="false" style="height: 0px;">
-                                                            <div class="panel-body">
-
+                                                                    </tbody>
+                                                                </table>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -681,8 +779,11 @@
                                                                 </div>
                                                                 <div class="col-md-5" style="text-align: right">
                                                                     <button class="btn btn-dark btn-round createSubcourseworkButton" data-toggle="modal" type="button" data-target="#subcourseworkModal" data-courseworkid="{{$coursework['id']}}"><i class="fa fa-plus"></i> New Subcoursework</button>
-                                                                    <button class="btn btn-dark btn-round"><i class="fa fa-save"></i> Save</button>
-                                                                    <button class="btn btn-dark btn-round deleteCourseworkButton" data-courseworkid="{{$coursework['id']}}" type="button"><i class="fa fa-trash"></i> Delete</button>
+                                                                    <button class="btn btn-dark btn-round spinnerNeeded"><i class="spinnerPlaceholder"></i> <i class="fa fa-save"></i> Save</button>
+                                                                    <button class="btn btn-dark btn-round deleteCourseworkButton spinnerNeeded" data-courseworkid="{{$coursework['id']}}" type="button">
+                                                                        <i class="spinnerPlaceholder"></i>
+                                                                        <i class="fa fa-trash"></i> Delete
+                                                                    </button>
                                                                 </div>
                                                             </div>
 
@@ -732,8 +833,8 @@
                                                                                     <tr class="even pointer">
                                                                                         <td>
                                                                                             <h4><input type="text" value="{{$subcoursework['name']}}"></h4>
-                                                                                            <button class="btn btn-dark btn-round saveSubcoursework" type="button" data-subcourseworkid="{{$subcoursework['id']}}"><i class="fa fa-save"></i> Save</button>
-                                                                                            <button class="btn btn-dark btn-round deleteSubcoursework" type="button" data-subcourseworkid="{{$subcoursework['id']}}"><i class="fa fa-trash"></i> Delete</button>
+                                                                                            <button class="btn btn-dark btn-round saveSubcoursework spinnerNeeded" type="button" data-subcourseworkid="{{$subcoursework['id']}}"><i class="spinnerPlaceholder"></i> <i class="fa fa-save"></i> Save</button>
+                                                                                            <button class="btn btn-dark btn-round deleteSubcoursework spinnerNeeded" type="button" data-subcourseworkid="{{$subcoursework['id']}}"><i class="spinnerPlaceholder"></i> <i class="fa fa-trash"></i> Delete</button>
                                                                                         </td>
                                                                                         <td>
                                                                                             <div class="panel">
@@ -786,7 +887,7 @@
                                                                                                                     <td></td>
                                                                                                                     <td>Max Marks:</td>
                                                                                                                     <td><input type="integer" value="{{$section['max_marks']}}" class="form-control"  style="width:50px" ></td>
-                                                                                                                    <td><button class="btn btn-dark btn-round deleteSection" data-sectionid="{{$section['id']}}"><i class="fa fa-trash"></i></button></td>
+                                                                                                                    <td><button class="btn btn-dark btn-round deleteSection spinnerNeeded" data-sectionid="{{$section['id']}}"><i class="spinnerPlaceholder"></i> <i class="fa fa-trash"></i></button></td>
                                                                                                                 </tr>
                                                                                                                 </tbody>
                                                                                                             </table>
@@ -851,7 +952,7 @@
                                                                     </a>
                                                                 </div>
                                                                 <div class="col-md-4" style="text-align: right">
-                                                                    <button class="btn btn-dark btn-round"><i class="fa fa-plus"></i> New Row</button>
+                                                                    <button class="btn btn-dark btn-round" data-subminimumid="{{$subminimum['id']}}"data-target="#newRowModal" id="newRowButton" data-toggle="modal"><i class="fa fa-plus"></i> New Row</button>
                                                                     <button class="btn btn-dark btn-round"><i class="fa fa-save"></i> Save</button>
                                                                     <button class="btn btn-dark btn-round"><i class="fa fa-trash"></i> Delete</button>
                                                                 </div>
@@ -920,8 +1021,6 @@
 
                                                                                 </tbody>
                                                                             </table>
-
-
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -1317,23 +1416,171 @@
         });
         $(document).ready(function(){
 
-            /*$('#checkAllConvenorsList').change(function(){
-               var checkboxes = document.getElementsByClassName('convenorsListCheckbox');
-               for(var i = 0; i < checkboxes.length; i++){
-                   console.log(checkboxes[i]);
-               }
-            });*/
-            $('.convenorsListCheckbox').change(function(){
-                var checkboxes = document.getElementsByClassName('convenorsListCheckbox');
-                for(var i = 0; i < checkboxes.length; i++){
-                    console.log(checkboxes[i]);
-                }
+            $('#checkAllSearchParticipantsResults').click(function(){
+                var checkboxes = $(':checkbox');
+                alert(checkboxes.length);
+                checkboxes.forEach(function(checkbox){
+                    console.log(checkbox);
+                })
             });
 
-            $('#refreshConvenorsList').click(function(){
-                $(this).children('.glyphicon').replaceWith('<i class="glyphicon glyphicon-refresh fa-spin"></i>');
+            $('#newRowButton').click(function(){
+                $('#subminimumId').val($(this).data('subminimumid'));
+            });
+
+            $('#createSubminimumButtonModal').click(function(){
+                var subminimumId = $('#subminimumId').val();
+                var coursework = $('#courseworkSubminimumDropdown').val();
+                var subcoursework = $('#subcourseworkSubminimumDropdown').val();
+                var weighting = $('#subminimumRowWeighting').val();
+                var thisElement = $(this);
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/createsubminimumrow',
+                    data:{
+                        subminimumId: subminimumId,
+                        coursework: coursework,
+                        subcoursework: subcoursework,
+                        weighting: weighting
+                    },
+                   success:function(data){
+                       $('#subminimumId').val('');
+                       $('#courseworkSubminimumDropdown').val('');
+                       $('#subcourseworkSubminimumDropdown').val('');
+                       $('#subminimumRowWeighting').val('');
+                       successOperation(thisElement);
+                   },
+                   error: function(data){
+                       failOperation(thisElement);
+                   }
+                });
+            });
+
+            $('#refreshTAsList').click(function(){
                 var courseId = $('#courseId').val();
-               $.ajax({
+                var thisElement = $(this);
+
+                $.ajax({
+                    type: 'POST',
+                    url: 'getteachingassistants',
+                    data:{
+                        courseId: courseId
+                    },
+                    success: function(data){
+                        var dataString = '<tbody id="TAsListResultsBody">';
+                        for(var i = 0; i < data.length; i++){
+                            var element = data[i];
+                            dataString += '<tr class="even pointer">' +
+                                '<td class="a-center ">' +
+                                '<input type="checkbox" class="TAsListCheckbox" data-userid='+element.id+'>' +
+                                '</td>' +
+                                '<td class=" ">' + element.first_name + '</td>' +
+                                '<td class=" ">' + element.last_name + '</td>' +
+                                '<td class=" ">' + element.staff_number + '</td>' +
+                                '<td class=" ">' + element.employee_id + '</td>' +
+                                '<td class=" ">' + element.email + '</td>' +
+                                '<td class=" ">' + element.access + '</td>' +
+                                '<td class=" ">' + element.approved + '</td>' +
+                                '</tr>';
+                        }
+                        dataString += '</tbody>';
+                        $('#TAsListResultsBody').replaceWith(dataString);
+                    },
+                    error: function(data){
+//                    console.log(data);
+                    }
+                });
+                refreshDone(thisElement);
+            });
+
+            $('#refreshStudentsList').click(function(){
+                var courseId = $('#courseId').val();
+                var thisElement = $(this);
+
+                $.ajax({
+                    type: 'POST',
+                    url: 'getstudents',
+                    data:{
+                        courseId: courseId
+                    },
+                    success: function(data){
+                        var dataString = '<tbody id="studentsListResultsBody">';
+                        for(var i = 0; i < data.length; i++){
+                            var element = data[i];
+                            dataString += '<tr class="even pointer">' +
+                                '<td class="a-center ">' +
+                                '<input type="checkbox" class="studentsListCheckbox" data-userid='+element.id+'>' +
+                                '</td>' +
+                                '<td class=" ">' + element.first_name + '</td>' +
+                                '<td class=" ">' + element.last_name + '</td>' +
+                                '<td class=" ">' + element.staff_number + '</td>' +
+                                '<td class=" ">' + element.employee_id + '</td>' +
+                                '<td class=" ">' + element.email + '</td>' +
+                                '<td class=" ">' + element.access + '</td>' +
+                                '<td class=" ">' + element.approved + '</td>' +
+                                '</tr>';
+                        }
+                        dataString += '</tbody>';
+                        $('#studentsListResultsBody').replaceWith(dataString);
+                    },
+                    error: function(data){
+//                    console.log(data);
+                    }
+                });
+                refreshDone(thisElement);
+            });
+
+            $('#refreshLecturersList').click(function(){
+                var courseId = $('#courseId').val();
+                var thisElement = $(this);
+
+                $.ajax({
+                    type: 'POST',
+                    url: 'getlecturers',
+                    data:{
+                        courseId: courseId
+                    },
+                    success: function(data){
+                        var dataString = '<tbody id="lecturersListResultsBody">';
+                        for(var i = 0; i < data.length; i++){
+                            var element = data[i];
+                            dataString += '<tr class="even pointer">' +
+                                '<td class="a-center ">' +
+                                '<input type="checkbox" class="lecturersListCheckbox" data-userid='+element.id+'>' +
+                                '</td>' +
+                                '<td class=" ">' + element.first_name + '</td>' +
+                                '<td class=" ">' + element.last_name + '</td>' +
+                                '<td class=" ">' + element.staff_number + '</td>' +
+                                '<td class=" ">' + element.employee_id + '</td>' +
+                                '<td class=" ">' + element.email + '</td>' +
+                                '<td class=" ">' + element.access + '</td>' +
+                                '<td class=" ">' + element.approved + '</td>' +
+                                '</tr>';
+                        }
+                        dataString += '</tbody>';
+                        $('#lecturersListResultsBody').replaceWith(dataString);
+                    },
+                    error: function(data){
+//                    console.log(data);
+                    }
+                });
+                refreshDone(thisElement);
+            });
+
+            $('.refreshSpin').click(function(){
+                $(this).children('#refreshPlaceholder').replaceWith('<i id="refreshPlaceholder" class="glyphicon glyphicon-refresh fa-spin"></i>');
+            });
+
+            function refreshDone(element){
+                element.children('#refreshPlaceholder').replaceWith('<i class="fa fa-check-circle"></i>');
+            }
+
+            $('#refreshConvenorsList').click(function(){
+                var courseId = $('#courseId').val();
+                var thisElement = $(this);
+
+                $.ajax({
                    type: 'POST',
                    url: 'getconvenors',
                    data:{
@@ -1353,16 +1600,17 @@
                                 '<td class=" ">' + element.employee_id + '</td>' +
                                 '<td class=" ">' + element.email + '</td>' +
                                 '<td class=" ">' + element.access + '</td>' +
+                                '<td class=" ">' + element.approved + '</td>' +
                                 '</tr>';
                         }
                         dataString += '</tbody>';
                        $('#convenorsListResultsBody').replaceWith(dataString);
                    },
                    error: function(data){
-                    console.log(data);
+//                    console.log(data);
                    }
-               });
-                $(this).children('.glyphicon').replaceWith('<i class="glyphicon glyphicon-refresh"></i>');
+                });
+                refreshDone(thisElement);
             });
 
             $('.spinnerNeeded').click(function(){
@@ -1372,6 +1620,7 @@
 
             $('.deleteCourseworkButton').click(function(){
                 var courseworkid = $(this).data('courseworkid');
+                var thisElement = $(this);
                 $.ajax({
                     type: 'POST',
                     url: '/deletecoursework',
@@ -1379,7 +1628,10 @@
                         courseworkId: courseworkid,
                     },
                     success:function(data){
-                        console.log(data);
+                        successOperation(thisElement);
+                    },
+                    error:function(data){
+                        failOperation(thisElement);
                     }
                 });
             });
@@ -1388,6 +1640,7 @@
                 var maxMarks = $('#sectionMaxMarks').val();
                 var name = $('#sectionName').val();
                 var subcourseworkId = $('#subcourseworkId').val();
+                var thisElement = $(this);
 
                 $.ajax({
                     type: 'POST',
@@ -1398,18 +1651,24 @@
                         subcourseworkId: subcourseworkId
                     },
                     success:function(data){
-                        console.log(data);
+                        successOperation(thisElement);
+                        $('#sectionMaxMarks').val("");
+                        $('#sectionName').val("");
+                        $('#subcourseworkId').val("");
+                    },
+                    error: function(data){
+                        failOperation(thisElement);
                     }
                 });
             });
 
             $('.newSectionButton').click(function(){
-                alert($(this).data('subcourseworkid'));
                 $('#subcourseworkId').val($(this).data('subcourseworkid'));
             });
 
             $('.deleteSection').click(function(){
                 var sectionid = $(this).data('sectionid');
+                var thisElement = $(this);
                 $.ajax({
                     type: 'POST',
                     url: '/deletesection',
@@ -1417,13 +1676,17 @@
                         sectionId: sectionid,
                     },
                     success:function(data){
-                        console.log(data);
+                        successOperation(thisElement);
+                    },
+                    error: function(data){
+                        failOperation(thisElement);
                     }
                 });
             });
 
             $('.deleteSubcoursework').click(function(){
                 var subcourseworkid = $(this).data('subcourseworkid');
+                var thisElement = $(this);
                 $.ajax({
                     type: 'POST',
                     url: '/deletesubcoursework',
@@ -1431,7 +1694,10 @@
                         subcourseworkId: subcourseworkid,
                     },
                     success:function(data){
-                        console.log(data);
+                        successOperation(thisElement);
+                    },
+                    error:function(data){
+                        failOperation(thisElement);
                     }
                 });
             });
@@ -1444,6 +1710,7 @@
                 var weighting = $('#subcourseworkWeighting').val();
                 var displayMarks = $('#subcourseworkDisplayMarks').is(':checked')?1:0;
                 var displayPercentage = $('#subcourseworkDisplayPercentage').is(':checked')? 1:0;
+                var thisElement = $(this);
 
                 $.ajax({
                     type: 'POST',
@@ -1458,7 +1725,16 @@
                         displayPercentage: displayPercentage
                     },
                     success:function(data){
-                        console.log(data);
+                        $('#modalCourseworkId').val("");
+                        $('#subcourseworkName').val("");
+                        $('#subcourseworkMaxMarks').val("");
+                        $('#subcourseworkWeighting').val("");
+                        $('#subcourseworkDisplayMarks').val("");
+                        $('#subcourseworkDisplayPercentage').val("");
+                        successOperation(thisElement);
+                    },
+                    error:function(data){
+                        failOperation(thisElement);
                     }
                 });
             });
@@ -1571,6 +1847,7 @@
                 var name = $('#subminimumName').val();
                 var type = $('#subminimumType').val();
                 var threshold = $('#subminimumThreshold').val();
+                var thisElement = $(this);
 
                 $.ajax({
                     type: 'POST',
@@ -1583,7 +1860,13 @@
                         courseId: courseId
                     },
                     success:function(data){
-
+                        $('#subminimumName').val('');
+                        $('#subminimumType').val('');
+                        $('#subminimumThreshold').val('');
+                        successOperation(thisElement);
+                    },
+                    error:function(data){
+                        failOperation(thisElement);
                     }
                 });
             });
@@ -1612,6 +1895,10 @@
                         courseId: courseId
                     },
                     success:function(data){
+                        $('#courseworkName').val("");
+                        $('#courseworkType').val("");
+                        $('#courseworkClassWeighting').val("");
+                        $('#courseworkYearWeighting').val("");
                         successOperation(thisElement);
                     },
                     error:function(data){
@@ -1643,17 +1930,17 @@
                                 break;
                             }
                             dataString += '<tr class="even pointer">' +
-                                '<td class="a-center ">' +
-                                '<input type="checkbox" class="searchParticipantsResultsCheckbox" data-userid="' + data[i].id + '">' +
+                                '<td class="a-center table-row">' +
+                                    '<input type="checkbox" class="searchParticipantsResultsCheckbox" data-userid="' + data[i].id + '">' +
                                 '</td>' +
-                                '<td class=" ">' + data[i].firstName + '</td>' +
-                                '<td class=" ">' + data[i].lastName + '</td>' +
-                                '<td class=" ">' + data[i].studentNumber + '</td>' +
-                                '<td class=" ">' + data[i].employeeId + '</td>' +
-                                '<td class=" ">' + data[i].email + '</td>' +
-                                '<td class=" ">' + data[i].role + '</td>' +
-                                '<td class=" ">' + data[i].status + '</td>' +
-                                '<td class=" ">' + data[i].approved + '</td> </td>' +
+                                '<td class="table-row">' + data[i].firstName + '</td>' +
+                                '<td class="table-row">' + data[i].lastName + '</td>' +
+                                '<td class="table-row">' + data[i].studentNumber + '</td>' +
+                                '<td class="table-row">' + data[i].employeeId + '</td>' +
+                                '<td class="table-row">' + data[i].email + '</td>' +
+                                '<td class="table-row">' + data[i].role + '</td>' +
+                                '<td class="table-row">' + data[i].status + '</td>' +
+                                '<td class="table-row">' + data[i].approved + '</td>' +
                                 '</tr>';
                         }
                         dataString += '</tbody>';
