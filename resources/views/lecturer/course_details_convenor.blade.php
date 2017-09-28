@@ -1080,11 +1080,6 @@
                                                         <label>&nbsp;</label><br>
                                                         <button class="btn btn-dark btn-round">Upload</button>
                                                     </div>
-                                                    {{--<div class="col-md-3">
-                                                        <p>&nbsp;</p>
-                                                        <button class="btn btn-dark btn-round">Browse</button>
-                                                        <button class="btn btn-dark btn-round">Add</button>
-                                                    </div>--}}
                                                 </div>
                                             </div>
                                         </div>
@@ -1126,7 +1121,7 @@
                                                     <div class="col-md-3">
                                                         <label for="">&nbsp;</label><br>
                                                         <button class="btn btn-dark btn-round spinnerNeeded" type="button" id="searchMarkButton" >
-                                                            <i id="spinnerPlaceholder"></i>
+                                                            <i class="spinnerPlaceholder"></i>
                                                             Search
                                                         </button>
                                                         <button class="btn btn-dark btn-round">Export</button>
@@ -1175,85 +1170,60 @@
                                             <div class="x_content collapse" style="display: none;">
                                                 <div class="row">
                                                     <div class="col-md-3">
-                                                        <label for="studentFile">Coursework:</label>
-                                                        <select name="" id="" class="form-control">
-                                                            <option>All</option>
-                                                            <option>Exam</option>
+                                                        <label for="searchStudentNumberCoursework">Coursework*:</label>
+                                                        <select id="courseworkSearchDropdown" class="form-control">
+                                                            @foreach($course['courseworks'] as $cwrk)
+                                                                <option value="{{$cwrk['id']}}">{{$cwrk['name']}}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label for="searchStudentNumberCoursework">Student/Employee #:</label>
+                                                        <input id="courseworkSearchStudentNumber" type="text" class="form-control">
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label for="searchStudentNumber">Results Per Page:</label>
+                                                        <select id="courseworkSearchPageLimit" class="form-control">
+                                                            <option>30</option>
+                                                            <option>Max</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label for="searchStudentNumber">Page #:</label>
+                                                        <select id="courseworkSearchPageOffset" class="form-control">
+                                                            @for($i = 1; $i < ($course['students_count']/30)+1; $i++)
+                                                                <option {{$i == 1?'selected':''}}>{{$i}}</option>
+                                                            @endfor
                                                         </select>
                                                     </div>
                                                     <div class="col-md-3">
-                                                        <label for="studentFile">Subcategory:</label>
-                                                        <select name="" id="" class="form-control">
-                                                            <option></option>
-                                                            <option>Default</option>
-                                                        </select>
+                                                        <label for="">&nbsp;</label><br>
+                                                        <button class="btn btn-dark btn-round spinnerNeeded" type="button" id="searchCourseworkMarkButton" >
+                                                            <i class="spinnerPlaceholder"></i>
+                                                            Search
+                                                        </button>
+                                                        <button class="btn btn-dark btn-round">Export</button>
                                                     </div>
-                                                    <div class="col-md-5">
-                                                        <p>&nbsp;</p>
-                                                        <button class="btn btn-round btn-dark">Display</button>
-                                                        <button class="btn btn-round btn-dark">Export</button>
-                                                    </div>
+                                                    <hr>
                                                 </div>
-                                                <hr>
-                                                <div class="row">
-                                                    <div class="col-md-12" style="text-align: center">
-                                                        <div class="btn-toolbar">
-                                                            <div class="btn-group">
-                                                                <button class="btn btn-dark" type="button"><<</button>
-                                                                <button class="btn btn-dark active" type="button">1</button>
-                                                                <button class="btn btn-dark" type="button">2</button>
-                                                                <button class="btn btn-dark" type="button">3</button>
-                                                                <button class="btn btn-dark" type="button">4</button>
-                                                                <button class="btn btn-dark" type="button">>></button>
-                                                            </div>
+                                                <br>
+                                                <div class="div" id="searchResultsBody" hidden>
+                                                    <h4>Results:</h4>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <table id="courseworkSearchResultsTable" class="table table-striped jambo_table bulk_action">
+                                                                <thead>
+                                                                <tr class="headings">
+                                                                    <th class="column-title">Student #</th>
+                                                                    <th class="column-title">Employee #</th>
+                                                                </tr>
+                                                                </thead>
+
+                                                                <tbody id="courseworkSearchResultsBody"></tbody>
+                                                            </table>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <br>
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <table class="table table-striped jambo_table bulk_action">
-                                                            <thead>
-                                                            <tr class="headings">
-                                                                <th class="column-title">Student #</th>
-                                                                <th class="column-title">Employee #</th>
-                                                                <th class="column-title">Exam</th>
-                                                                <th class="column-title">Class Mark</th>
-                                                                <th class="column-title">Year Mark</th>
-                                                                <th class="column-title">DP</th>
-                                                                <th class="column-title">Grade</th>
-                                                            </tr>
-                                                            </thead>
-
-                                                            <tbody>
-                                                            <tr class="even pointer">
-                                                                <td class=" ">stdtes001</td>
-                                                                <td class=" ">7654321</td>
-                                                                <td class=" ">
-                                                                    {{--<input type="text" class="form-control" value="75">--}}75
-                                                                </td>
-                                                                <td class=" ">95{{--<input type="text" class="form-control" value="95">--}}</td>
-                                                                <td class=" ">85{{--<input type="text" class="form-control" value="85">--}}</td>
-                                                                <td class=" ">
-                                                                    <select name="" id="" class="form-control">
-                                                                        <option value="">DP</option>
-                                                                        <option value="">DPR</option>
-                                                                    </select>
-                                                                </td>
-                                                                <td class=" ">
-                                                                    <select name="" id="" class="form-control">
-                                                                        <option value="">85</option>
-                                                                        <option value="">OSS</option>
-                                                                        <option value="">FS</option>
-                                                                    </select>
-                                                                </td>
-                                                            </tr>
-                                                            </tbody>
-                                                        </table>
-                                                        <button class="btn btn-dark btn-round">Update</button>
-                                                    </div>
-                                                </div>
-
                                             </div>
                                         </div>
                                     </div>
@@ -1273,70 +1243,67 @@
 
                                             <div class="x_content collapse" style="display: none;">
                                                 <div class="row">
-                                                    <div class="col-md-3">
-                                                        <label for="studentFile">Student/Employee #:</label>
-                                                        <input type="text" class="form-control">
+                                                    <div class="col-md-2">
+                                                        <label for="searchStudentNumberCoursework">Coursework*:</label>
+                                                        <select id="subcourseworkCourseworkDropdown" class="form-control">
+                                                            <option value="-1"></option>
+                                                            @foreach($course['courseworks'] as $cwrk)
+                                                                <option value="{{$cwrk['id']}}">{{$cwrk['name']}}</option>
+                                                            @endforeach
+                                                        </select>
                                                     </div>
-                                                    <div class="col-md-3">
-                                                        <label for="studentFile">Coursework:</label>
-                                                        <select name="" id="" class="form-control">
-                                                            <option>Exam</option>
+                                                    <div class="col-md-2">
+                                                        <label for="searchStudentNumberCoursework">Subcoursework*:</label>
+                                                        <select id="subcourseworkSubcourseworkDropdown" class="form-control">
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label for="searchStudentNumberCoursework">Student/Employee #:</label>
+                                                        <input id="subcourseworkSearchStudentNumber" type="text" class="form-control">
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label for="searchStudentNumber">Results Per Page:</label>
+                                                        <select id="subourseworkSearchPageLimit" class="form-control">
+                                                            <option>30</option>
+                                                            <option>Max</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-1">
+                                                        <label for="searchStudentNumber">Page #:</label>
+                                                        <select id="subcourseworkSearchPageOffset" class="form-control">
+                                                            @for($i = 1; $i < ($course['students_count']/30)+1; $i++)
+                                                                <option {{$i == 1?'selected':''}}>{{$i}}</option>
+                                                            @endfor
                                                         </select>
                                                     </div>
                                                     <div class="col-md-3">
-                                                        <label for="studentFile">Subcategory:</label>
-                                                        <select name="" id="" class="form-control">
-                                                            <option>All</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <p>&nbsp;</p>
-                                                        <button class="btn btn-dark btn-round">Display</button>
+                                                        <label for="">&nbsp;</label><br>
+                                                        <button class="btn btn-dark btn-round spinnerNeeded" type="button" id="searchSubcourseworkMarkButton" >
+                                                            <i class="spinnerPlaceholder"></i>
+                                                            Search
+                                                        </button>
                                                         <button class="btn btn-dark btn-round">Export</button>
                                                     </div>
+                                                    <hr>
                                                 </div>
-                                                <div class="row">
-                                                    <div class="col-md-12" style="text-align: center">
-                                                        <div class="btn-toolbar">
-                                                            <div class="btn-group">
-                                                                <button class="btn btn-dark" type="button"><<</button>
-                                                                <button class="btn btn-dark active" type="button">1</button>
-                                                                <button class="btn btn-dark" type="button">2</button>
-                                                                <button class="btn btn-dark" type="button">3</button>
-                                                                <button class="btn btn-dark" type="button">4</button>
-                                                                <button class="btn btn-dark" type="button">>></button>
-                                                            </div>
+                                                <br>
+                                                <div class="div" id="subcourseworkSearchResultsBody" hidden>
+                                                    <h4>Results:</h4>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <table id="subcourseworkSearchResultsTable" class="table table-striped jambo_table bulk_action">
+                                                                <thead>
+                                                                <tr class="headings">
+                                                                    <th class="column-title">Student #</th>
+                                                                    <th class="column-title">Employee #</th>
+                                                                </tr>
+                                                                </thead>
+
+                                                                <tbody id="courseworkSearchResultsBody"></tbody>
+                                                            </table>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <br>
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <table class="table table-striped jambo_table bulk_action">
-                                                            <thead>
-                                                            <tr class="headings">
-                                                                <th class="column-title">Student #</th>
-                                                                <th class="column-title">Employee #</th>
-                                                                <th class="column-title">Default</th>
-                                                                <th class="column-title">Total</th>
-                                                            </tr>
-                                                            </thead>
-
-                                                            <tbody>
-                                                            <tr class="even pointer">
-                                                                <td class=" ">stdtes001</td>
-                                                                <td class=" ">7654321</td>
-                                                                <td class=" ">
-                                                                    <input type="text" class="form-control" value="75">
-                                                                </td>
-                                                                <td class=" "><input type="text" class="form-control" value="75"></td>
-                                                            </tr>
-                                                            </tbody>
-                                                        </table>
-                                                        <button class="btn btn-dark btn-round">Update</button>
-                                                    </div>
-                                                </div>
-
                                             </div>
                                         </div>
                                     </div>
@@ -1417,6 +1384,150 @@
         });
         $(document).ready(function(){
 
+            $('#searchSubcourseworkMarkButton').click(function(){
+                var courseworkId = $('#subcourseworkCourseworkDropdown').val();
+                var subcourseworkId = $('#subcourseworkSubcourseworkDropdown').val();
+                var studentNumber = $('#subcourseworkSearchStudentNumber').val();
+                var courseId = $('#courseId').val();
+                var offset = ($('#subcourseworkSearchPageLimit').val()=='Max'?-1:$('#subcourseworkSearchPageOffset').val()-1);
+                var thisElement = $(this);
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/getstudentssubcourseworkmarks',
+                    data:{
+                        courseworkId: courseworkId,
+                        subcourseworkId: subcourseworkId,
+                        courseId: courseId,
+                        studentNumber: studentNumber,
+                        offset: offset
+                    },
+                    success:function(data){
+                        console.log(data);
+                        $('#subcourseworkSearchResultsTable').parent().parent().parent().show();
+                        var dataString =    '<table id="subcourseworkSearchResultsTable" class="table table-striped jambo_table bulk_action">'+
+                            '<thead>'+
+                            '<tr class="headings">'+
+                            '<th class="column-title">Student #</th>'+
+                            '<th class="column-title">Employee #</th>';
+                        for(var i = 0; i < data.columns.length; i++){
+                            dataString += '<th class="column-title">'+data.columns[i]+'</th>';
+                        }
+                        dataString += '<th class="column-title">Total Marks</th>';
+                        dataString += '<th class="column-title">Total Marks(%)</th>';
+                        dataString += '<th class="column-title">Weighted Marks</th>';
+                        dataString += '</tr></thead>';
+                        dataString += '<tbody id="courseworkSearchResultsBody">';
+                        for(var i = 0; i < data.marks.length; i++){
+                            var record = data.marks[i];
+                            dataString += '<tr class="even pointer">';
+                            dataString +=  '<td>'+record.student_number+'</td>';
+                            dataString +=  '<td>'+record.employee_id+'</td>';
+                            for(var j = 0; j < record.sections.length; j++){
+                                dataString +=  '<td>'+record.sections[j].numerator + ' / ' + record.sections[j].denominator +'</td>';
+                            }
+                            dataString +=  '<td>'+record.total_num + ' / ' + record.total_den +'</td>';
+                            dataString +=  '<td>'+record.percentage +'</td>';
+                            dataString +=  '<td>'+record.weighted_marks +'</td>';
+                            dataString +=  '</tr>';
+                        }
+                        dataString += '</tbody>';
+
+                        $('#subcourseworkSearchResultsTable').replaceWith(dataString);
+                        $('#subcourseworkSearchResultsTable').show();
+                        successOperation(thisElement);
+                    },
+                    error: function(data) {
+                        failOperation(thisElement);
+//                        $('#courseworkSearchResultsBody').hide();
+                    }
+                });
+            });
+
+            $('#subcourseworkCourseworkDropdown').change(function(){
+                var subcourseworkDropdown = $('#subcourseworkSubcourseworkDropdown');
+                subcourseworkDropdown.empty();
+
+                var selectedCoursework = $(this).val();
+                var courseId = $('#courseId').val();
+                var token = $('#_token').val();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/getsubcourseworks',
+                    data:{
+                        _token:token,
+                        coursework: selectedCoursework,
+                        courseId: courseId
+                    },
+                    success:function(data){
+                        var option = document.createElement('option');
+                        option.value=-1;
+                        option.text = "";
+                        subcourseworkDropdown.append(option);
+
+                        for(var i = 0; i < data.length; i++){
+                            var option = document.createElement('option');
+                            option.value = data[i].id;
+                            option.text = data[i].name;
+                            subcourseworkDropdown.append(option);
+                        }
+                    }
+                });
+            });
+
+            $('#searchCourseworkMarkButton').click(function(){
+                var courseworkId = $('#courseworkSearchDropdown').val();
+                var studentNumber = $('#courseworkSearchStudentNumber').val();
+                var courseId = $('#courseId').val();
+                var offset = ($('#courseworkSearchPageLimit').val()=='Max'?-1:$('#courseworkSearchPageOffset').val()-1);
+                var thisElement = $(this);
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/getstudentscourseworkmarks',
+                    data:{
+                        courseworkId: courseworkId,
+                        courseId: courseId,
+                        studentNumber: studentNumber,
+                        offset: offset
+                    },
+                    success:function(data){
+                        $('#courseworkSearchResultsTable').parent().parent().parent().show();
+                        var dataString =    '<table id="courseworkSearchResultsTable" class="table table-striped jambo_table bulk_action">'+
+                                            '<thead>'+
+                                            '<tr class="headings">'+
+                                            '<th class="column-title">Student #</th>'+
+                                            '<th class="column-title">Employee #</th>';
+                        for(var i = 0; i < data.columns.length; i++){
+                            dataString += '<th class="column-title">'+data.columns[i]+'</th>';
+                        }
+                        dataString += '<th class="column-title">Total</th></tr></thead>';
+                        dataString += '<tbody id="courseworkSearchResultsBody">';
+                        for(var i = 0; i < data.marks.length; i++){
+                            var record = data.marks[i];
+                            dataString += '<tr class="even pointer">';
+                            dataString +=  '<td>'+record.student_number+'</td>';
+                            dataString +=  '<td>'+record.employee_id+'</td>';
+                            for(var j = 0; j < record.subcourseworks.length; j++){
+                                dataString +=  '<td>'+record.subcourseworks[j]+'</td>';
+                            }
+                            dataString +=  '<td>'+record.total_marks+'</td>';
+                            dataString +=  '</tr>';
+                        }
+                        dataString += '</tbody>';
+
+                        $('#courseworkSearchResultsTable').replaceWith(dataString);
+                        $('#courseworkSearchResultsTable').show();
+                        successOperation(thisElement);
+                    },
+                    error: function(data) {
+                        failOperation(thisElement);
+                        $('#courseworkSearchResultsTable').hide();
+                    }
+                });
+            });
+
             $('.deleteSubminimumButton').click(function(){
                 var rowId = $(this).data('subminimumid');
                 var thisElement = $(this);
@@ -1487,7 +1598,7 @@
                 });
             });
 
-            $('#courseworkSubminimumDropdown').change(function(){
+            $('#courseworkSubminimumDropdown').change(function() {
                 var subcourseworkDropdown = $('#subcourseworkSubminimumDropdown').empty();
 
                 var selectedCoursework = $(this).val();
@@ -1497,18 +1608,18 @@
                 $.ajax({
                     type: 'POST',
                     url: '/getsubcourseworks',
-                    data:{
-                        _token:token,
+                    data: {
+                        _token: token,
                         coursework: selectedCoursework,
                         courseId: courseId
                     },
-                    success:function(data){
+                    success: function (data) {
                         var option = document.createElement('option');
                         option.text = "";
                         option.value = -1;
                         subcourseworkDropdown.append(option);
 
-                        for(var i = 0; i < data.length; i++){
+                        for (var i = 0; i < data.length; i++) {
                             var option = document.createElement('option');
                             option.value = data[i].id;
                             option.text = data[i].name;
@@ -1844,8 +1955,6 @@
 
                     }
                 });
-
-
             });
 
             $('#uploadSubcourseworkDropdown').change(function(){
@@ -1873,7 +1982,7 @@
                 });
             });
 
-            $('#uploadCourseworkDropdown').change(function(){
+            $('#uploadCourseworkDropdown').change(function() {
                 var subcourseworkDropdown = $('#uploadSubcourseworkDropdown').empty();
                 $('#uploadSectionDropdown').empty();
                 var selectedCoursework = $(this).val();
@@ -1883,17 +1992,17 @@
                 $.ajax({
                     type: 'POST',
                     url: '/getsubcourseworks',
-                    data:{
-                        _token:token,
+                    data: {
+                        _token: token,
                         coursework: selectedCoursework,
                         courseId: courseId
                     },
-                    success:function(data){
+                    success: function (data) {
                         var option = document.createElement('option');
                         option.text = "";
                         subcourseworkDropdown.append(option);
 
-                        for(var i = 0; i < data.length; i++){
+                        for (var i = 0; i < data.length; i++) {
                             var option = document.createElement('option');
                             option.text = data[i];
                             subcourseworkDropdown.append(option);
@@ -2012,11 +2121,8 @@
                         failOperation(thisElement);
                     }
                 });
-
                 $('#searchParticipantsPanel').show();
-
             });
-
 
             $('#updateInfoButton').click(function(){
                 var courseName = $('#courseName').val();
@@ -2050,7 +2156,6 @@
                         failOperation(thisElement);
                     }
                 });
-
             });
 
             function successOperation(element){
@@ -2150,6 +2255,6 @@
                     }
                 });
             });
-        });
+        })
     </script>
 @endsection

@@ -680,4 +680,154 @@ class LecturerController extends Controller
         SubminimumColumnMap::where('subminimum_id', $id)->delete();
         Subminimum::destroy($id);
     }
+
+    public function getStudentsCourseworkMarks(Request $request){
+        $courseId = $request->input('courseId');
+        $courseworkId = $request->input('courseworkId');
+        $studentNumber = $request->input('studentNumber');
+        $limit = 30;
+        $offsetRaw = $request->input('offset');
+        $offset = $offsetRaw*$limit;
+
+        $students = [];
+        if($studentNumber){
+            $usr = User::where('student_number', $studentNumber)
+                ->orWhere('employee_id', $studentNumber)->first();
+            if($usr) {
+                $students[] = UserCourseMap::where('user_id', $usr->id)
+                    ->where('course_id', $courseId)->first()->user;
+            }
+        } else {
+            $users = [];
+            if($offsetRaw == -1){
+                $users = UserCourseMap::where('course_id', $courseId)->first();
+            } else {
+                $users = UserCourseMap::where('course_id', $courseId)
+                    ->limit($limit)->offset($offset)->get();
+            }
+            foreach($users as $user){
+                $students[] = $user->user;
+            }
+        }
+
+        $course = Course::where('id', $courseId)->first();
+        $coursework = Coursework::where('id', $courseworkId)->first();
+        $subcourseworks = $coursework->subcourseworks;
+        $columns = [];
+        $results = [];
+
+        foreach($subcourseworks as $subcwrk){
+            $columns[] = $subcwrk->name;
+        }
+
+        $results['columns'] = $columns;
+        $marks = [];
+
+        foreach ($students as $user){
+            $result = [];
+            $result['student_number'] = $user->student_number;
+            $result['employee_id'] = $user->employee_id;
+
+            $courseworkTotalMark = 0.0;
+
+            $subcourseworks = [];
+
+            foreach ($coursework->subcourseworks as $subcoursework) {
+
+                $subcourseworkWeighting = $subcoursework->weighting_in_coursework;
+                $subcourseworkN = 0.0;
+                $subcourseworkD = 0.0;
+                foreach ($subcoursework->sections as $section) {
+                    $subcourseworkD += $section->max_marks;
+                    $subcourseworkN += SectionUserMarkMap::where('user_id', $user->id)
+                        ->where('section_id', $section->id)->first()->marks;
+                }
+                $subcourseworkFinalMark = $subcourseworkD!=0?($subcourseworkN*$subcourseworkWeighting)/$subcourseworkD:0;
+                $courseworkTotalMark += $subcourseworkFinalMark;
+
+                $subcourseworks[] = $subcourseworkFinalMark;
+            }
+            $result['subcourseworks'] = $subcourseworks;
+            $result['total_marks'] = $courseworkTotalMark;
+            $marks[] = $result;
+        }
+        $results['marks'] = $marks;
+
+        return Response::json($results);
+    }
+
+    public function getStudentsSubcourseworkMarks(Request $request){
+        $courseId = $request->input('courseId');
+        $courseworkId = $request->input('courseworkId');
+        $subcourseworkId = $request->input('subcourseworkId');
+        $studentNumber = $request->input('studentNumber');
+        $limit = 30;
+        $offsetRaw = $request->input('offset');
+        $offset = $offsetRaw*$limit;
+
+        $students = [];
+        if($studentNumber){
+            $usr = User::where('student_number', $studentNumber)
+                ->orWhere('employee_id', $studentNumber)->first();
+            if($usr) {
+                $students[] = UserCourseMap::where('user_id', $usr->id)
+                    ->where('course_id', $courseId)->first()->user;
+            }
+        } else {
+            $users = [];
+            if($offsetRaw == -1){
+                $users = UserCourseMap::where('course_id', $courseId)->first();
+            } else {
+                $users = UserCourseMap::where('course_id', $courseId)
+                    ->limit($limit)->offset($offset)->get();
+            }
+            foreach($users as $user){
+                $students[] = $user->user;
+            }
+        }
+
+        $course = Course::where('id', $courseId)->first();
+        $coursework = Coursework::where('id', $courseworkId)->first();
+        $subcoursework = SubCoursework::where('id', $subcourseworkId)->first();
+        $sections = Section::where('subcoursework_id', $subcourseworkId)->get();
+
+        $columns = [];
+        $results = [];
+
+        foreach($sections as $section){
+            $columns[] = $section->name;
+        }
+
+        $results['columns'] = $columns;
+        $records = [];
+
+        foreach ($students as $user){
+            $result = [];
+            $result['student_number'] = $user->student_number;
+            $result['employee_id'] = $user->employee_id;
+
+            $subcourseworkWeighting = $subcoursework->weighting_in_coursework;
+            $subcourseworkN = 0.0;
+            $subcourseworkD = 0.0;
+            $marks = [];
+            foreach ($sections as $section) {
+                $mark = [];
+                $mark['numerator'] = SectionUserMarkMap::where('user_id', $user->id)
+                    ->where('section_id', $section->id)->first()->marks;
+                $mark['denominator'] = $section->max_marks;
+                $subcourseworkD += $section->max_marks;
+                $subcourseworkN += $mark['numerator'];
+                $marks[] = $mark;
+            }
+            $subcourseworkFinalMark = $subcourseworkD!=0?($subcourseworkN*$subcourseworkWeighting)/$subcourseworkD:0;
+            $result['sections'] = $marks;
+            $result['total_num'] = $subcourseworkN;
+            $result['total_den'] = $subcourseworkD;
+            $result['percentage'] = $subcourseworkD!=0?($subcourseworkN*100.0)/$subcourseworkD:0;
+            $result['weighted_marks'] = $subcourseworkFinalMark;
+            $records[] = $result;
+        }
+        $results['marks'] = $records;
+        return Response::json($results);
+    }
 }

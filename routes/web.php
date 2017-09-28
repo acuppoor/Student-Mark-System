@@ -39,6 +39,8 @@ Route::post('/deletesubminimum', 'PagesController@deleteSubminimum');
 Route::post('/getsubcourseworks', 'PagesController@getSubCourseworks');
 Route::post('/getsections', 'PagesController@getSections');
 Route::post('/getstudentsmarks', 'PagesController@getStudentsMarks');
+Route::post('/getstudentscourseworkmarks', 'PagesController@getStudentsCourseworkMarks');
+Route::post('/getstudentssubcourseworkmarks', 'PagesController@getStudentsSubcourseworkMarks');
 
 Route::get('/lecturingcourses', 'PagesController@lecturerCourses')->name("lecturer_courses");
 Route::post('/lecturingcourses/filter', 'PagesController@lecturerCourses');
