@@ -12,6 +12,7 @@ use App\Section;
 use App\SectionUserMarkMap;
 use App\SubCoursework;
 use App\Subminimum;
+use App\SubminimumColumnMap;
 use App\TACourseMap;
 use App\User;
 use App\UserCourseMap;
@@ -84,6 +85,7 @@ class LecturerController extends Controller
         $subminimums = [];
         foreach($course->subminimums as $subm){
             $submininum = [];
+            $subminimum['id'] = $subm->id;
             $subminimum['name'] = $subm->name;
             $subminimum['for_dp'] = $subm->for_dp;
             $subminimum['threshold'] = $subm->threshold;
@@ -192,13 +194,26 @@ class LecturerController extends Controller
     }
 
     public function getSubCourseworks(Request $request){
-        $courseworkId = Coursework::where('name', $request->input('coursework'))->first()->id;
-
-        $subcourseworks = SubCoursework::where('coursework_id', $courseworkId)->get();
-        $results=[];
-        foreach ($subcourseworks as $subcwrk){
-            $results[] = $subcwrk->name;
+        $cwrkValue = $request->input('coursework');
+        if(is_numeric($cwrkValue)){
+            $courseworkId = $cwrkValue;
+            $subcourseworks = SubCoursework::where('coursework_id', $courseworkId)->get();
+            $results=[];
+            foreach ($subcourseworks as $subcwrk){
+                $result = [];
+                $result['name'] = $subcwrk->name;
+                $result['id'] = $subcwrk->id;
+                $results[] = $result;
+            }
+        } else {
+            $courseworkId = Coursework::where('name', $cwrkValue)->first()->id;
+            $subcourseworks = SubCoursework::where('coursework_id', $courseworkId)->get();
+            $results=[];
+            foreach ($subcourseworks as $subcwrk){
+                $results[] = $subcwrk->name;
+            }
         }
+
 
         return Response::json($results);
     }
@@ -640,5 +655,29 @@ class LecturerController extends Controller
             $tas[] = $ta;
         }
         return $tas;
+    }
+
+    public function createSubminimumRow(Request $request){
+        $id = $request->input('subminimumId');
+        $coursework = $request->input('coursework');
+        $subcoursework = $request->input('subcoursework');
+        $weighting = $request->input('weighting');
+        $s = new SubminimumColumnMap();
+        $s->coursework_id = $coursework;
+        $s->subminimum_id = $id;
+        $s->subcoursework_id = $subcoursework;
+        $s->weighting = $weighting;
+        $s->save();
+    }
+
+    public function deleteSubminimumRow(Request $request){
+        $id = $request->input('id');
+        SubminimumColumnMap::destroy($id);
+    }
+
+    public function deleteSubminimum(Request $request){
+        $id = $request->input('id');
+        SubminimumColumnMap::where('subminimum_id', $id)->delete();
+        Subminimum::destroy($id);
     }
 }

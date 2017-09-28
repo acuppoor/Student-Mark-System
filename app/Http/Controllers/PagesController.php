@@ -423,6 +423,25 @@ class PagesController extends Controller
         }
     }
 
+    public function createSubminimumRow(Request $request){
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login');
+        }
+        $roleID = Auth::user()->role_id;
+        switch ($roleID){
+            case 1:
+            case 2:
+                return view('student.access_denied');
+            case 3:
+            case 4:
+                return app('App\Http\Controllers\LecturerController')->createSubminimumRow($request);
+            case 5:
+                return view('departmentadmin.courses');
+            case 6:
+                return view('systemadmin.courses');
+        }
+    }
 
     public function createSection(Request $request){
         if(Auth::user()->approved != 1){
@@ -477,6 +496,46 @@ class PagesController extends Controller
             case 3:
             case 4:
                 return app('App\Http\Controllers\LecturerController')->createSubminimum($request);
+            case 5:
+                return view('departmentadmin.courses');
+            case 6:
+                return view('systemadmin.courses');
+        }
+    }
+
+    public function deleteSubminimumRow(Request $request){
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login');
+        }
+        $roleID = Auth::user()->role_id;
+        switch ($roleID){
+            case 1:
+            case 2:
+                return view('student.access_denied');
+            case 3:
+            case 4:
+                return app('App\Http\Controllers\LecturerController')->deleteSubminimumRow($request);
+            case 5:
+                return view('departmentadmin.courses');
+            case 6:
+                return view('systemadmin.courses');
+        }
+    }
+
+    public function deleteSubminimum(Request $request){
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login');
+        }
+        $roleID = Auth::user()->role_id;
+        switch ($roleID){
+            case 1:
+            case 2:
+                return view('student.access_denied');
+            case 3:
+            case 4:
+                return app('App\Http\Controllers\LecturerController')->deleteSubminimum($request);
             case 5:
                 return view('departmentadmin.courses');
             case 6:

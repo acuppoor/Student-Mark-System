@@ -954,7 +954,7 @@
                                                                 <div class="col-md-4" style="text-align: right">
                                                                     <button class="btn btn-dark btn-round" data-subminimumid="{{$subminimum['id']}}"data-target="#newRowModal" id="newRowButton" data-toggle="modal"><i class="fa fa-plus"></i> New Row</button>
                                                                     <button class="btn btn-dark btn-round"><i class="fa fa-save"></i> Save</button>
-                                                                    <button class="btn btn-dark btn-round"><i class="fa fa-trash"></i> Delete</button>
+                                                                    <button class="btn btn-dark btn-round deleteSubminimumButton spinnerNeeded" type="button" data-subminimumid="{{$subminimum['id']}}"><i class="spinnerPlaceholder"></i> <i class="fa fa-trash"></i> Delete</button>
                                                                 </div>
                                                             </div>
 
@@ -1014,7 +1014,8 @@
                                                                                             <input type="integer" class="form-control" value="{{$row['weighting']}}">
                                                                                         </td>
                                                                                         <td>
-                                                                                            <button class="btn btn-dark btn-round"><i class="fa fa-trash"></i></button>
+                                                                                            <button data-rowid="{{$row['id']}}" class="btn btn-dark btn-round spinnerNeeded saveRowButton" type="button"><i class="spinnerPlaceholder"></i> <i class="fa fa-save"></i></button>
+                                                                                            <button data-rowid="{{$row['id']}}" class="btn btn-dark btn-round spinnerNeeded deleteRowButton" type="button"><i class="spinnerPlaceholder"></i> <i class="fa fa-trash"></i></button>
                                                                                         </td>
                                                                                     </tr>
                                                                                 @endforeach
@@ -1416,12 +1417,42 @@
         });
         $(document).ready(function(){
 
-            $('#checkAllSearchParticipantsResults').click(function(){
-                var checkboxes = $(':checkbox');
-                alert(checkboxes.length);
-                checkboxes.forEach(function(checkbox){
-                    console.log(checkbox);
-                })
+            $('.deleteSubminimumButton').click(function(){
+                var rowId = $(this).data('subminimumid');
+                var thisElement = $(this);
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/deletesubminimum',
+                    data:{
+                        id: rowId
+                    },
+                    success:function(data){
+                        successOperation(thisElement);
+                    },
+                    error:function(data){
+                        failOperation(thisElement);
+                    }
+                });
+            });
+
+            $('.deleteRowButton').click(function(){
+                var rowId = $(this).data('rowid');
+                var thisElement = $(this);
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/deletesubminimumrow',
+                    data:{
+                        id: rowId
+                    },
+                    success:function(data){
+                        successOperation(thisElement);
+                    },
+                    error:function(data){
+                        failOperation(thisElement);
+                    }
+                });
             });
 
             $('#newRowButton').click(function(){
@@ -1445,7 +1476,6 @@
                         weighting: weighting
                     },
                    success:function(data){
-                       $('#subminimumId').val('');
                        $('#courseworkSubminimumDropdown').val('');
                        $('#subcourseworkSubminimumDropdown').val('');
                        $('#subminimumRowWeighting').val('');
@@ -1454,6 +1484,37 @@
                    error: function(data){
                        failOperation(thisElement);
                    }
+                });
+            });
+
+            $('#courseworkSubminimumDropdown').change(function(){
+                var subcourseworkDropdown = $('#subcourseworkSubminimumDropdown').empty();
+
+                var selectedCoursework = $(this).val();
+                var courseId = $('#courseId').val();
+                var token = $('#_token').val();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/getsubcourseworks',
+                    data:{
+                        _token:token,
+                        coursework: selectedCoursework,
+                        courseId: courseId
+                    },
+                    success:function(data){
+                        var option = document.createElement('option');
+                        option.text = "";
+                        option.value = -1;
+                        subcourseworkDropdown.append(option);
+
+                        for(var i = 0; i < data.length; i++){
+                            var option = document.createElement('option');
+                            option.value = data[i].id;
+                            option.text = data[i].name;
+                            subcourseworkDropdown.append(option);
+                        }
+                    }
                 });
             });
 
