@@ -723,6 +723,46 @@ class PagesController extends Controller
         }
     }
 
+    public function updateSubcoursework(Request $request){
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login');
+        }
+        $roleID = Auth::user()->role_id;
+        switch ($roleID){
+            case 1:
+            case 2:
+                return view('student.access_denied');
+            case 3:
+            case 4:
+                return app('App\Http\Controllers\LecturerController')->updateSubcoursework($request);
+            case 5:
+                return view('departmentadmin.courses');
+            case 6:
+                return view('systemadmin.courses');
+        }
+    }
+
+    public function updateSection(Request $request){
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login');
+        }
+        $roleID = Auth::user()->role_id;
+        switch ($roleID){
+            case 1:
+            case 2:
+                return view('student.access_denied');
+            case 3:
+            case 4:
+                return app('App\Http\Controllers\LecturerController')->updateSection($request);
+            case 5:
+                return view('departmentadmin.courses');
+            case 6:
+                return view('systemadmin.courses');
+        }
+    }
+
     public function getSections(Request $request){
         if(Auth::user()->approved != 1){
             Auth::logout();

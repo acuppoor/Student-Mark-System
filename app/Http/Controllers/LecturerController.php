@@ -937,4 +937,36 @@ class LecturerController extends Controller
         $coursework->save();
 
     }
+
+    public function updateSubcoursework(Request $request){
+        $subcourseworkId = $request->input('subcourseworkId');
+        $name = $request->input('name');
+        $maxMarks = $request->input('maxMarks');
+        $releaseDate = $request->input('releaseDate');
+        $weightingCourse = $request->input('weightingCourse');
+        $displayMarks = $request->input('displayMarks');
+        $displayPercentage = $request->input('displayPercentage');
+
+        $subcoursework = SubCoursework::where('id', $subcourseworkId)->first();
+        $subcoursework->name = $name;
+        $subcoursework->display_to_students = $releaseDate;
+        $subcoursework->display_marks = $displayMarks;
+        $subcoursework->display_percentage = $displayPercentage;
+        $subcoursework->weighting_in_coursework = $weightingCourse;
+        $subcoursework->max_marks = $maxMarks;
+        $subcoursework->save();
+
+    }
+
+    public function updateSection(Request $request){
+        $sectionId = $request->input('sectionId');
+        $name = $request->input('name');
+        $maxMarks = $request->input('maxMarks');
+
+        $section = Section::where('id', $sectionId)->first();
+        $section->name = $name;
+        $section->max_marks = $maxMarks;
+        $section->save();
+
+    }
 }

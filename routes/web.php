@@ -47,6 +47,8 @@ Route::post('/convenorsaccess', 'PagesController@convenorsAccess');
 Route::post('/lecturersaccess', 'PagesController@lecturersAccess');
 Route::post('/tasaccess', 'PagesController@tasAccess');
 Route::post('/updatecoursework', 'PagesController@updateCoursework');
+Route::post('/updatesubcoursework', 'PagesController@updateSubcoursework');
+Route::post('/updatesection', 'PagesController@updateSection');
 
 Route::get('/lecturingcourses', 'PagesController@lecturerCourses')->name("lecturer_courses");
 Route::post('/lecturingcourses/filter', 'PagesController@lecturerCourses');

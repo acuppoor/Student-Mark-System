@@ -806,7 +806,7 @@
                                                                                         {{$count.'. '}}
                                                                                     </td>
                                                                                     <td>
-                                                                                        <input type="text" class="form-control {{$coursework['name']}}" data-type="name" value="{{$coursework['name']}}">
+                                                                                        <input type="text" class="form-control {{str_replace(' ', '', $coursework['name'])}}" data-type="name" value="{{$coursework['name']}}">
                                                                                     </td>
                                                                                 </tr>
                                                                             </table>
@@ -830,7 +830,7 @@
                                                                         <tr class="even pointer">
                                                                             <td>Type:</td>
                                                                             <td>
-                                                                                <select name="" id="" data-type="type" class="form-control {{$coursework['name']}}">
+                                                                                <select name="" id="" data-type="type" class="form-control {{str_replace(' ', '', $coursework['name'])}}">
                                                                                     @foreach(\App\CourseworkType::all() as $courseworkType)
                                                                                         <option {{$courseworkType->name==$coursework['type']?'selected':''}}>{{$courseworkType->name}}</option>
                                                                                     @endforeach
@@ -838,14 +838,14 @@
                                                                             </td>
                                                                             <td></td><td></td><td></td>
                                                                             <td>Release Date:</td>
-                                                                            <td><input type="date" data-type="releasedate" class="calendar-date form-control {{$coursework['name']}}" value="{{$coursework['display_to_students']}}"></td>
+                                                                            <td><input type="date" data-type="releasedate" class="calendar-date form-control {{str_replace(' ', '', $coursework['name'])}}" value="{{$coursework['display_to_students']}}"></td>
                                                                         </tr>
                                                                         <tr class="even pointer">
                                                                             <td>Weighting in Class Record:</td>
-                                                                            <td><input type="number" min="-1" max="100" data-type="weightingclass" class="form-control {{$coursework['name']}}" value="{{$coursework['weighting_in_classrecord']}}"></td>
+                                                                            <td><input type="number" min="-1" max="100" data-type="weightingclass" class="form-control {{str_replace(' ', '', $coursework['name'])}}" value="{{$coursework['weighting_in_classrecord']}}"></td>
                                                                             <td></td><td></td><td></td>
                                                                             <td>Weighting in Year Mark:</td>
-                                                                            <td><input type="number" min="-1" max="100" data-type="weightingyear" class="form-control {{$coursework['name']}}" value="{{$coursework['weighting_in_yearmark']}}"></td>
+                                                                            <td><input type="number" min="-1" max="100" data-type="weightingyear" class="form-control {{str_replace(' ', '', $coursework['name'])}}" value="{{$coursework['weighting_in_yearmark']}}"></td>
                                                                         </tr>
                                                                         </tbody>
                                                                     </table>
@@ -868,8 +868,8 @@
                                                                                     @php($subcount++)
                                                                                     <tr class="even pointer">
                                                                                         <td>
-                                                                                            <h4><input type="text" value="{{$subcoursework['name']}}"></h4>
-                                                                                            <button class="btn btn-dark btn-round saveSubcoursework spinnerNeeded" type="button" data-subcourseworkid="{{$subcoursework['id']}}"><i class="spinnerPlaceholder"></i> <i class="fa fa-save"></i> Save</button>
+                                                                                            <h4><input type="text" data-type="name" class="{{str_replace(' ', '', $subcoursework['name'])}}" value="{{$subcoursework['name']}}"></h4>
+                                                                                            <button class="btn btn-dark btn-round saveSubcoursework spinnerNeeded" type="button" data-subcourseworkname="{{str_replace(' ', '', $subcoursework['name'])}}" data-subcourseworkid="{{$subcoursework['id']}}"><i class="spinnerPlaceholder"></i> <i class="fa fa-save"></i> Save</button>
                                                                                             <button class="btn btn-dark btn-round deleteSubcoursework spinnerNeeded" type="button" data-subcourseworkid="{{$subcoursework['id']}}"><i class="spinnerPlaceholder"></i> <i class="fa fa-trash"></i> Delete</button>
                                                                                         </td>
                                                                                         <td>
@@ -883,23 +883,23 @@
                                                                                                             <tbody>
                                                                                                             <tr class="even pointer">
                                                                                                                 <td>Release Date:</td>
-                                                                                                                <td><input type="date"  {{--style="width:125px"--}}  class="calendar-date form-control" value="{{$subcoursework['display_to_students']}}"></td>
+                                                                                                                <td><input type="date" class="{{str_replace(' ', '', $subcoursework['name'])}}" data-type="releasedate" style="width:125px"  class="calendar-date form-control" value="{{$subcoursework['display_to_students']}}"></td>
                                                                                                             </tr>
                                                                                                             <tr class="even pointer">
                                                                                                                 <td>Display Percentage:</td>
-                                                                                                                <td><input type="checkbox" {{$subcoursework['display_percentage']==1?'checked':''}}  style="width:125px" ></td>
+                                                                                                                <td><input type="checkbox" class="{{str_replace(' ', '', $subcoursework['name'])}}" data-type="displaypercentage" {{$subcoursework['display_percentage']==1?'checked':''}}  style="width:125px" ></td>
                                                                                                             </tr>
                                                                                                             <tr>
                                                                                                                 <td>Display Marks:</td>
-                                                                                                                <td><input type="checkbox" {{$subcoursework['display_marks']==1?'checked':''}}  style="width:125px" ></td>
+                                                                                                                <td><input type="checkbox" class="{{str_replace(' ', '', $subcoursework['name'])}}" data-type="displaymarks" {{$subcoursework['display_marks']==1?'checked':''}}  style="width:125px" ></td>
                                                                                                             </tr>
                                                                                                             <tr class="even pointer">
                                                                                                                 <td>Max Marks:</td>
-                                                                                                                <td><input type="number" min="0" max="100" class="form-control" style="width:125px" value="{{$subcoursework['max_marks']}}"></td>
+                                                                                                                <td><input type="number" min="0" max="100" class="form-control {{str_replace(' ', '', $subcoursework['name'])}}" data-type="maxmarks" style="width:125px" value="{{$subcoursework['max_marks']}}"></td>
                                                                                                             </tr>
                                                                                                             <tr class="even pointer">
                                                                                                                 <td>Weighting in Coursework:</td>
-                                                                                                                <td><input type="number" min="-1" max="100" class="form-control"  style="width:125px" value="{{$subcoursework['weighting']}}"></td>
+                                                                                                                <td><input type="number" min="-1" max="100" class="form-control {{str_replace(' ', '', $subcoursework['name'])}}" data-type="weightingcourse" style="width:125px" value="{{$subcoursework['weighting']}}"></td>
                                                                                                             </tr>
                                                                                                             </tbody>
                                                                                                         </table>
@@ -919,11 +919,14 @@
                                                                                                                 <tbody>
                                                                                                                 <tr class="even pointer">
                                                                                                                     <td>Name:</td>
-                                                                                                                    <td><input type="text" value="{{$section['name']}}" class="form-control" style="width:125px" ></td>
+                                                                                                                    <td><input type="text" data-type="name" value="{{$section['name']}}" class="{{str_replace(' ','', $section['name'])}} form-control" style="width:125px" ></td>
                                                                                                                     <td></td>
                                                                                                                     <td>Max Marks:</td>
-                                                                                                                    <td><input type="number" min="-1" max="100" value="{{$section['max_marks']}}" class="form-control"  style="width:75px" ></td>
-                                                                                                                    <td><button class="btn btn-dark btn-round deleteSection spinnerNeeded" data-sectionid="{{$section['id']}}"><i class="spinnerPlaceholder"></i> <i class="fa fa-trash"></i></button></td>
+                                                                                                                    <td><input type="number" min="-1" max="100" data-type="maxmarks" value="{{$section['max_marks']}}" class="{{str_replace(' ','', $section['name'])}} form-control"  style="width:75px" ></td>
+                                                                                                                    <td>
+                                                                                                                        <button class="btn btn-dark btn-round saveSectionButton spinnerNeeded" data-sectionid="{{$section['id']}}" type="button" data-sectionname="{{str_replace(' ','', $section['name'])}}"><i class="spinnerPlaceholder"></i> <i class="fa fa-save"></i></button>
+                                                                                                                        <button class="btn btn-dark btn-round deleteSection spinnerNeeded" data-sectionid="{{$section['id']}}" type="button"><i class="spinnerPlaceholder"></i> <i class="fa fa-trash"></i></button>
+                                                                                                                    </td>
                                                                                                                 </tr>
                                                                                                                 </tbody>
                                                                                                             </table>
@@ -1420,6 +1423,82 @@
             }
         });
         $(document).ready(function(){
+
+            $('.saveSectionButton').click(function(){
+                var sectionId = $(this).data('sectionid');
+                var sectionName = $(this).data('sectionname');
+                var thisElement = $(this);
+
+                var name = "";
+                var maxMarks = '';
+
+                var elements = $('.'+sectionName);
+                for(var i = 0; i < elements.length; i++){
+                    if(elements[i].getAttribute('data-type')=='name'){name = elements[i].value;}
+                    if(elements[i].getAttribute('data-type')=='maxmarks'){maxMarks = elements[i].value;}
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: '/updatesection',
+
+                    data:{
+                        sectionId: sectionId,
+                        name: name,
+                        maxMarks: maxMarks
+                    },
+                    success:function(data){
+                        successOperation(thisElement);
+                    },
+                    error:function(data){
+                        failOperation(thisElement);
+                    }
+                });
+            });
+
+            $('.saveSubcoursework').click(function(){
+                var subcourseworkId = $(this).data('subcourseworkid');
+                var subcourseworkName = $(this).data('subcourseworkname');
+                var thisElement = $(this);
+
+                var name = "";
+                var releaseDate = '';
+                var displayPercentage = '';
+                var displayMarks = '';
+                var maxMarks = '';
+                var weightingCourse = '';
+
+                var elements = $('.'+subcourseworkName);
+                for(var i = 0; i < elements.length; i++){
+                    if(elements[i].getAttribute('data-type')=='name'){name = elements[i].value;}
+                    if(elements[i].getAttribute('data-type')=='displaypercentage'){displayPercentage = elements[i].checked?1:0;}
+                    if(elements[i].getAttribute('data-type')=='displaymarks'){displayMarks =  elements[i].checked?1:0;}
+                    if(elements[i].getAttribute('data-type')=='weightingcourse'){weightingCourse = elements[i].value;}
+                    if(elements[i].getAttribute('data-type')=='releasedate'){releaseDate = elements[i].value;}
+                    if(elements[i].getAttribute('data-type')=='maxmarks'){maxMarks = elements[i].value;}
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: '/updatesubcoursework',
+
+                    data:{
+                        subcourseworkId: subcourseworkId,
+                        name: name,
+                        displayPercentage: displayPercentage,
+                        displayMarks: displayMarks,
+                        weightingCourse: weightingCourse,
+                        maxMarks: maxMarks,
+                        releaseDate: releaseDate
+                    },
+                    success:function(data){
+                        successOperation(thisElement);
+                    },
+                    error:function(data){
+                        failOperation(thisElement);
+                    }
+                });
+
+
+            });
 
             $('.saveCourseworkButton').click(function(){
                 var courseworkId = $(this).data('courseworkid');
