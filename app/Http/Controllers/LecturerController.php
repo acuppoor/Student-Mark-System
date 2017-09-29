@@ -418,8 +418,10 @@ class LecturerController extends Controller
         return $courses;
     }
 
-    private function isSimilar($wordOne, $wordTwo){
-        return true;
+    private function isSimilar($haystack, $needle){
+//        echo(strrpos(strtolower($haystack), strtolower($needle));die();
+        $pos = strpos(strtolower($haystack), strtolower($needle));
+        return ($pos===0||$pos>=1) || strtolower($haystack)==strtolower($needle);
     }
 
     public function updateCourseInfo(Request $request, $courseId){
@@ -494,7 +496,11 @@ class LecturerController extends Controller
         $email = $request->input('emailAddress');
         $studentNumber = $request->input('studentNumber');
         $courseId = $request->input('courseId');
+        $offset = $request->input('offset')-1;
+        $limit = $request->input('limit') != 'Max'? 30:'Max';
+
         $users = [];
+
         if($studentNumber || $email){
             if($studentNumber && $email){
                 $usrs = User::where('employee_id', 'like', '%'.$studentNumber.'%')
@@ -531,8 +537,13 @@ class LecturerController extends Controller
                 $users[] = $usr->user;
             }
         }
-//        print_r($users); die();
+
         $users = $users?array_unique($users):$users;
+
+        if($limit!='Max'){
+            $users = array_slice($users, $offset, $limit);
+        }
+
         $results=[];
         if($users){
             foreach ($users as $user){
@@ -812,6 +823,7 @@ class LecturerController extends Controller
             $marks = [];
             foreach ($sections as $section) {
                 $mark = [];
+                $mark['id'] = $section->id;
                 $mark['numerator'] = SectionUserMarkMap::where('user_id', $user->id)
                     ->where('section_id', $section->id)->first()->marks;
                 $mark['denominator'] = $section->max_marks;
@@ -829,5 +841,27 @@ class LecturerController extends Controller
         }
         $results['marks'] = $records;
         return Response::json($results);
+    }
+
+    public function updateSectionMarks(Request $request){
+        $data = $request->input('data');
+
+        foreach($data as $record) {
+            $studentNumber = $record['student_number'];
+            $sectionId = $record['section_id'];
+            $marks = $record['marks'];
+
+            $userId = User::where('student_number', $studentNumber)->first()->id;
+
+            $sectionMap = SectionUserMarkMap::where('section_id', $sectionId)
+                                            ->where('user_id', $userId)->first();
+            if(!$sectionMap){
+                $sectionMap = new SectionUserMarkMap();
+                $sectionMap->user_id = $userId;
+                $sectionMap->section_id = $sectionId;
+            }
+            $sectionMap->marks = $marks;
+            $sectionMap->save();
+        }
     }
 }

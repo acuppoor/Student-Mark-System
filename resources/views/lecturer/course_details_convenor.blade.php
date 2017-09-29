@@ -310,10 +310,6 @@
                                     <div class="col-md-3"></div>
                                     <div class="col-md-6" >
                                         <div class="x_panel" style="height: auto;">
-                                            {{--<div class="x_title">
-                                                <h2>Add Participants</h2>
-                                                <div class="clearfix"></div>
-                                            </div>--}}
                                             <div class="x_content" style="display: block;">
                                                 <form method="" action="">
                                                     {{csrf_field()}}
@@ -517,14 +513,32 @@
                                             </div>
                                             <div class="x_content collapse" style="display: block;">
                                                 <div class="row">
-                                                    <div class="col-md-4">
+                                                    <div class="col-md-3">
+                                                        <label for="searchStudentNumber">Student/Staff #:</label>
                                                         <input type="text" class="form-control" id="participantsStudentNumber" placeholder="student/staff #">
                                                     </div>
-                                                    <div class="col-md-5">
+                                                    <div class="col-md-3">
+                                                        <label for="searchStudentNumber">Email Address:</label>
                                                         <input type="text" class="form-control" id="participantsEmail" placeholder="Email">
                                                     </div>
                                                     <div class="col-md-2">
-                                                        <button class="btn btn-dark btn-rounded spinnerNeeded" type="button" id="searchParticipantsButton">
+                                                        <label for="searchStudentNumber">Results Per Page:</label>
+                                                        <select id="participantsPageLimit" class="form-control">
+                                                            <option>30</option>
+                                                            <option>Max</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label for="searchStudentNumber">Page #:</label>
+                                                        <select id="participantsPageOffset" class="form-control">
+                                                            @for($i = 1; $i < ($course['students_count']/30)+2; $i++)
+                                                                <option {{$i == 1?'selected':''}}>{{$i}}</option>
+                                                            @endfor
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-2">
+                                                        <label> </label><br>
+                                                        <button class="btn btn-dark btn-round spinnerNeeded" type="button" id="searchParticipantsButton">
                                                             <i class="spinnerPlaceholder"></i>
                                                             <i class="fa fa-search"></i>
                                                             Search
@@ -1289,6 +1303,7 @@
                                                 <br>
                                                 <div class="div" id="subcourseworkSearchResultsBody" hidden>
                                                     <h4>Results:</h4>
+                                                    <button type="button" class="btn btn-round btn-dark updateSectionMarksButton spinnerNeeded"><i class="spinnerPlaceholder"></i> Update</button>
                                                     <div class="row">
                                                         <div class="col-md-12">
                                                             <table id="subcourseworkSearchResultsTable" class="table table-striped jambo_table bulk_action">
@@ -1303,6 +1318,7 @@
                                                             </table>
                                                         </div>
                                                     </div>
+                                                    <button type="button" class="btn btn-round btn-dark updateSectionMarksButton spinnerNeeded"><i class="spinnerPlaceholder"></i> Update</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -1384,6 +1400,36 @@
         });
         $(document).ready(function(){
 
+            $('.updateSectionMarksButton').click(function(){
+                var inputBoxes = $('.sectionMarkInput');
+                var sections = [];
+                var thisElement = $(this);
+
+                for(var i = 0; i < inputBoxes.length; i++){
+                    var section = {
+                        section_id: inputBoxes[i].getAttribute('data-sectionid'),
+                        student_number: inputBoxes[i].getAttribute('data-studentnumber'),
+                        marks: inputBoxes[i].value
+                    };
+                    sections[i] = section;
+                }
+                console.log(sections);
+                $.ajax({
+                    type: 'POST',
+                    url: '/updatesectionmarks',
+
+                    data:{
+                        data:sections
+                    },
+                    success:function(data){
+                        successOperation(thisElement);
+                    },
+                    error:function(data){
+                        failOperation(thisElement);
+                    }
+                });
+            });
+
             $('#searchSubcourseworkMarkButton').click(function(){
                 var courseworkId = $('#subcourseworkCourseworkDropdown').val();
                 var subcourseworkId = $('#subcourseworkSubcourseworkDropdown').val();
@@ -1403,7 +1449,6 @@
                         offset: offset
                     },
                     success:function(data){
-                        console.log(data);
                         $('#subcourseworkSearchResultsTable').parent().parent().parent().show();
                         var dataString =    '<table id="subcourseworkSearchResultsTable" class="table table-striped jambo_table bulk_action">'+
                             '<thead>'+
@@ -1424,7 +1469,7 @@
                             dataString +=  '<td>'+record.student_number+'</td>';
                             dataString +=  '<td>'+record.employee_id+'</td>';
                             for(var j = 0; j < record.sections.length; j++){
-                                dataString +=  '<td>'+record.sections[j].numerator + ' / ' + record.sections[j].denominator +'</td>';
+                                dataString +=  '<td><input type="number" min="0" max="'+record.sections[j].denominator+'" data-studentnumber="'+record.student_number+'" data-sectionid="'+record.sections[j].id+'" style="width:50px"class="sectionMarkInput" value="'+record.sections[j].numerator + '"> / ' + record.sections[j].denominator +'</td>';
                             }
                             dataString +=  '<td>'+record.total_num + ' / ' + record.total_den +'</td>';
                             dataString +=  '<td>'+record.percentage +'</td>';
@@ -2080,6 +2125,8 @@
             $('#searchParticipantsButton').click(function(){
                 var studentNumber = $('#participantsStudentNumber').val();
                 var emailAddress = $('#participantsEmail').val();
+                var limit = $('#participantsPageLimit').val();
+                var offset = $('#participantsPageOffset').val();
                 var courseId = $('#courseId').val();
                 var token = $('#_token').val();
                 var thisElement = $(this);
@@ -2089,6 +2136,8 @@
                     url: '/participantslist',
                     data: {
                         _token: token,
+                        limit: limit,
+                        offset: offset,
                         studentNumber: studentNumber,
                         emailAddress: emailAddress,
                         courseId: courseId
