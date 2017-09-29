@@ -42,6 +42,11 @@ Route::post('/getstudentsmarks', 'PagesController@getStudentsMarks');
 Route::post('/getstudentscourseworkmarks', 'PagesController@getStudentsCourseworkMarks');
 Route::post('/getstudentssubcourseworkmarks', 'PagesController@getStudentsSubcourseworkMarks');
 Route::post('/updatesectionmarks', 'PagesController@updateSectionMarks');
+Route::post('/approveusers', 'PagesController@approveUsers');
+Route::post('/convenorsaccess', 'PagesController@convenorsAccess');
+Route::post('/lecturersaccess', 'PagesController@lecturersAccess');
+Route::post('/tasaccess', 'PagesController@tasAccess');
+Route::post('/updatecoursework', 'PagesController@updateCoursework');
 
 Route::get('/lecturingcourses', 'PagesController@lecturerCourses')->name("lecturer_courses");
 Route::post('/lecturingcourses/filter', 'PagesController@lecturerCourses');

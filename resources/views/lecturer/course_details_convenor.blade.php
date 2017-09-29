@@ -42,7 +42,7 @@
                         <input type="text" id="subminimumName" class="form-control" name="subminimumName" required="">
                         <br/>
                         <label for="subminimumThreshold">Threshold*:</label>
-                        <input type="integer" id="subminimumThreshold" class="form-control" name="subminimumThreshold" required="">
+                        <input type="number" min="0" max="100" id="subminimumThreshold" class="form-control" name="subminimumThreshold" required="">
                         <br/>
                         <label for="subminimumType">Type*:</label>
                         <select id="subminimumType" class="form-control">
@@ -104,11 +104,11 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <label for="courseEndDate">Weighting in Class Record*:</label>
-                                    <input type="integer" id="courseworkClassWeighting" class="form-control" name="courseworkClassWeighting" required="">
+                                    <input type="number" min="-1" max="100" id="courseworkClassWeighting" class="form-control" name="courseworkClassWeighting" required="">
                                 </div>
                                 <div class="col-md-4">
                                     <label for="courseEndDate">Weighting in Year Record*:</label>
-                                    <input type="integer" id="courseworkYearWeighting" class="form-control" name="courseworkYearWeighting" required="">
+                                    <input type="number" min="-1" max="100" id="courseworkYearWeighting" class="form-control" name="courseworkYearWeighting" required="">
                                 </div>
                                 <div class="col-md-4">
                                     <label for="courseworkReleaseDate">Release Date*:</label>
@@ -156,11 +156,11 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <label for="subcourseworkMaxMarks">Max Marks*:</label>
-                                <input type="integer" id="subcourseworkMaxMarks" class="form-control" name="subcourseworkMaxMarks" required="">
+                                <input type="number" min="0" max="100" id="subcourseworkMaxMarks" class="form-control" name="subcourseworkMaxMarks" required="">
                             </div>
                             <div class="col-md-6">
                                 <label for="subcourseworkWeighting">Weighting in Coursework:</label>
-                                <input type="integer" id="subcourseworkWeighting" class="form-control" name="subcourseworkWeighting" required="">
+                                <input type="number" min="-1" max="100" id="subcourseworkWeighting" class="form-control" name="subcourseworkWeighting" required="">
                             </div>
                         </div>
                         <br/>
@@ -205,7 +205,7 @@
                         <input type="text" id="sectionName" class="form-control" name="sectionName" required="">
                         <br>
                         <label for="sectionMaxMarks">Max Marks*:</label>
-                        <input type="text" id="sectionMaxMarks" class="form-control" name="sectionMaxMarks" required="">
+                        <input type="number" min="0" max="100" id="sectionMaxMarks" class="form-control" name="sectionMaxMarks" required="">
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-dark btn-round spinnerNeeded" id="createSectionButtonModal" type="button">
@@ -245,7 +245,7 @@
                         </select>
                         <br>
                         <label for="subminimumRowWeighting">Weighting:</label>
-                        <input type="integer" id="subminimumRowWeighting" class="form-control">
+                        <input type="number" min="0" max="100" id="subminimumRowWeighting" class="form-control">
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-dark btn-round spinnerNeeded" id="createSubminimumButtonModal" type="button">
@@ -614,6 +614,15 @@
                                                                     <i class="glyphicon glyphicon-refresh" id="refreshPlaceholder"></i>
                                                                     Refresh
                                                                 </button>
+                                                                <button class="btn btn-dark btn-round convenorsAccessButton spinnerNeeded" type="button" data-access="1">
+                                                                    <i class="spinnerPlaceholder"></i>
+                                                                    Grant Access To Selected</button>
+                                                                <button class="btn btn-dark btn-round convenorsAccessButton spinnerNeeded" type="button" data-access="0">
+                                                                    <i class="spinnerPlaceholder"></i>
+                                                                    Deny Access To Selected</button>
+                                                                <button class="btn btn-dark btn-round spinnerNeeded" type="button" id="approveConvenorsButton">
+                                                                    <i class="spinnerPlaceholder"></i>
+                                                                    Approve Selected</button>
                                                                 <table class="table table-striped jambo_table bulk_action">
                                                                     <thead>
                                                                     <tr class="headings">
@@ -634,8 +643,6 @@
 
                                                                     </tbody>
                                                                 </table>
-                                                                <button class="btn btn-dark btn-round">Grant Access To Selected</button>
-                                                                <button class="btn btn-dark btn-round">Deny Access To Selected</button>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -650,8 +657,15 @@
                                                                     <i class="glyphicon glyphicon-refresh" id="refreshPlaceholder"></i>
                                                                     Refresh
                                                                 </button>
-                                                                <button type="button" id="" class="btn btn-dark btn-round spinnerNeeded"><i class="spinnerPlaceholder"></i> Grant Access To Selected</button>
-                                                                <button type="button" class="btn btn-dark btn-round spinnerNeeded"><i class="spinnerPlaceholder"></i> Deny Access To Selected</button>
+                                                                <button class="btn btn-dark btn-round lecturersAccessButton spinnerNeeded" type="button" data-access="1">
+                                                                    <i class="spinnerPlaceholder"></i>
+                                                                    Grant Access To Selected</button>
+                                                                <button class="btn btn-dark btn-round lecturersAccessButton spinnerNeeded" type="button" data-access="0">
+                                                                    <i class="spinnerPlaceholder"></i>
+                                                                    Deny Access To Selected</button>
+                                                                <button class="btn btn-dark btn-round spinnerNeeded" type="button" id="approveLecturersButton">
+                                                                <i class="spinnerPlaceholder"></i>
+                                                                Approve Selected</button>
                                                                 <table class="table table-striped jambo_table bulk_action">
                                                                     <thead>
                                                                     <tr class="headings">
@@ -686,13 +700,14 @@
                                                                     <i class="glyphicon glyphicon-refresh" id="refreshPlaceholder"></i>
                                                                     Refresh
                                                                 </button>
-                                                                <button type="button" id="" class="btn btn-dark btn-round spinnerNeeded"><i class="spinnerPlaceholder"></i> Grant Access To Selected</button>
-                                                                <button type="button" class="btn btn-dark btn-round spinnerNeeded"><i class="spinnerPlaceholder"></i> Deny Access To Selected</button>
+                                                                <button class="btn btn-dark btn-round spinnerNeeded" type="button" id="approveStudentsButton">
+                                                                <i class="spinnerPlaceholder"></i>
+                                                                Approve Selected</button>
                                                                 <table class="table table-striped jambo_table bulk_action">
                                                                     <thead>
                                                                     <tr class="headings">
                                                                         <th>
-                                                                            <input type="checkbox" class="checkbox" id="checkAllLecturersList">
+                                                                            <input type="checkbox" class="checkbox" id="checkAllStudentsList">
                                                                         </th>
                                                                         <th class="column-title">First Name</th>
                                                                         <th class="column-title">Last Name</th>
@@ -722,8 +737,15 @@
                                                                     <i class="glyphicon glyphicon-refresh" id="refreshPlaceholder"></i>
                                                                     Refresh
                                                                 </button>
-                                                                <button type="button" id="" class="btn btn-dark btn-round spinnerNeeded"><i class="spinnerPlaceholder"></i> Grant Access To Selected</button>
-                                                                <button type="button" class="btn btn-dark btn-round spinnerNeeded"><i class="spinnerPlaceholder"></i> Deny Access To Selected</button>
+                                                                <button class="btn btn-dark btn-round TAsAccessButton spinnerNeeded" type="button" data-access="1">
+                                                                    <i class="spinnerPlaceholder"></i>
+                                                                    Grant Access To Selected</button>
+                                                                <button class="btn btn-dark btn-round TAsAccessButton spinnerNeeded" type="button" data-access="0">
+                                                                    <i class="spinnerPlaceholder"></i>
+                                                                    Deny Access To Selected</button>
+                                                                <button class="btn btn-dark btn-round spinnerNeeded" type="button" id="approveTAsButton">
+                                                                    <i class="spinnerPlaceholder"></i>
+                                                                    Approve Selected</button>
                                                                 <table class="table table-striped jambo_table bulk_action">
                                                                     <thead>
                                                                     <tr class="headings">
@@ -784,7 +806,7 @@
                                                                                         {{$count.'. '}}
                                                                                     </td>
                                                                                     <td>
-                                                                                        <input type="text" class="form-control" value="{{$coursework['name']}}">
+                                                                                        <input type="text" class="form-control {{$coursework['name']}}" data-type="name" value="{{$coursework['name']}}">
                                                                                     </td>
                                                                                 </tr>
                                                                             </table>
@@ -793,7 +815,7 @@
                                                                 </div>
                                                                 <div class="col-md-5" style="text-align: right">
                                                                     <button class="btn btn-dark btn-round createSubcourseworkButton" data-toggle="modal" type="button" data-target="#subcourseworkModal" data-courseworkid="{{$coursework['id']}}"><i class="fa fa-plus"></i> New Subcoursework</button>
-                                                                    <button class="btn btn-dark btn-round spinnerNeeded"><i class="spinnerPlaceholder"></i> <i class="fa fa-save"></i> Save</button>
+                                                                    <button class="btn btn-dark btn-round spinnerNeeded saveCourseworkButton" data-courseworkname='{{$coursework['name']}}' data-courseworkid="{{$coursework['id']}}" type="button"><i class="spinnerPlaceholder"></i> <i class="fa fa-save"></i> Save</button>
                                                                     <button class="btn btn-dark btn-round deleteCourseworkButton spinnerNeeded" data-courseworkid="{{$coursework['id']}}" type="button">
                                                                         <i class="spinnerPlaceholder"></i>
                                                                         <i class="fa fa-trash"></i> Delete
@@ -808,7 +830,7 @@
                                                                         <tr class="even pointer">
                                                                             <td>Type:</td>
                                                                             <td>
-                                                                                <select name="" id="" class="form-control">
+                                                                                <select name="" id="" data-type="type" class="form-control {{$coursework['name']}}">
                                                                                     @foreach(\App\CourseworkType::all() as $courseworkType)
                                                                                         <option {{$courseworkType->name==$coursework['type']?'selected':''}}>{{$courseworkType->name}}</option>
                                                                                     @endforeach
@@ -816,14 +838,14 @@
                                                                             </td>
                                                                             <td></td><td></td><td></td>
                                                                             <td>Release Date:</td>
-                                                                            <td><input type="date" class="calendar-date form-control" value="{{$coursework['display_to_students']}}"></td>
+                                                                            <td><input type="date" data-type="releasedate" class="calendar-date form-control {{$coursework['name']}}" value="{{$coursework['display_to_students']}}"></td>
                                                                         </tr>
                                                                         <tr class="even pointer">
                                                                             <td>Weighting in Class Record:</td>
-                                                                            <td><input type="integer" class="form-control" value="{{$coursework['weighting_in_classrecord']}}"></td>
+                                                                            <td><input type="number" min="-1" max="100" data-type="weightingclass" class="form-control {{$coursework['name']}}" value="{{$coursework['weighting_in_classrecord']}}"></td>
                                                                             <td></td><td></td><td></td>
                                                                             <td>Weighting in Year Mark:</td>
-                                                                            <td><input type="integer" class="form-control" value="{{$coursework['weighting_in_yearmark']}}"></td>
+                                                                            <td><input type="number" min="-1" max="100" data-type="weightingyear" class="form-control {{$coursework['name']}}" value="{{$coursework['weighting_in_yearmark']}}"></td>
                                                                         </tr>
                                                                         </tbody>
                                                                     </table>
@@ -873,11 +895,11 @@
                                                                                                             </tr>
                                                                                                             <tr class="even pointer">
                                                                                                                 <td>Max Marks:</td>
-                                                                                                                <td><input type="integer" class="form-control" style="width:125px" value="{{$subcoursework['max_marks']}}"></td>
+                                                                                                                <td><input type="number" min="0" max="100" class="form-control" style="width:125px" value="{{$subcoursework['max_marks']}}"></td>
                                                                                                             </tr>
                                                                                                             <tr class="even pointer">
                                                                                                                 <td>Weighting in Coursework:</td>
-                                                                                                                <td><input type="integer" class="form-control"  style="width:125px" value="{{$subcoursework['weighting']}}"></td>
+                                                                                                                <td><input type="number" min="-1" max="100" class="form-control"  style="width:125px" value="{{$subcoursework['weighting']}}"></td>
                                                                                                             </tr>
                                                                                                             </tbody>
                                                                                                         </table>
@@ -900,7 +922,7 @@
                                                                                                                     <td><input type="text" value="{{$section['name']}}" class="form-control" style="width:125px" ></td>
                                                                                                                     <td></td>
                                                                                                                     <td>Max Marks:</td>
-                                                                                                                    <td><input type="integer" value="{{$section['max_marks']}}" class="form-control"  style="width:50px" ></td>
+                                                                                                                    <td><input type="number" min="-1" max="100" value="{{$section['max_marks']}}" class="form-control"  style="width:75px" ></td>
                                                                                                                     <td><button class="btn btn-dark btn-round deleteSection spinnerNeeded" data-sectionid="{{$section['id']}}"><i class="spinnerPlaceholder"></i> <i class="fa fa-trash"></i></button></td>
                                                                                                                 </tr>
                                                                                                                 </tbody>
@@ -986,7 +1008,7 @@
                                                                             </td>
                                                                             <td></td><td></td><td></td>
                                                                             <td>Threshold:</td>
-                                                                            <td><input type="integer" class="form-control" value="{{$subminimum['threshold']}}"></td>
+                                                                            <td><input type="number" min="-1" max="100" class="form-control" value="{{$subminimum['threshold']}}"></td>
                                                                         </tr>
                                                                         </tbody>
                                                                     </table>
@@ -1025,7 +1047,7 @@
                                                                                             </select>
                                                                                         </td>
                                                                                         <td>
-                                                                                            <input type="integer" class="form-control" value="{{$row['weighting']}}">
+                                                                                            <input type="number" min="-1" max="100" class="form-control" value="{{$row['weighting']}}">
                                                                                         </td>
                                                                                         <td>
                                                                                             <button data-rowid="{{$row['id']}}" class="btn btn-dark btn-round spinnerNeeded saveRowButton" type="button"><i class="spinnerPlaceholder"></i> <i class="fa fa-save"></i></button>
@@ -1318,7 +1340,6 @@
                                                             </table>
                                                         </div>
                                                     </div>
-                                                    <button type="button" class="btn btn-round btn-dark updateSectionMarksButton spinnerNeeded"><i class="spinnerPlaceholder"></i> Update</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -1399,6 +1420,319 @@
             }
         });
         $(document).ready(function(){
+
+            $('.saveCourseworkButton').click(function(){
+                var courseworkId = $(this).data('courseworkid');
+                var courseworkName = $(this).data('courseworkname');
+                var thisElement = $(this);
+
+                var name = "";
+                var type = '';
+                var weightingYear = '';
+                var weightingClass = '';
+                var releaseDate = '';
+
+                var elements = $('.'+courseworkName);
+                for(var i = 0; i < elements.length; i++){
+                    if(elements[i].getAttribute('data-type')=='name'){name = elements[i].value;}
+                    if(elements[i].getAttribute('data-type')=='type'){type = elements[i].value;}
+                    if(elements[i].getAttribute('data-type')=='weightingyear'){weightingYear = elements[i].value;}
+                    if(elements[i].getAttribute('data-type')=='weightingclass'){weightingClass = elements[i].value;}
+                    if(elements[i].getAttribute('data-type')=='releasedate'){releaseDate = elements[i].value;}
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: '/updatecoursework',
+
+                    data:{
+                        courseworkId: courseworkId,
+                        name: name,
+                        type: type,
+                        weightingYear: weightingYear,
+                        weightingClass: weightingClass,
+                        releaseDate: releaseDate
+                    },
+                    success:function(data){
+                        successOperation(thisElement);
+                    },
+                    error:function(data){
+                        failOperation(thisElement);
+                    }
+                });
+
+            });
+
+            $('.approveTAsButton').click(function(){
+                var userIds = [];
+                var count = 0;
+                var thisElement = $(this);
+
+                var checkboxes = $('.TAsListCheckbox');
+                for(var i = 0; i < checkboxes.length; i++){
+                    if(checkboxes[i].checked){
+                        userIds[count++] = checkboxes[i].getAttribute('data-userid');
+                    }
+                }
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/approveusers',
+
+                    data:{
+                        userIds:userIds
+                    },
+                    success:function(data){
+                        successOperation(thisElement);
+                    },
+                    error:function(data){
+                        failOperation(thisElement);
+                    }
+                });
+            });
+
+            $('#approveStudentsButton').click(function(){
+                var userIds = [];
+                var count = 0;
+                var thisElement = $(this);
+
+                var checkboxes = $('.studentsListCheckbox');
+                for(var i = 0; i < checkboxes.length; i++){
+                    if(checkboxes[i].checked){
+                        userIds[count++] = checkboxes[i].getAttribute('data-userid');
+                    }
+                }
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/approveusers',
+
+                    data:{
+                        userIds:userIds
+                    },
+                    success:function(data){
+                        successOperation(thisElement);
+                    },
+                    error:function(data){
+                        failOperation(thisElement);
+                    }
+                });
+            });
+
+            $('#approveLecturersButton').click(function(){
+                var userIds = [];
+                var count = 0;
+                var thisElement = $(this);
+
+                var checkboxes = $('.lecturersListCheckbox');
+                for(var i = 0; i < checkboxes.length; i++){
+                    if(checkboxes[i].checked){
+                        userIds[count++] = checkboxes[i].getAttribute('data-userid');
+                    }
+                }
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/approveusers',
+
+                    data:{
+                        userIds:userIds
+                    },
+                    success:function(data){
+                        successOperation(thisElement);
+                    },
+                    error:function(data){
+                        failOperation(thisElement);
+                    }
+                });
+            });
+
+            $('#approveConvenorsButton').click(function(){
+                var userIds = [];
+                var count = 0;
+                var thisElement = $(this);
+
+                var checkboxes = $('.convenorsListCheckbox');
+                for(var i = 0; i < checkboxes.length; i++){
+                    if(checkboxes[i].checked){
+                        userIds[count++] = checkboxes[i].getAttribute('data-userid');
+                    }
+                }
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/approveusers',
+
+                    data:{
+                        userIds:userIds
+                    },
+                    success:function(data){
+                        successOperation(thisElement);
+                    },
+                    error:function(data){
+                        failOperation(thisElement);
+                    }
+                });
+            });
+
+            $('.TAsAccessButton').click(function(){
+                var userIds = [];
+                var count = 0;
+                var access = $(this).data('access');
+                var courseId = $('#courseId').val();
+                var thisElement = $(this);
+
+                var checkboxes = $('.TAsListCheckbox');
+                for(var i = 0; i < checkboxes.length; i++){
+                    if(checkboxes[i].checked){
+                        userIds[count++] = checkboxes[i].getAttribute('data-userid');
+                    }
+                }
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/tasaccess',
+
+                    data:{
+                        userIds:userIds,
+                        access: access,
+                        courseId: courseId
+                    },
+                    success:function(data){
+                        successOperation(thisElement);
+                    },
+                    error:function(data){
+                        failOperation(thisElement);
+                    }
+                });
+            });
+
+            $('#checkAllTAsList').click(function(){
+                var checkboxes = $('.TAsListCheckbox');
+                for(var i = 0; i < checkboxes.length; i++){
+                    checkboxes[i].checked = $(this).is(':checked');
+                }
+            });
+
+            $('#checkAllStudentsList').click(function(){
+                var checkboxes = $('.studentsListCheckbox');
+                for(var i = 0; i < checkboxes.length; i++){
+                    checkboxes[i].checked = $(this).is(':checked');
+                }
+            });
+
+            $('.lecturersAccessButton').click(function(){
+                var userIds = [];
+                var count = 0;
+                var access = $(this).data('access');
+                var courseId = $('#courseId').val();
+                var thisElement = $(this);
+
+                var checkboxes = $('.lecturersListCheckbox');
+                for(var i = 0; i < checkboxes.length; i++){
+                    if(checkboxes[i].checked){
+                        userIds[count++] = checkboxes[i].getAttribute('data-userid');
+                    }
+                }
+                console.log(userIds);
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/lecturersaccess',
+
+                    data:{
+                        userIds:userIds,
+                        access: access,
+                        courseId: courseId
+                    },
+                    success:function(data){
+                        successOperation(thisElement);
+                    },
+                    error:function(data){
+                        failOperation(thisElement);
+                    }
+                });
+            });
+
+            $('#checkAllLecturersList').click(function(){
+                var checkboxes = $('.lecturersListCheckbox');
+                for(var i = 0; i < checkboxes.length; i++){
+                    checkboxes[i].checked = $(this).is(':checked');
+                }
+            });
+
+            $('.convenorsAccessButton').click(function(){
+                var userIds = [];
+                var count = 0;
+                var access = $(this).data('access');
+                var courseId = $('#courseId').val();
+                var thisElement = $(this);
+
+                var checkboxes = $('.convenorsListCheckbox');
+                for(var i = 0; i < checkboxes.length; i++){
+                    if(checkboxes[i].checked){
+                        userIds[count++] = checkboxes[i].getAttribute('data-userid');
+                    }
+                }
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/convenorsaccess',
+
+                    data:{
+                        userIds:userIds,
+                        access: access,
+                        courseId: courseId
+                    },
+                    success:function(data){
+                        successOperation(thisElement);
+                    },
+                    error:function(data){
+                        failOperation(thisElement);
+                    }
+                });
+            });
+
+            $('#checkAllConvenorsList').click(function(){
+                var checkboxes = $('.convenorsListCheckbox');
+                for(var i = 0; i < checkboxes.length; i++){
+                    checkboxes[i].checked = $(this).is(':checked');
+                }
+            });
+
+            $('#approveParticipantsButton').click(function(){
+                var userIds = [];
+                var count = 0;
+                var thisElement = $(this);
+
+                var checkboxes = $('.searchParticipantsResultsCheckbox');
+                for(var i = 0; i < checkboxes.length; i++){
+                    if(checkboxes[i].checked){
+                        userIds[count++] = checkboxes[i].getAttribute('data-userid');
+                    }
+                }
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/approveusers',
+
+                    data:{
+                        userIds:userIds
+                    },
+                    success:function(data){
+                        successOperation(thisElement);
+                    },
+                    error:function(data){
+                        failOperation(thisElement);
+                    }
+                });
+            });
+
+            $('#checkAllSearchParticipantsResults').click(function(){
+                var checkboxes = $('.searchParticipantsResultsCheckbox');
+                for(var i = 0; i < checkboxes.length; i++){
+                    checkboxes[i].checked = $(this).is(':checked');
+                }
+            });
 
             $('.updateSectionMarksButton').click(function(){
                 var inputBoxes = $('.sectionMarkInput');
@@ -1764,7 +2098,7 @@
                             var element = data[i];
                             dataString += '<tr class="even pointer">' +
                                 '<td class="a-center ">' +
-                                '<input type="checkbox" class="lecturersListCheckbox" data-userid='+element.id+'>' +
+                                '<input type="checkbox" class="lecturersListCheckbox" data-userid="'+element.id+'">' +
                                 '</td>' +
                                 '<td class=" ">' + element.first_name + '</td>' +
                                 '<td class=" ">' + element.last_name + '</td>' +
@@ -1796,6 +2130,7 @@
             $('#refreshConvenorsList').click(function(){
                 var courseId = $('#courseId').val();
                 var thisElement = $(this);
+                $('#checkAllConvenorsList').attr('checked', false);
 
                 $.ajax({
                    type: 'POST',

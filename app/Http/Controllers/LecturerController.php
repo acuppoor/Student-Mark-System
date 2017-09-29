@@ -22,7 +22,6 @@ use Illuminate\Support\Facades\Auth;
 
 class LecturerController extends Controller
 {
-
     public function getCourseDetails($courseId){
         return $this->getCourseInfo($courseId);
     }
@@ -287,8 +286,9 @@ class LecturerController extends Controller
                             $subcourseworkD = 0.0;
                             foreach ($subcoursework->sections as $section) {
                                 $subcourseworkD += $section->max_marks;
-                                $subcourseworkN += SectionUserMarkMap::where('user_id', $student->id)
-                                                    ->where('section_id', $section->id)->first()->marks;
+                                $numerator = SectionUserMarkMap::where('user_id', $student->id)
+                                                    ->where('section_id', $section->id)->first();
+                                $subcourseworkN = $numerator? $numerator->marks:0;
                             }
                             $subcourseworkFinalMark = $subcourseworkD!=0?($subcourseworkN*$subcourseworkWeighting)/$subcourseworkD:0;
                             $courseworkTotalMark += $subcourseworkFinalMark;
@@ -863,5 +863,78 @@ class LecturerController extends Controller
             $sectionMap->marks = $marks;
             $sectionMap->save();
         }
+    }
+
+    public function approveUsers(Request $request){
+        $userIds = $request->input('userIds');
+//        User::where('id', 'IN', $userIds)->update(['approved'=>0]);
+        foreach ($userIds as $userId) {
+            $user = User::where('id', $userId)->first();
+            $user->approved = 1;
+            $user->save();
+        }
+    }
+
+    public function convenorsAccess(Request $request){
+        $userIds = $request->input('userIds');
+        $status = $request->input('access');
+        $courseId = $request->input('courseId');
+        foreach ($userIds as $userId) {
+            $map = ConvenorCourseMap::where('id', $userId)->where('course_id', $courseId)->first();
+            if(!$map){
+                $map = new ConvenorCourseMap();
+                $map->user_id = $userId; $map->course_id = $courseId;
+            }
+            $map->status = $status;
+            $map->save();
+        }
+    }
+
+    public function lecturersAccess(Request $request){
+        $userIds = $request->input('userIds');
+        $status = $request->input('access');
+        $courseId = $request->input('courseId');
+        foreach ($userIds as $userId) {
+            $map = LecturerCourseMap::where('id', $userId)->where('course_id', $courseId)->first();
+            if(!$map){
+                $map = new LecturerCourseMap();
+                $map->user_id = $userId; $map->course_id = $courseId;
+            }
+            $map->status = $status;
+            $map->save();
+        }
+    }
+
+    public function tasAccess(Request $request){
+        $userIds = $request->input('userIds');
+        $status = $request->input('access');
+        $courseId = $request->input('courseId');
+        foreach ($userIds as $userId) {
+            $map = TACourseMap::where('id', $userId)->where('course_id', $courseId)->first();
+            if(!$map){
+                $map = new TACourseMap();
+                $map->user_id = $userId; $map->course_id = $courseId;
+            }
+            $map->status = $status;
+            $map->save();
+        }
+    }
+
+    public function updateCoursework(Request $request){
+        $courseworkId = $request->input('courseworkId');
+        $name = $request->input('name');
+        $type = $request->input('type');
+        $releaseDate = $request->input('releaseDate');
+        $weightingYear = $request->input('weightingYear');
+        $weightingClass = $request->input('weightingClass');
+
+        $coursework = Coursework::where('id', $courseworkId)->first();
+        $coursework->name = $name;
+        $coursework->coursework_type_id = CourseworkType::where('name', $type)->first()->id;
+        $coursework->display_to_students = $releaseDate;
+        $coursework->weighting_in_yearmark = $weightingYear;
+        $coursework->weighting_in_classrecord = $weightingClass;
+        $coursework->save();
+
     }
 }
