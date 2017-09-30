@@ -448,15 +448,16 @@
                                                         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree" aria-expanded="false" style="height: 0px;">
                                                             <div class="panel-body">
                                                                 <div class="row">
-                                                                    <form action="">
+                                                                    <form action="/updatestudentslist" method="POST" enctype="multipart/form-data" id="studentListUpdateForm">
                                                                         {{csrf_field()}}
+                                                                        <input type="hidden" name="courseId" value="{{$course['id']}}">
                                                                         <div class="col-md-8">
                                                                             <label for="studentFile">File:</label>
-                                                                            <input id="studentFile" type="file" class="form-control">
+                                                                            <input type="file" name="file" id="studentsFile">
                                                                         </div>
                                                                         <div class="col-md-3">
                                                                             <label>&nbsp;</label><br>
-                                                                            <button class="btn btn-dark btn-round spinnerNeeded" id="addStudentFileButton" type="button">
+                                                                            <button class="btn btn-dark btn-round spinnerNeeded" id="addStudentFileButton" type="submit">
                                                                                 <i class="spinnerPlaceholder"></i>
                                                                                 <i class="fa fa-plus"></i>
                                                                                 Add
@@ -474,7 +475,7 @@
                                                         </a>
                                                         <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour" aria-expanded="false" style="height: 0px;">
                                                             <div class="panel-body">
-                                                                <form id='studentFileUploadForm' action="">
+                                                                <form action="">
                                                                     <div class="col-md-6">
                                                                         <input id="taEmailAddress" type="email" class="form-control" placeholder="Email">
                                                                     </div>
@@ -551,7 +552,7 @@
                                                         <div class="x_title" id="searchParticipantsHeader" >
                                                             <h2>Results</h2>
                                                             <ul class="nav navbar-right panel_toolbox">
-                                                                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a>
+                                                                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                                                                 </li>
                                                             </ul>
                                                             <div class="clearfix"></div>
@@ -983,7 +984,7 @@
                                                                                         {{$count.'. '}}
                                                                                     </td>
                                                                                     <td>
-                                                                                        <input type="text" class="form-control" value="{{$subminimum['name']}}">
+                                                                                        <input type="text" class="form-control {{str_replace(' ', '', $subminimum['name'])}}" data-type="name" value="{{$subminimum['name']}}">
                                                                                     </td>
                                                                                 </tr>
                                                                             </table>
@@ -991,8 +992,8 @@
                                                                     </a>
                                                                 </div>
                                                                 <div class="col-md-4" style="text-align: right">
-                                                                    <button class="btn btn-dark btn-round" data-subminimumid="{{$subminimum['id']}}"data-target="#newRowModal" id="newRowButton" data-toggle="modal"><i class="fa fa-plus"></i> New Row</button>
-                                                                    <button class="btn btn-dark btn-round"><i class="fa fa-save"></i> Save</button>
+                                                                    <button class="btn btn-dark btn-round" data-subminimumid="{{$subminimum['id']}}" data-target="#newRowModal" id="newRowButton" data-toggle="modal"><i class="fa fa-plus"></i> New Row</button>
+                                                                    <button class="btn btn-dark btn-round saveSubminimumButton spinnerNeeded" data-subminimumid="{{$subminimum['id']}}" data-subminimumname="{{str_replace(' ', '', $subminimum['name'])}}" type="button"><i class="spinnerPlaceholder"></i> <i class="fa fa-save"></i> Save</button>
                                                                     <button class="btn btn-dark btn-round deleteSubminimumButton spinnerNeeded" type="button" data-subminimumid="{{$subminimum['id']}}"><i class="spinnerPlaceholder"></i> <i class="fa fa-trash"></i> Delete</button>
                                                                 </div>
                                                             </div>
@@ -1004,14 +1005,14 @@
                                                                         <tr class="even pointer">
                                                                             <td>Type:</td>
                                                                             <td>
-                                                                                <select name="" id="" class="form-control">
-                                                                                    <option {{$subminimum['for_dp'] == 1?'selected':''}}>DP</option>
-                                                                                    <option {{$subminimum['for_dp'] == 1?'':'selected'}}>Final Grade</option>
+                                                                                <select name="" id="" class="form-control {{str_replace(' ', '', $subminimum['name'])}}" data-type="type">
+                                                                                    <option value="1" {{$subminimum['for_dp'] == 1?'selected':''}}>DP</option>
+                                                                                    <option value="0" {{$subminimum['for_dp'] == 1?'':'selected'}}>Final Grade</option>
                                                                                 </select>
                                                                             </td>
                                                                             <td></td><td></td><td></td>
                                                                             <td>Threshold:</td>
-                                                                            <td><input type="number" min="-1" max="100" class="form-control" value="{{$subminimum['threshold']}}"></td>
+                                                                            <td><input type="number" min="-1" max="100" class="form-control {{str_replace(' ', '', $subminimum['name'])}}" data-type="threshold" value="{{$subminimum['threshold']}}"></td>
                                                                         </tr>
                                                                         </tbody>
                                                                     </table>
@@ -1033,27 +1034,27 @@
                                                                                 @foreach($subminimum['rows'] as $row)
                                                                                     <tr class="even pointer">
                                                                                         <td>
-                                                                                            <select class="form-control">
+                                                                                            <select data-type="coursework" class="form-control {{str_replace(' ', '', $row['coursework']).''.$row['id']}}">
                                                                                                 @foreach($course['courseworks'] as $coursework)
-                                                                                                    <option {{$row['coursework']==$coursework['name']?'selected':''}}>{{$coursework['name']}}</option>
+                                                                                                    <option value="{{$coursework['id']}}" {{$row['coursework']==$coursework['name']?'selected':''}}>{{$coursework['name']}}</option>
                                                                                                 @endforeach
                                                                                             </select>
                                                                                         </td>
                                                                                         <td>
-                                                                                            <select class="form-control">
+                                                                                            <select data-type="subcoursework" class="form-control {{str_replace(' ', '', $row['coursework']).''.$row['id']}}">
                                                                                                 <option></option>
                                                                                                 @foreach($course['courseworks'] as $coursework)
                                                                                                     @foreach($coursework['subcourseworks'] as $subcoursework)
-                                                                                                        <option {{$row['subcoursework']==$subcoursework['name']?'selected':''}}>{{$subcoursework['name']}}</option>
+                                                                                                        <option value="{{$subcoursework['id']}}" {{$row['subcoursework']==$subcoursework['name']?'selected':''}}>{{$subcoursework['name']}}</option>
                                                                                                     @endforeach
                                                                                                 @endforeach
                                                                                             </select>
                                                                                         </td>
                                                                                         <td>
-                                                                                            <input type="number" min="-1" max="100" class="form-control" value="{{$row['weighting']}}">
+                                                                                            <input type="number" min="-1" max="100" data-type="weighting" class="form-control {{str_replace(' ', '', $row['coursework']).''.$row['id']}}" value="{{$row['weighting']}}">
                                                                                         </td>
                                                                                         <td>
-                                                                                            <button data-rowid="{{$row['id']}}" class="btn btn-dark btn-round spinnerNeeded saveRowButton" type="button"><i class="spinnerPlaceholder"></i> <i class="fa fa-save"></i></button>
+                                                                                            <button data-rowid="{{$row['id']}}" class="btn btn-dark btn-round spinnerNeeded saveRowButton" data-rowname="{{str_replace(' ', '', $row['coursework']).''.$row['id']}}" type="button"><i class="spinnerPlaceholder"></i> <i class="fa fa-save"></i></button>
                                                                                             <button data-rowid="{{$row['id']}}" class="btn btn-dark btn-round spinnerNeeded deleteRowButton" type="button"><i class="spinnerPlaceholder"></i> <i class="fa fa-trash"></i></button>
                                                                                         </td>
                                                                                     </tr>
@@ -1090,35 +1091,41 @@
                                             </div>
                                             <div class="x_content collapse" style="display: none;">
                                                 <div class="row">
-                                                    <div class="col-md-2">
-                                                        <label for="studentFile">Coursework*:</label>
-                                                        <select name="" id="uploadCourseworkDropdown" class="form-control">
-                                                            <option></option>
-                                                            @foreach($course['courseworks'] as $coursework)
-                                                                <option>{{$coursework['name']}}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-md-2">
-                                                        <label for="studentFile">Subcoursework*:</label>
-                                                        <select name="" id="uploadSubcourseworkDropdown" class="form-control">
-                                                            <option></option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-md-2">
-                                                        <label for="studentFile">Section*:</label>
-                                                        <select name="" id="uploadSectionDropdown" class="form-control">
-                                                            <option></option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <label for="studentFile">Marks File:</label>
-                                                        <input id="studentFile" type="file" class="form-control-file">
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <label>&nbsp;</label><br>
-                                                        <button class="btn btn-dark btn-round">Upload</button>
-                                                    </div>
+                                                    <form action="/uploadsectionmarks" method="POST" enctype="multipart/form-data" id="studentListUpdateForm">
+                                                        {{csrf_field()}}
+                                                        <input type="hidden" name="courseId" value="{{$course['id']}}">
+                                                        <div class="col-md-2">
+                                                            <label for="studentFile">Coursework*:</label>
+                                                            <select name="uploadCoursework" id="uploadCourseworkDropdown" class="form-control">
+                                                                <option></option>
+                                                                @foreach($course['courseworks'] as $coursework)
+                                                                    <option value="{{$coursework['id']}}">{{$coursework['name']}}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label for="studentFile">Subcoursework*:</label>
+                                                            <select name="uploadSubcoursework" id="uploadSubcourseworkDropdown" class="form-control">
+                                                                <option></option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <label for="studentFile">Section*:</label>
+                                                            <select name="uploadSection" id="uploadSectionDropdown" class="form-control">
+                                                                <option></option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <label for="studentFile">Marks File:</label>
+                                                            <input name="marksFile" id="studentFile" type="file" class="form-control-file">
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <label>&nbsp;</label><br>
+                                                            <button class="btn btn-dark btn-round" type="submit">
+                                                                <i class="fa fa-upload"></i>
+                                                                Upload</button>
+                                                        </div>
+                                                    </form>
                                                 </div>
                                             </div>
                                         </div>
@@ -1161,9 +1168,14 @@
                                                         <label for="">&nbsp;</label><br>
                                                         <button class="btn btn-dark btn-round spinnerNeeded" type="button" id="searchMarkButton" >
                                                             <i class="spinnerPlaceholder"></i>
+                                                            <i class="fa fa-search"></i>
                                                             Search
                                                         </button>
-                                                        <button class="btn btn-dark btn-round">Export</button>
+                                                        <button class="btn btn-dark btn-round spinnerNeeded" type="button" id="exportMarkButton">
+                                                            <i class="spinnerPlaceholder"></i>
+                                                            <i class="fa fa-download"></i>
+                                                            Export
+                                                        </button>
                                                     </div>
                                                     <hr>
                                                 </div>
@@ -1423,6 +1435,100 @@
             }
         });
         $(document).ready(function(){
+/*
+            $('#addStudentFileButton').click(function(){
+                var thisElement = $(this);
+
+                var input = document.getElementById("studentsFile");
+
+               var file = input.files[0];
+
+               var formData = new FormData();
+               formData.append('file', file.size);
+               console.log(file);
+
+                $.ajax({
+                   type: 'POST',
+                   url: '/updatestudentslist',
+                   data: formData,
+                   processData: false,
+                   contentType: false,
+                   success: function(data){
+                       successOperation(thisElement);
+                   },
+                    error: function(data){
+                       failOperation(thisElement);
+                    }
+                });
+            });*/
+
+            $('.saveRowButton').click(function(){
+                var rowId = $(this).data('rowid');
+                var rowName = $(this).data('rowname');
+                var thisElement = $(this);
+
+                var coursework = "";
+                var subcoursework = '';
+                var weighting = '';
+
+                var elements = $('.'+ rowName);
+                for(var i = 0; i < elements.length; i++){
+                    if(elements[i].getAttribute('data-type')=='coursework'){coursework = elements[i].value;}
+                    if(elements[i].getAttribute('data-type')=='subcoursework'){subcoursework = elements[i].value;}
+                    if(elements[i].getAttribute('data-type')=='weighting'){weighting = elements[i].value;}
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: '/updatesubminimumrow',
+
+                    data:{
+                        rowId: rowId,
+                        coursework: coursework,
+                        subcoursework: subcoursework,
+                        weighting: weighting
+                    },
+                    success:function(data){
+                        successOperation(thisElement);
+                    },
+                    error:function(data){
+                        failOperation(thisElement);
+                    }
+                });
+            });
+
+            $('.saveSubminimumButton').click(function(){
+                var subminimumId = $(this).data('subminimumid');
+                var subminimumName = $(this).data('subminimumname');
+                var thisElement = $(this);
+
+                var type = "";
+                var name = '';
+                var threshold = '';
+
+                var elements = $('.'+subminimumName);
+                for(var i = 0; i < elements.length; i++){
+                    if(elements[i].getAttribute('data-type')=='type'){type = elements[i].value;}
+                    if(elements[i].getAttribute('data-type')=='threshold'){threshold = elements[i].value;}
+                    if(elements[i].getAttribute('data-type')=='name'){name = elements[i].value;}
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: '/updatesubminimum',
+
+                    data:{
+                        subminimumId: subminimumId,
+                        name: name,
+                        threshold: threshold,
+                        type: type
+                    },
+                    success:function(data){
+                        successOperation(thisElement);
+                    },
+                    error:function(data){
+                        failOperation(thisElement);
+                    }
+                });
+            });
 
             $('.saveSectionButton').click(function(){
                 var sectionId = $(this).data('sectionid');
@@ -2416,6 +2522,30 @@
                 });
             });
 
+            $('#exportMarkButton').click(function(){
+                var studentNumber = $('#searchStudentNumber').val();
+                var courseId = $('#courseId').val();
+                var offset = ($('#searchResultsPageLimit').val()=='Max'?-1:$('#searchResultsPageOffset').val()-1);
+                var thisElement = $(this);
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/getstudentsmarks',
+                    data:{
+                        courseId: courseId,
+                        studentNumber: studentNumber,
+                        offset: offset,
+                        download:true
+                    },
+                    success:function(data){
+                        successOperation(thisElement);
+                    },
+                    error: function(data){
+                        failOperation(thisElement);
+                    }
+                });
+            });
+
             $('#uploadSubcourseworkDropdown').change(function(){
                 var sectionDropdown = $('#uploadSectionDropdown').empty();
                 var selectedSubcoursework = $(this).val();
@@ -2431,10 +2561,12 @@
                     success:function(data){
                         var option = document.createElement('option');
                         option.text = "";
+                        option.value = -1;
                         sectionDropdown.append(option);
                         for(var i = 0; i < data.length; i++){
                             var option = document.createElement('option');
-                            option.text = data[i];
+                            option.text = data[i].name;
+                            option.value = data[i].id;
                             sectionDropdown.append(option);
                         }
                     }
@@ -2459,11 +2591,13 @@
                     success: function (data) {
                         var option = document.createElement('option');
                         option.text = "";
+                        option.value=-1;
                         subcourseworkDropdown.append(option);
 
                         for (var i = 0; i < data.length; i++) {
                             var option = document.createElement('option');
-                            option.text = data[i];
+                            option.text = data[i].name;
+                            option.value= data[i].id;
                             subcourseworkDropdown.append(option);
                         }
                     }
@@ -2559,9 +2693,9 @@
                     success: function (data) {
                         var dataString ='<tbody id="searchParticipantsResultsBody">';
                         for(var i = 0; i < data.length; i++) {
-                            if (data[i].firstName == 'undefined') {
-                                break;
-                            }
+//                            if (data[i].firstName == 'undefined') {
+//                                break;
+//                            }
                             dataString += '<tr class="even pointer">' +
                                 '<td class="a-center table-row">' +
                                     '<input type="checkbox" class="searchParticipantsResultsCheckbox" data-userid="' + data[i].id + '">' +
@@ -2701,22 +2835,6 @@
                     }
                 });
 
-            });
-
-            $('#addStudentFileButton').click(function(){
-//                var formData = new FormData($('#studentFileUploadForm')[0]);
-                var thisElement = $(this);
-                $.ajax({
-                    type: 'POST',
-                    url: courseId+'/students',
-                    data:{},
-                    success: function (data) {
-                        successOperation(thisElement);
-                    },
-                    error: function(data){
-                        failOperation(thisElement);
-                    }
-                });
             });
         })
     </script>

@@ -8,6 +8,7 @@ use App\CourseType;
 use App\Coursework;
 use App\CourseworkType;
 use App\LecturerCourseMap;
+use App\Mail\InvitationMail;
 use App\Section;
 use App\SectionUserMarkMap;
 use App\SubCoursework;
@@ -17,8 +18,12 @@ use App\TACourseMap;
 use App\User;
 use App\UserCourseMap;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Mail;
 use \Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 
 class LecturerController extends Controller
 {
@@ -94,7 +99,9 @@ class LecturerController extends Controller
                 $row = [];
                 $row['id'] = $rw->id;
                 $row['coursework'] = Coursework::where('id', $rw->coursework_id)->first()->name;
+                $row['coursework_id'] = $rw->coursework_id;
                 $subcwrk = SubCoursework::where('id', $rw->subcoursework_id)->first();
+                $row['subcoursework_id'] = $subcwrk?$subcwrk->id:-1;
                 $row['subcoursework'] = $subcwrk? $subcwrk->name : '';
                 $row['weighting'] = $rw->weighting;
                 $rows[] = $row;
@@ -126,6 +133,26 @@ class LecturerController extends Controller
 
     public function deleteCoursework(Request $request){
         $courseworkId = $request->input('courseworkId');
+        $subcourseworkIds = [];
+        $sectionIds = [];
+        $mapIds = [];
+        $subcourseworks = SubCoursework::where('coursework_id', $courseworkId)->get();
+
+        foreach($subcourseworks as $subcoursework){
+            $sections = $subcoursework->sections;
+            foreach ($sections as $section){
+                $sectionUserMaps = $section->userMarkMap;
+                foreach ($sectionUserMaps as $sectionUserMap) {
+                    $mapIds[] = $sectionUserMap->id;
+                }
+                $sectionIds[] = $section->id;
+            }
+            $subcourseworkIds = $subcoursework->id;
+        }
+
+        SectionUserMarkMap::destroy($mapIds);
+        Section::destroy($sectionIds);
+        SubCoursework::destroy($subcourseworkIds);
         Coursework::destroy($courseworkId);
     }
 
@@ -154,7 +181,21 @@ class LecturerController extends Controller
     public function deleteSubcoursework(Request $request)
     {
         $subcourseworkId = $request->input('subcourseworkId');
-//        echo($subcourseworkId); die();
+        $sectionIds = [];
+        $mapIds = [];
+        $subcoursework = SubCoursework::where('id', $subcourseworkId)->first();
+
+        $sections = $subcoursework->sections;
+        foreach ($sections as $section){
+            $sectionUserMaps = $section->userMarkMap;
+            foreach ($sectionUserMaps as $sectionUserMap) {
+                $mapIds[] = $sectionUserMap->id;
+            }
+            $sectionIds[] = $section->id;
+        }
+
+        SectionUserMarkMap::destroy($mapIds);
+        Section::destroy($sectionIds);
         SubCoursework::destroy($subcourseworkId);
     }
 
@@ -174,7 +215,14 @@ class LecturerController extends Controller
     public function deleteSection(Request $request)
     {
         $sectionId = $request->input('sectionId');
-//        echo($subcourseworkId); die();
+        $section = Section::where('id', $sectionId);
+        $mapIds = [];
+        $sectionUserMaps = $section->userMarkMap;
+        foreach ($sectionUserMaps as $sectionUserMap) {
+            $mapIds[] = $sectionUserMap->id;
+        }
+
+        SectionUserMarkMap::destroy($mapIds);
         Section::destroy($sectionId);
     }
 
@@ -209,7 +257,10 @@ class LecturerController extends Controller
             $subcourseworks = SubCoursework::where('coursework_id', $courseworkId)->get();
             $results=[];
             foreach ($subcourseworks as $subcwrk){
-                $results[] = $subcwrk->name;
+                $result = [];
+                $result['name'] = $subcwrk->name;
+                $result['id'] = $subcwrk->id;
+                $results[] = $result;
             }
         }
 
@@ -218,12 +269,15 @@ class LecturerController extends Controller
     }
 
     public function getSections(Request $request){
-        $subcourseworkId = SubCoursework::where('name', $request->input('subcoursework'))->first()->id;
+        $subcourseworkId = SubCoursework::where('id', $request->input('subcoursework'))->first()->id;
 
         $sections = Section::where('subcoursework_id', $subcourseworkId)->get();
         $results=[];
         foreach ($sections as $sctn){
-            $results[] = $sctn->name;
+            $result = [];
+            $result['name'] = $sctn->name;
+            $result['id'] = $sctn->id;
+            $results[] = $result;
         }
 
         return Response::json($results);
@@ -232,6 +286,7 @@ class LecturerController extends Controller
     public function getStudentsMarks(Request $request){
         $studentNumber = $request->input('studentNumber');
         $courseId = $request->input('courseId');
+        $download = $request->input('download');
         $limit = 30;
         $offsetRaw = $request->input('offset');
         $offset = $offsetRaw*$limit;
@@ -305,8 +360,18 @@ class LecturerController extends Controller
             $result['year_mark'] = $yearmark;
             $results[] = $result;
         }
+        if(!$download) {
+            return Response::json($results);
+        } else {
+            print_r($results);
 
-        return Response::json($results);
+            $lines = [];
+            $lines[] = 'campus_id, employee_id, class_mark, year_mark, dp, final_grade';
+            foreach($results as $result){
+                $line = '';
+            }
+
+        }
     }
 
     public function getLecturerCourses(Request $request){
@@ -453,6 +518,8 @@ class LecturerController extends Controller
         $convenorCourseMap->status = 1;
         $convenorCourseMap->save();
 
+        Mail::to($email)->send(new InvitationMail());
+
         return Response::json("Success");
     }
 
@@ -482,7 +549,6 @@ class LecturerController extends Controller
         );
         $user->approved = 1;
         $user->role_id = 2; $user->save();
-//        print_r($user);die();
         $taCourseMap = new TACourseMap();
         $taCourseMap->user_id = $user->id;
         $taCourseMap->course_id = $courseId;
@@ -552,25 +618,25 @@ class LecturerController extends Controller
                 $convenorMap = ConvenorCourseMap::where('user_id', $user->id)->where('course_id', $courseId)->first();
                 $taMap = TACourseMap::where('user_id', $user->id)->where('course_id', $courseId)->first();
 
-                $status = -1;
+                $status = '';
                 $role = "";
                 if($studentMap){
-                    $status=$studentMap->status;
+                    $status.= ($studentMap->status==1?'Registered':'Other');
                     $role .= "Student";
                 }
                 if($lecturerMap) {
-                    $status = $lecturerMap->status;
+                    $status  .= ($status?' | ':'').($lecturerMap->status==1?'Access':'No Access');
                     $role .= ($role ? ' | ' : '') . "Lecturer";
                 }
                 if($convenorMap) {
-                    $status = $convenorMap->status;
+                    $status .= ($status?' | ':'').($convenorMap->status==1?'Access':'No Access');
                     $role .= ($role ? ' | ' : '') . "Course Convenor";
                 }
                 if($taMap){
-                    $status=$taMap->status;
+                    $status .= ($status?' | ':'').($taMap->status==1?'Access':'No Access');
                     $role .= ($role?' | ':'')."Teaching Assistant";
                 }
-                if($status != -1){
+                if($status){
                     $result = [];
                     $result["id"] = $user->id;
                     $result["firstName"] = $user->first_name;
@@ -579,7 +645,7 @@ class LecturerController extends Controller
                     $result["email"] = $user->email;
                     $result["employeeId"]= $user->employee_id;
                     $result["role"] = $role;
-                    $result["status"] = "Registered";
+                    $result["status"] = $status;
                     $result["approved"] = $user->approved==1?'Yes':'No';
                     $results[] = $result;
                 }
@@ -750,8 +816,9 @@ class LecturerController extends Controller
                 $subcourseworkD = 0.0;
                 foreach ($subcoursework->sections as $section) {
                     $subcourseworkD += $section->max_marks;
-                    $subcourseworkN += SectionUserMarkMap::where('user_id', $user->id)
-                        ->where('section_id', $section->id)->first()->marks;
+                    $sectionMap = SectionUserMarkMap::where('user_id', $user->id)
+                        ->where('section_id', $section->id)->first();
+                    $subcourseworkN += ($sectionMap? $sectionMap->marks:0);
                 }
                 $subcourseworkFinalMark = $subcourseworkD!=0?($subcourseworkN*$subcourseworkWeighting)/$subcourseworkD:0;
                 $courseworkTotalMark += $subcourseworkFinalMark;
@@ -763,6 +830,8 @@ class LecturerController extends Controller
             $marks[] = $result;
         }
         $results['marks'] = $marks;
+
+//        print_r($results);
 
         return Response::json($results);
     }
@@ -824,8 +893,9 @@ class LecturerController extends Controller
             foreach ($sections as $section) {
                 $mark = [];
                 $mark['id'] = $section->id;
-                $mark['numerator'] = SectionUserMarkMap::where('user_id', $user->id)
-                    ->where('section_id', $section->id)->first()->marks;
+                $sectionMap = SectionUserMarkMap::where('user_id', $user->id)
+                    ->where('section_id', $section->id)->first();
+                $mark['numerator'] = -$sectionMap? $sectionMap>marks:0;
                 $mark['denominator'] = $section->max_marks;
                 $subcourseworkD += $section->max_marks;
                 $subcourseworkN += $mark['numerator'];
@@ -968,5 +1038,171 @@ class LecturerController extends Controller
         $section->max_marks = $maxMarks;
         $section->save();
 
+    }
+
+    public function updateSubminimum(Request $request){
+        $subminimumId = $request->input('subminimumId');
+        $name = $request->input('name');
+        $type = $request->input('type');
+        $threshold = $request->input('threshold');
+
+        $subminimum = Subminimum::where('id', $subminimumId)->first();
+        $subminimum->name = $name;
+        $subminimum->for_dp = $type;
+        $subminimum->threshold = $threshold;
+        $subminimum->save();
+    }
+
+    public function updateSubminimumRow(Request $request){
+        $rowId = $request->input('rowId');
+        $coursework = $request->input('coursework');
+        $subcoursework = $request->input('subcoursework');
+        $weighting = $request->input('weighting');
+
+//        echo($coursework);die();
+
+        $row = SubminimumColumnMap::where('id', $rowId)->first();
+        $row->coursework_id = $coursework;
+        $row->subcoursework_id = $subcoursework?$subcoursework:-1;
+        $row->weighting = $weighting;
+        $row->save();
+    }
+
+    public function updateStudentsList(Request $request){
+        $file = $request->file('file');
+        $courseId = $request->input('courseId');
+        $course = Course::find($courseId)->first();
+
+
+        $path = Storage::putFileAs('file', $file, 'students_list_'.$courseId.'.csv');
+
+        if($path && $course) {
+
+            Excel::load('storage/app/'.$path, function ($reader) use(&$courseId, &$course){
+
+                $values = $reader->toArray();
+
+                foreach ($values as $row) {
+                    $employeeId = $row['emplid'];
+                    $campusId = strtolower($row['campus_id']);
+                    $term = $row['term'];
+                    $subject = $row['subject'];
+                    $catalogNumber = $row['catalog_nbr'];
+                    $classNumber = $row['class_nbr'];
+                    $academicProgram = $row['acad_prog'];
+
+                    $courseCode = $subject.$catalogNumber;
+                    /*if(strcasecmp($course->code,$courseCode)!=0 || $term!=$course->term_number){
+                        break;
+                    }*/
+
+                    $user = User::where('employee_id', $employeeId)
+                        ->orWhere('student_number', $campusId)->first();
+                    if(!$user) {
+                        /*$user = new User([
+                            'employee_id' => $employeeId,
+                            'student_number' => $campusId,
+                            'approved' => 1
+                        ]);*/
+                        $user = new User();
+                        $user->employee_id = $employeeId;
+                        $user->student_number = $campusId;
+                        $user->approved = 1;
+                        $user->save();
+                    }
+                    $userCourseMap = UserCourseMap::where('user_id', $user->id)
+                        ->where('course_id', $courseId)->first();
+                    if(!$userCourseMap){
+                        $userCourseMap = new UserCourseMap();
+                        $userCourseMap->user_id=$user->id;
+                        $userCourseMap->course_id=$courseId;
+                        $userCourseMap->academic_program=$academicProgram;
+                        $userCourseMap->class_number=$classNumber;
+                        $userCourseMap->status=1;
+                    } else {
+                        $userCourseMap->academic_program = $academicProgram;
+                        $userCourseMap->class_number = $classNumber;
+                    }
+                    $userCourseMap->save();
+                }
+            });
+        }
+        return redirect()->back();
+    }
+
+    public function uploadSectionMarks(Request $request){
+        $file = $request->file('marksFile');
+        $courseId = $request->input('courseId');
+        $courseworkId = $request->input('uploadCoursework');
+        $subcourseworkId = $request->input('uploadSubcoursework');
+        $sectionId = $request->input('uploadSection');
+
+        $section = Section::find($sectionId)->first();
+        $subcoursework = SubCoursework::find($subcourseworkId)->first();
+        $coursework = Coursework::find($courseworkId)->first();
+
+        $validation =
+                        $section->subcoursework_id == $subcourseworkId &&
+                        $subcoursework->coursework_id == $courseworkId &&
+                        $coursework->course_id == $courseId;
+
+        $path = Storage::putFileAs('file', $file, 'marks_file_'.$courseworkId.'_'.$subcourseworkId.'_'.$sectionId.'_'.$courseId.'.csv');
+
+        if($path && $section && $validation) {
+
+            Excel::load('storage/app/'.$path, function ($reader) use(&$sectionId, $courseId){
+
+                $values = $reader->toArray();
+
+                foreach ($values as $row) {
+                    $employeeId = $row['emplid'];
+                    $campusId = strtolower($row['campus_id']);
+                    $term = $row['term'];
+                    $subject = $row['subject'];
+                    $catalogNumber = $row['catalog_nbr'];
+                    $classNumber = $row['class_nbr'];
+                    $academicProgram = $row['acad_prog'];
+                    $marks = $row['final_grade'];
+
+                    $courseCode = $subject.$catalogNumber;
+                    /*if(strcasecmp($course->code,$courseCode)!=0 || $term!=$course->term_number){
+                        break;
+                    }*/
+
+                    $user = User::where('employee_id', $employeeId)
+                        ->orWhere('student_number', $campusId)->first();
+                    if(!$user) {
+                        $user = new User();
+                        $user->employee_id = $employeeId;
+                        $user->student_number = $campusId;
+                        $user->approved = 1;
+                        $user->save();
+                    }
+                    $userCourseMap = UserCourseMap::where('user_id', $user->id)
+                        ->where('course_id', $courseId)->first();
+                    if(!$userCourseMap){
+                        $userCourseMap = new UserCourseMap();
+                        $userCourseMap->user_id=$user->id;
+                        $userCourseMap->course_id=$courseId;
+                        $userCourseMap->academic_program=$academicProgram;
+                        $userCourseMap->class_number=$classNumber;
+                        $userCourseMap->status=1;
+                        $userCourseMap->save();
+                    }
+
+                    $sectionMap = SectionUserMarkMap::where('user_id', $user->id)
+                        ->where('section_id', $sectionId)->first();
+                    if(!$sectionMap){
+                        $sectionMap = new SectionUserMarkMap();
+                        $sectionMap->user_id = $user->id;
+                        $sectionMap->section_id = $sectionId;
+                    }
+                    $sectionMap->marks = $marks;
+                    $sectionMap->save();
+                }
+            });
+        }
+
+        return redirect()->back();
     }
 }

@@ -11,6 +11,6 @@ class Section extends Model
     }
 
     public function userMarkMap(){
-        return $this->hasOne('App\SectionUserMarkMap');
+        return $this->hasMany('App\SectionUserMarkMap');
     }
 }

@@ -17,10 +17,9 @@ class CreateUsersTable extends Migration
             $table->increments('id');
             $table->string('first_name')->default('undefined');
             $table->string('last_name')->default('undefined');
-            $table->string('student_number')->default('undefined');
-            $table->string('employee_id')->default('undefined');
-            $table->string('academic_program')->default('undefined');
-            $table->string('email')->unique();
+            $table->string('student_number')->unique()->default('undefined');
+            $table->string('employee_id')->unique()->default('undefined');
+            $table->string('email')->default('undefined@undefined.un');
             $table->string('password')->default(bcrypt('1234567'));
             $table->boolean('approved')->default(0);
             $table->boolean('account_registered')->default(0);
@@ -35,7 +34,6 @@ class CreateUsersTable extends Migration
                 'last_name' => 'Cuppoor',
                 'student_number' => 'cppkus001',
                 'employee_id' => 1234567,
-                'academic_program' => 'EB805',
                 'email' => 'cppkus001@myuct.ac.za',
                 'password' => bcrypt('1234567'),
                 'account_registered' => 1,

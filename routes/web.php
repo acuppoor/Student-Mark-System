@@ -49,6 +49,10 @@ Route::post('/tasaccess', 'PagesController@tasAccess');
 Route::post('/updatecoursework', 'PagesController@updateCoursework');
 Route::post('/updatesubcoursework', 'PagesController@updateSubcoursework');
 Route::post('/updatesection', 'PagesController@updateSection');
+Route::post('/updatesubminimum', 'PagesController@updateSubminimum');
+Route::post('/updatesubminimumrow', 'PagesController@updateSubminimumRow');
+Route::post('/updatestudentslist', 'PagesController@updateStudentsList');
+Route::post('/uploadsectionmarks', 'PagesController@uploadSectionMarks');
 
 Route::get('/lecturingcourses', 'PagesController@lecturerCourses')->name("lecturer_courses");
 Route::post('/lecturingcourses/filter', 'PagesController@lecturerCourses');

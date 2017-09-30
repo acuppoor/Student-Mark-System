@@ -17,6 +17,7 @@ class CreateUserCourseMapsTable extends Migration
             $table->increments('id');
             $table->integer('user_id');
             $table->integer('course_id');
+            $table->string('academic_program');
             $table->integer('class_number');
             $table->boolean('status'); // 1 means registered, 0 deregistered
             $table->timestamps();
@@ -26,6 +27,7 @@ class CreateUserCourseMapsTable extends Migration
             array(
                 'user_id' => 1,
                 'course_id' => 1,
+                'academic_program' => '12345',
                 'class_number' => 9654,
                 'status' => 1
             )
