@@ -7,6 +7,7 @@ use App\Course;
 use App\CourseType;
 use App\Coursework;
 use App\CourseworkType;
+use App\FinalGradeType;
 use App\LecturerCourseMap;
 use App\Mail\InvitationMail;
 use App\Section;
@@ -16,6 +17,7 @@ use App\Subminimum;
 use App\SubminimumColumnMap;
 use App\TACourseMap;
 use App\User;
+use App\UserCourseFinalGrade;
 use App\UserCourseMap;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
@@ -319,6 +321,7 @@ class LecturerController extends Controller
             $result = [];
             $result['student_number'] = $student->student_number;
             $result['employee_id'] = $student->employee_id;
+            $result['id'] = $student->id;
             $yearmark = 0.0;
             $classmark = 0.0;
 
@@ -358,10 +361,34 @@ class LecturerController extends Controller
             }
             $result['class_mark'] = $classmark;
             $result['year_mark'] = $yearmark;
+            $finalGrade = UserCourseFinalGrade::where('user_id', $student->id)
+                                    ->where('course_id', $courseId)->first();
+            if($finalGrade){
+                if($finalGrade->type_id == 1){
+                    $result['final_grade'] = $yearmark;
+                } else {
+                    $result['final_grade'] = FinalGradeType::where('id', $finalGrade->type_id)->first()->name;
+                }
+            } else {
+                $result['final_grade'] = $yearmark;
+            }
             $results[] = $result;
         }
+
+        $types = [];
+        foreach (FinalGradeType::all() as $item) {
+            $type = [];
+            $type['name'] = $item->name;
+            $type['id'] = $item->id;
+            $types[] = $type;
+        }
+
+        $returnResults = [];
+        $returnResults[] = $results;
+        $returnResults[] = $types;
+
         if(!$download) {
-            return Response::json($results);
+            return Response::json($returnResults);
         } else {
             print_r($results);
 
@@ -895,7 +922,7 @@ class LecturerController extends Controller
                 $mark['id'] = $section->id;
                 $sectionMap = SectionUserMarkMap::where('user_id', $user->id)
                     ->where('section_id', $section->id)->first();
-                $mark['numerator'] = -$sectionMap? $sectionMap>marks:0;
+                $mark['numerator'] = -$sectionMap? $sectionMap->marks:0;
                 $mark['denominator'] = $section->max_marks;
                 $subcourseworkD += $section->max_marks;
                 $subcourseworkN += $mark['numerator'];
@@ -1127,6 +1154,7 @@ class LecturerController extends Controller
                 }
             });
         }
+        Storage::delete($path);
         return redirect()->back();
     }
 
@@ -1141,16 +1169,16 @@ class LecturerController extends Controller
         $subcoursework = SubCoursework::find($subcourseworkId)->first();
         $coursework = Coursework::find($courseworkId)->first();
 
-        $validation =
+        $validation =   $courseworkId!=0 || ($coursework && $subcoursework && $section &&
                         $section->subcoursework_id == $subcourseworkId &&
                         $subcoursework->coursework_id == $courseworkId &&
-                        $coursework->course_id == $courseId;
+                        $coursework->course_id == $courseId);
 
         $path = Storage::putFileAs('file', $file, 'marks_file_'.$courseworkId.'_'.$subcourseworkId.'_'.$sectionId.'_'.$courseId.'.csv');
 
         if($path && $section && $validation) {
 
-            Excel::load('storage/app/'.$path, function ($reader) use(&$sectionId, $courseId){
+            Excel::load('storage/app/'.$path, function ($reader) use(&$sectionId, $courseId, $courseworkId){
 
                 $values = $reader->toArray();
 
@@ -1165,7 +1193,8 @@ class LecturerController extends Controller
                     $marks = $row['final_grade'];
 
                     $courseCode = $subject.$catalogNumber;
-                    /*if(strcasecmp($course->code,$courseCode)!=0 || $term!=$course->term_number){
+                    $course = Course::find($courseId)->first();
+                    /*if(strtolower($course->code) != strtolower($courseCode) || $term!=$course->term_number){
                         break;
                     }*/
 
@@ -1189,20 +1218,39 @@ class LecturerController extends Controller
                         $userCourseMap->status=1;
                         $userCourseMap->save();
                     }
-
-                    $sectionMap = SectionUserMarkMap::where('user_id', $user->id)
-                        ->where('section_id', $sectionId)->first();
-                    if(!$sectionMap){
-                        $sectionMap = new SectionUserMarkMap();
-                        $sectionMap->user_id = $user->id;
-                        $sectionMap->section_id = $sectionId;
+                    if($courseworkId != 0) {
+                        $sectionMap = SectionUserMarkMap::where('user_id', $user->id)
+                            ->where('section_id', $sectionId)->first();
+                        if (!$sectionMap) {
+                            $sectionMap = new SectionUserMarkMap();
+                            $sectionMap->user_id = $user->id;
+                            $sectionMap->section_id = $sectionId;
+                        }
+                        $sectionMap->marks = $marks;
+                        $sectionMap->save();
+                    } else {
+                        $userFinalMap = new UserCourseFinalGrade();
+                        $userFinalMap->user_id = $user->id;
+                        $userFinalMap->course_id = $courseId;
+                        $userFinalMap->grade_id = FinalGradeType::where('name', $marks);
                     }
-                    $sectionMap->marks = $marks;
-                    $sectionMap->save();
                 }
             });
         }
 
+        Storage::delete($path);
+
         return redirect()->back();
+    }
+
+    public function getGradeTypes(){
+        $results = [];
+        foreach (FinalGradeType::all() as $item) {
+            $result = [];
+            $result['name'] = $item->name;
+            $result['id'] = $item->id;
+            $results[] = $result;
+        }
+        return Response::json($results);
     }
 }

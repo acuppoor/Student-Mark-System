@@ -25,6 +25,7 @@
             </button>
         </a>
     </li>
+    <input type="hidden" id="gradeTypes">
 
     <div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true" id="subminimumModal" style="display: none;">
         <div class="modal-dialog modal-sm">
@@ -1098,6 +1099,7 @@
                                                             <label for="studentFile">Coursework*:</label>
                                                             <select name="uploadCoursework" id="uploadCourseworkDropdown" class="form-control">
                                                                 <option></option>
+                                                                <option value="0"><i>Final Marks</i></option>
                                                                 @foreach($course['courseworks'] as $coursework)
                                                                     <option value="{{$coursework['id']}}">{{$coursework['name']}}</option>
                                                                 @endforeach
@@ -2481,11 +2483,25 @@
                 $('#modalCourseworkId').val(courseworkId);
             });
 
+            $.ajax({
+                type: 'POST',
+                url:'/getfinalgradetypes',
+                data:{},
+                success:function(data){
+                    var optionString = '';
+                    for(var i = 1; i < data.length; i++){
+                        optionString += '<option value="'+data[i].id+'">'+data[i].name+'</option>';
+                    }
+                    $('#gradeTypes').val(optionString);
+                }
+            });
+
             $('#searchMarkButton').click(function(){
                 var studentNumber = $('#searchStudentNumber').val();
                 var courseId = $('#courseId').val();
                 var offset = ($('#searchResultsPageLimit').val()=='Max'?-1:$('#searchResultsPageOffset').val()-1);
                 var thisElement = $(this);
+
 
                 $.ajax({
                     type: 'POST',
@@ -2496,15 +2512,29 @@
                         offset: offset
                     },
                     success:function(data){
+                        var originalData = data;
+                        var types = data[1];
+                        data = data[0];
+
                         var dataString = '<tbody id="searchMarkResultsBody">';
                         for(var i = 0; i < data.length; i++){
+                            var optionString = '';
+                            for(var j = 1; j < types.length; j++){
+                                optionString += '<option value="'+types[j].id+'" '+(data[i].final_grade==types[j].name?'selected':'')+'>'+types[j].name+'</option>';
+                            }
+
                             dataString += '<tr class="even pointer">';
                             dataString +=  '<td>'+data[i].student_number+'</td>';
                             dataString +=  '<td>'+data[i].employee_id+'</td>';
                             dataString +=  '<td>'+data[i].class_mark+'</td>';
                             dataString +=  '<td>'+data[i].year_mark+'</td>';
                             dataString +=  '<td>DP</td>';
-                            dataString +=  '<td>'+data[i].year_mark+'</td>';
+                            dataString +=  '<td>'+
+                                '<select class="studentFinalGradeDropdown" data-index="'+i+'" data-userid="'+data[i].id+'">' +
+                                '<option value="1">'+data[i].year_mark+'</option>'+
+                                optionString+
+                                '</select>'+
+                                '</td>';
                             dataString +=  '</tr>';
                         }
                         dataString += '</tbody>';
@@ -2512,6 +2542,12 @@
                         $('#searchMarkResultsBody').replaceWith(dataString);
                         $('#searchResultsBody').show();
                         successOperation(thisElement);
+
+                        var elements = $('.studentFinalGradeDropdown');
+                        for(var i = 0; i < elements.length; i++){
+                            var index = elements[i].getAttribute('data-index');
+                            elements.value = 5;
+                        }
 
                     },
                     error: function(data){
@@ -2580,28 +2616,35 @@
                 var courseId = $('#courseId').val();
                 var token = $('#_token').val();
 
-                $.ajax({
-                    type: 'POST',
-                    url: '/getsubcourseworks',
-                    data: {
-                        _token: token,
-                        coursework: selectedCoursework,
-                        courseId: courseId
-                    },
-                    success: function (data) {
-                        var option = document.createElement('option');
-                        option.text = "";
-                        option.value=-1;
-                        subcourseworkDropdown.append(option);
-
-                        for (var i = 0; i < data.length; i++) {
+                if(selectedCoursework == 0){
+                    subcourseworkDropdown.prop('disabled', true);
+                    $('#uploadSectionDropdown').prop('disabled', true);
+                } else {
+                    subcourseworkDropdown.prop('disabled', false);
+                    $('#uploadSectionDropdown').prop('disabled', false);
+                    $.ajax({
+                        type: 'POST',
+                        url: '/getsubcourseworks',
+                        data: {
+                            _token: token,
+                            coursework: selectedCoursework,
+                            courseId: courseId
+                        },
+                        success: function (data) {
                             var option = document.createElement('option');
-                            option.text = data[i].name;
-                            option.value= data[i].id;
+                            option.text = "";
+                            option.value = -1;
                             subcourseworkDropdown.append(option);
+
+                            for (var i = 0; i < data.length; i++) {
+                                var option = document.createElement('option');
+                                option.text = data[i].name;
+                                option.value = data[i].id;
+                                subcourseworkDropdown.append(option);
+                            }
                         }
-                    }
-                });
+                    });
+                }
             });
 
             $('#createSubminimumButton').click(function(){

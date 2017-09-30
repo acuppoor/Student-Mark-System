@@ -53,6 +53,8 @@ Route::post('/updatesubminimum', 'PagesController@updateSubminimum');
 Route::post('/updatesubminimumrow', 'PagesController@updateSubminimumRow');
 Route::post('/updatestudentslist', 'PagesController@updateStudentsList');
 Route::post('/uploadsectionmarks', 'PagesController@uploadSectionMarks');
+Route::post('/getfinalgradetypes', 'PagesController@getGradeTypes');
+
 
 Route::get('/lecturingcourses', 'PagesController@lecturerCourses')->name("lecturer_courses");
 Route::post('/lecturingcourses/filter', 'PagesController@lecturerCourses');
