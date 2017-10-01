@@ -23,10 +23,13 @@ class SysAdminController extends Controller
                 $dept = [];
                 $dept['name'] = $department->name;
                 $dept['code'] = $department->code;
-                $deptAdmins = $department->adminMaps;
+                $dept['id'] = $department->id;
+                $deptAdminMaps = $department->adminMaps;
                 $admins = [];
-                foreach ($deptAdmins as $deptAdmin) {
-                    $admins[] = $deptAdmin->user;
+                foreach ($deptAdminMaps as $deptAdmin) {
+                    if($deptAdmin->status == 1) {
+                        $admins[] = $deptAdmin->admin;
+                    }
                 }
                 $dept['admins'] = $admins;
                 $depts[] = $dept;
@@ -98,6 +101,79 @@ class SysAdminController extends Controller
             $department->save();
         } else {
             throwException();
+        }
+    }
+
+    public function updateFaculty(Request $request){
+        $name = $request->input('name');
+        $facultyId = $request->input('facultyId');
+
+        $faculty = Faculty::where('id', $facultyId)->first();
+
+        if($faculty && $name){
+            $faculty->name = $name;
+            $faculty->save();
+        } else {
+            throwException();
+        }
+    }
+
+    public function deleteFaculty(Request $request){
+        $facultyId = $request->input('facultyId');
+        $faculty = Faculty::where('id', $facultyId)->first();
+        if($faculty) {
+            $departments = $faculty->departments;
+            foreach ($departments as $department) {
+                $courses = $department->courses;
+                foreach ($courses as $course) {
+                    $course->delete();
+                }
+                $department->delete();
+            }
+            $faculty->delete();
+        }
+    }
+
+    public function updateDepartment(Request $request){
+        $facultyId = $request->input('facultyId');
+        $departmentId = $request->input('departmentId');
+        $code = $request->input('code');
+        $userIds = $request->input('userIds');
+        $name = $request->input('name');
+
+       $department = Department::where('id', $departmentId)->first();
+       if($department){
+           $department->name = $name;
+           $department->faculty_id = $facultyId;
+           $department->code = $code;
+           $department->save();
+
+           if($userIds) {
+               foreach ($userIds as $userId) {
+                   $userMap = DeptAdminDeptMap::where('user_id', $userId)->where('department_id', $departmentId)->first();
+                   if ($userMap) {
+                       $userMap->status = 0;
+                       $userMap->save();
+                   }
+               }
+           }
+
+       } else {
+           throwException();
+       }
+    }
+
+    public function deleteDepartment(Request $request){
+        $departmentId = $request->input('departmentId');
+        $department = Department::where('id', $departmentId)->first();
+        if($department){
+            $courses = $department->courses;
+            foreach ($courses as $course) {
+                $course->delete();
+            }
+            $department->delete();
+        } else {
+            throwException('Department not found!');
         }
     }
 }

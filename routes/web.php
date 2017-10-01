@@ -60,6 +60,10 @@ Route::post('/getdepartments', 'PagesController@getDepartments');
 Route::post('/adddepartmentadmin', 'PagesController@addDepartmentAdmin');
 Route::post('/addfaculty', 'PagesController@addFaculty');
 Route::post('/adddepartment', 'PagesController@addDepartment');
+Route::post('/updatefaculty', 'PagesController@updateFaculty');
+Route::post('/deletefaculty', 'PagesController@deleteFaculty');
+Route::post('/updatedepartment', 'PagesController@updateDepartment');
+Route::post('/deletedepartment', 'PagesController@deleteDepartment');
 
 
 Route::get('/lecturingcourses', 'PagesController@lecturerCourses')->name("lecturer_courses");

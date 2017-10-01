@@ -156,8 +156,37 @@
                         </div>
                         <div class="x_content collapse" style="display: none;">
                             <div class="row">
-                                <i><h5>Admin Features to be determined and added here
-                                    </h5></i>
+                                <table class="table table-striped jambo_table bulk_action">
+                                    <thead>
+                                    <tr class="headings">
+                                        <th class="column-title">#</th>
+                                        <th class="column-title">Name</th>
+                                        <th class="column-title"> &nbsp;</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        @php($count = 1)
+                                        @foreach($faculties as $faculty)
+                                            <tr><td>{{$count++}}</td>
+                                                <td>
+                                                    <input type="text" class="form-control" id="facultyNameInput{{str_replace(' ', '', $faculty['name'])}}" value="{{$faculty['name']}}">
+                                                </td>
+                                                <td>
+                                                    <button type="button" data-facultyname="facultyNameInput{{str_replace(' ', '', $faculty['name'])}}" data-facultyid="{{$faculty['id']}}" class="btn btn-dark btn-round saveFacultyButton spinnerNeeded">
+                                                        <i class="spinnerPlaceholder"></i>
+                                                        <i class="fa fa-save"></i>
+                                                        Save
+                                                    </button>
+                                                    <button type="button" data-facultyid="{{$faculty['id']}}" class="btn btn-dark btn-round deleteFacultyButton spinnerNeeded">
+                                                        <i class="spinnerPlaceholder"></i>
+                                                        <i class="fa fa-trash"></i>
+                                                        Delete
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -177,8 +206,61 @@
                         </div>
                         <div class="x_content collapse" style="display: none;">
                             <div class="row">
-                                <i><h5>Admin Features to be determined and added here
-                                    </h5></i>
+                                <table class="table table-striped jambo_table bulk_action">
+                                    <thead>
+                                    <tr class="headings">
+                                        <th class="column-title">#</th>
+                                        <th class="column-title">Faculty*:</th>
+                                        <th class="column-title">Department Name*:</th>
+                                        <th class="column-title">Department Code*:</th>
+                                        <th class="column-title">Department Admins:</th>
+                                        <th class="column-title">&nbsp;</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @php($count = 1)
+                                    @foreach($faculties as $faculty)
+                                        @foreach($faculty['depts'] as $department)
+                                            <tr><td>{{$count++}}</td>
+                                                <td>
+                                                    <select class="form-control" id="departmentInfoFaculty{{str_replace(' ', '', $department['name'])}}">
+                                                        @foreach($faculties as $f)
+                                                            <option value="{{$f['id']}}" {{$f['id']==$faculty['id']?'selected':''}}>{{$f['name']}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control" id="departmentInfoName{{str_replace(' ', '', $department['name'])}}" value="{{$department['name']}}">
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control" id="departmentInfoCode{{str_replace(' ', '', $department['name'])}}" value="{{$department['code']}}">
+                                                </td>
+                                                <td>
+                                                    <ol>
+                                                        @foreach($department['admins'] as $admin)
+                                                            <li>{{$admin->email}} ( <input type="checkbox" class="removeDeptAdmin{{str_replace(' ', '', $department['name'])}}" data-departmentid="{{$department['id']}}" data-userid="{{$admin->id}}"> Remove )</li>
+                                                        @endforeach
+                                                    </ol>
+                                                </td>
+                                                <td>
+                                                    <button type="button" data-departmentname="{{str_replace(' ', '', $department['name'])}}" data-departmentid="{{$department['id']}}" class="btn btn-dark btn-round saveDepartmentButton spinnerNeeded">
+                                                        <i class="spinnerPlaceholder"></i>
+                                                        <i class="fa fa-save"></i>
+                                                        Save
+                                                    </button>
+                                                    <button type="button" data-departmentid="{{$department['id']}}" class="btn btn-dark btn-round deleteDepartmentButton spinnerNeeded">
+                                                        <i class="spinnerPlaceholder"></i>
+                                                        <i class="fa fa-trash"></i>
+                                                        Delete
+                                                    </button>
+                                                </td>
+                                            </tr>
+
+                                        @endforeach
+
+                                    @endforeach
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -197,6 +279,116 @@
             }
         });
         $(document).ready(function(){
+
+            $('.deleteDepartmentButton').click(function(){
+                var departmentId = $(this).data('departmentid');
+                var thisElement = $(this);
+                var confirmation = confirm('Are you sure you want to delete the department? All its' +
+                    ' courses will be deleted!');
+                if(!confirmation){
+                    nullOperation(thisElement);
+                    return;
+                }
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/deletedepartment',
+                    data:{
+                        departmentId: departmentId
+                    },
+                    success: function (data) {
+                        successOperation(thisElement);
+                    },
+                    error: function (data) {
+                        failOperation(thisElement);
+                    }
+                });
+            });
+
+            $('.saveDepartmentButton').click(function(){
+                var departmentName = $(this).data('departmentname');
+                var departmentId = $(this).data('departmentid');
+
+                var newName = document.getElementById('departmentInfoName'+departmentName).value;
+                var facultyId = document.getElementById('departmentInfoFaculty'+departmentName).value;
+                var code = document.getElementById('departmentInfoCode'+departmentName).value;
+                var userIds = [];
+                var count = 0;
+
+                var checkboxes = document.getElementsByClassName('removeDeptAdmin'+departmentName);
+                for(var i = 0; i < checkboxes.length; i++){
+                    if (checkboxes[i].checked){
+                        userIds[count++] = checkboxes[i].getAttribute('data-userid');
+                    }
+                }
+
+                var thisElement = $(this);
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/updatedepartment',
+                    data:{
+                        facultyId: facultyId,
+                        departmentId: departmentId,
+                        name: newName,
+                        code: code,
+                        userIds: userIds
+                    },
+                    success: function (data) {
+                        successOperation(thisElement);
+                    },
+                    error: function (data) {
+                        failOperation(thisElement);
+                    }
+                });
+            });
+
+            $('.deleteFacultyButton').click(function(){
+                var facultyId = $(this).data('facultyid');
+                var thisElement = $(this);
+                var confirmation = confirm('Are you sure you want to delete the faculty? All its' +
+                    ' departments and courses will be deleted!');
+                if(!confirmation){
+                    nullOperation(thisElement);
+                    return;
+                }
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/deletefaculty',
+                    data:{
+                        facultyId: facultyId
+                    },
+                    success: function (data) {
+                        successOperation(thisElement);
+                    },
+                    error: function (data) {
+                        failOperation(thisElement);
+                    }
+                });
+            });
+
+            $('.saveFacultyButton').click(function(){
+                var facultyName = $(this).data('facultyname');
+                var facultyId = $(this).data('facultyid');
+                var newName = document.getElementById(facultyName).value;
+                var thisElement = $(this);
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/updatefaculty',
+                    data:{
+                        facultyId: facultyId,
+                        name: newName
+                    },
+                    success: function (data) {
+                        successOperation(thisElement);
+                    },
+                    error: function (data) {
+                        failOperation(thisElement);
+                    }
+                });
+            });
 
             $('#createDepartmentButton').click(function(){
                 var name = $('#createDepartmentName').val();
@@ -267,6 +459,10 @@
 
             function failOperation(element){
                 element.children('.spinnerPlaceholder').replaceWith('<i class="spinnerPlaceholder fa fa-times-circle"></i>');
+            }
+
+            function nullOperation(element){
+                element.children('.spinnerPlaceholder').replaceWith('<i class="spinnerPlaceholder"></i>');
             }
 
             $('.spinnerNeeded').click(function(){

@@ -1163,4 +1163,84 @@ class PagesController extends Controller
                 return app('App\Http\Controllers\SysAdminController')->addDepartment($request);
         }
     }
+
+    public function updateFaculty(Request $request){
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login');
+        }
+        $roleID = Auth::user()->role_id;
+        switch ($roleID){
+            case 1:
+            case 2:
+                return view('student.access_denied');
+            case 3:
+            case 4:
+                return view('lecturer.access_denied');
+            case 5:
+                return view('departmentadmin.access_denied');
+            case 6:
+                return app('App\Http\Controllers\SysAdminController')->updateFaculty($request);
+        }
+    }
+
+    public function deleteFaculty(Request $request){
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login');
+        }
+        $roleID = Auth::user()->role_id;
+        switch ($roleID){
+            case 1:
+            case 2:
+                return view('student.access_denied');
+            case 3:
+            case 4:
+                return view('lecturer.access_denied');
+            case 5:
+                return view('departmentadmin.access_denied');
+            case 6:
+                return app('App\Http\Controllers\SysAdminController')->deleteFaculty($request);
+        }
+    }
+
+    public function updateDepartment(Request $request){
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login');
+        }
+        $roleID = Auth::user()->role_id;
+        switch ($roleID){
+            case 1:
+            case 2:
+                return view('student.access_denied');
+            case 3:
+            case 4:
+                return view('lecturer.access_denied');
+            case 5:
+                return view('departmentadmin.access_denied');
+            case 6:
+                return app('App\Http\Controllers\SysAdminController')->updateDepartment($request);
+        }
+    }
+
+    public function deleteDepartment(Request $request){
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login');
+        }
+        $roleID = Auth::user()->role_id;
+        switch ($roleID){
+            case 1:
+            case 2:
+                return view('student.access_denied');
+            case 3:
+            case 4:
+                return view('lecturer.access_denied');
+            case 5:
+                return view('departmentadmin.access_denied');
+            case 6:
+                return app('App\Http\Controllers\SysAdminController')->deleteDepartment($request);
+        }
+    }
 }
