@@ -295,22 +295,25 @@ class LecturerController extends Controller
 
         $students = [];
         if($studentNumber){
-            $usr = User::where('student_number', $studentNumber)
-                ->orWhere('employee_id', $studentNumber)->first();
-            if($usr) {
-                $students[] = UserCourseMap::where('user_id', $usr->id)
-                                            ->where('course_id', $courseId)->first()->user;
+            $usrs = User::where('student_number', 'like', '%'.$studentNumber.'%')
+                ->orWhere('employee_id', 'like', '%'.$studentNumber.'%')->get();
+            if($usrs) {
+                foreach ($usrs as $usr) {
+                    $students[] = UserCourseMap::where('user_id', $usr->id)
+                        ->where('course_id', $courseId)->first()->user;
+                }
             }
         } else {
-            $users = [];
             if($offsetRaw == -1){
-                $users = UserCourseMap::where('course_id', $courseId)->first();
+                $users = UserCourseMap::where('course_id', $courseId)->get();
             } else {
                 $users = UserCourseMap::where('course_id', $courseId)
                     ->limit($limit)->offset($offset)->get();
             }
-            foreach($users as $user){
-                $students[] = $user->user;
+            if($users) {
+                foreach ($users as $user) {
+                    $students[] = $user->user;
+                }
             }
         }
 
@@ -372,6 +375,7 @@ class LecturerController extends Controller
             } else {
                 $result['final_grade'] = $yearmark;
             }
+            $result['dp_status'] = 'DP';
             $results[] = $result;
         }
 
@@ -390,14 +394,25 @@ class LecturerController extends Controller
         if(!$download) {
             return Response::json($returnResults);
         } else {
-            print_r($results);
+            $studentsMarks = $returnResults[0];
 
-            $lines = [];
-            $lines[] = 'campus_id, employee_id, class_mark, year_mark, dp, final_grade';
-            foreach($results as $result){
-                $line = '';
+            $fileName = "class_year_marks_".$courseId.".csv";
+            $fullFileName = "generated_files/".$fileName;
+
+            $myfile = fopen($fullFileName, "w");
+
+            fputcsv($myfile, explode(', ','Campus Id, Emplid, Class Mark, Year Mark, DP Status, Final Grade'));
+
+            foreach($studentsMarks as $result){
+                $line = implode(', ', [$result['student_number'], $result['employee_id'], $result['class_mark'],
+                    $result['year_mark'], $result['dp_status'], $result['final_grade']]);
+                fputcsv($myfile, explode(', ', $line));
             }
+            fclose($myfile);
 
+//            $downloadFile = Storage::disk('exports')->get($fileName);
+//            return Response::download(public_path().'/'.$fullFileName);
+            return Response::json($fileName);
         }
     }
 
@@ -789,28 +804,32 @@ class LecturerController extends Controller
         $courseId = $request->input('courseId');
         $courseworkId = $request->input('courseworkId');
         $studentNumber = $request->input('studentNumber');
+        $download = $request->input('download');
         $limit = 30;
         $offsetRaw = $request->input('offset');
         $offset = $offsetRaw*$limit;
 
         $students = [];
         if($studentNumber){
-            $usr = User::where('student_number', $studentNumber)
-                ->orWhere('employee_id', $studentNumber)->first();
-            if($usr) {
-                $students[] = UserCourseMap::where('user_id', $usr->id)
-                    ->where('course_id', $courseId)->first()->user;
+            $usrs = User::where('student_number', 'like', '%'.$studentNumber.'%')
+                ->orWhere('employee_id', 'like', '%'.$studentNumber.'%')->get();
+            if($usrs) {
+                foreach ($usrs as $usr) {
+                    $students[] = UserCourseMap::where('user_id', $usr->id)
+                        ->where('course_id', $courseId)->first()->user;
+                }
             }
         } else {
-            $users = [];
             if($offsetRaw == -1){
-                $users = UserCourseMap::where('course_id', $courseId)->first();
+                $users = UserCourseMap::where('course_id', $courseId)->get();
             } else {
                 $users = UserCourseMap::where('course_id', $courseId)
                     ->limit($limit)->offset($offset)->get();
             }
-            foreach($users as $user){
-                $students[] = $user->user;
+            if($users) {
+                foreach ($users as $user) {
+                    $students[] = $user->user;
+                }
             }
         }
 
@@ -858,9 +877,35 @@ class LecturerController extends Controller
         }
         $results['marks'] = $marks;
 
-//        print_r($results);
+        if(!$download) {
+            return Response::json($results);
+        } else {
 
-        return Response::json($results);
+            $fileName = "coursework_marks_".$courseId.".csv";
+            $fullFileName = "generated_files/".$fileName;
+
+            $myfile = fopen($fullFileName, "w");
+
+            $headers = ['Campus Id', 'Emplid'];
+            foreach ($results['columns'] as $column) {
+                $headers[] = $column;
+            }
+            $headers[] = 'Total';
+
+            fputcsv($myfile, $headers);
+
+            foreach($results['marks'] as $result){
+                $line = [$result['student_number'], $result['employee_id']];
+                foreach ($result['subcourseworks'] as $subcoursework) {
+                    $line[] = $subcoursework;
+                }
+                $line[] = $result['total_marks'];
+                fputcsv($myfile, $line);
+            }
+            fclose($myfile);
+
+            return Response::json($fullFileName);
+        }
     }
 
     public function getStudentsSubcourseworkMarks(Request $request){
@@ -868,28 +913,32 @@ class LecturerController extends Controller
         $courseworkId = $request->input('courseworkId');
         $subcourseworkId = $request->input('subcourseworkId');
         $studentNumber = $request->input('studentNumber');
+        $download = $request->input('download');
         $limit = 30;
         $offsetRaw = $request->input('offset');
         $offset = $offsetRaw*$limit;
 
         $students = [];
         if($studentNumber){
-            $usr = User::where('student_number', $studentNumber)
-                ->orWhere('employee_id', $studentNumber)->first();
-            if($usr) {
-                $students[] = UserCourseMap::where('user_id', $usr->id)
-                    ->where('course_id', $courseId)->first()->user;
+            $usrs = User::where('student_number', 'like', '%'.$studentNumber.'%')
+                ->orWhere('employee_id', 'like', '%'.$studentNumber.'%')->get();
+            if($usrs) {
+                foreach ($usrs as $usr) {
+                    $students[] = UserCourseMap::where('user_id', $usr->id)
+                        ->where('course_id', $courseId)->first()->user;
+                }
             }
         } else {
-            $users = [];
             if($offsetRaw == -1){
-                $users = UserCourseMap::where('course_id', $courseId)->first();
+                $users = UserCourseMap::where('course_id', $courseId)->get();
             } else {
                 $users = UserCourseMap::where('course_id', $courseId)
                     ->limit($limit)->offset($offset)->get();
             }
-            foreach($users as $user){
-                $students[] = $user->user;
+            if($users) {
+                foreach ($users as $user) {
+                    $students[] = $user->user;
+                }
             }
         }
 
@@ -922,7 +971,7 @@ class LecturerController extends Controller
                 $mark['id'] = $section->id;
                 $sectionMap = SectionUserMarkMap::where('user_id', $user->id)
                     ->where('section_id', $section->id)->first();
-                $mark['numerator'] = -$sectionMap? $sectionMap->marks:0;
+                $mark['numerator'] = $sectionMap? $sectionMap->marks:0;
                 $mark['denominator'] = $section->max_marks;
                 $subcourseworkD += $section->max_marks;
                 $subcourseworkN += $mark['numerator'];
@@ -937,7 +986,40 @@ class LecturerController extends Controller
             $records[] = $result;
         }
         $results['marks'] = $records;
-        return Response::json($results);
+
+        if(!$download) {
+            return Response::json($results);
+        } else {
+            $fileName = "subcoursework_marks_".$courseId.".csv";
+            $fullFileName = "generated_files/".$fileName;
+
+            $myfile = fopen($fullFileName, "w");
+
+            $headers = ['Campus Id', 'Emplid'];
+            foreach ($results['columns'] as $column) {
+                $headers[] = $column;
+            }
+            $headers[] = 'Total Marks';
+            $headers[] = 'Total Marks (%)';
+            $headers[] = 'Weighted Marks';
+
+            fputcsv($myfile, $headers);
+
+            foreach($results['marks'] as $result){
+                $line = [$result['student_number'], $result['employee_id']];
+                foreach ($result['sections'] as $section) {
+                    $line[] = $section['numerator'] . '/' . $section['denominator'];
+                }
+                $line[] = $result['total_num']. '/' . $result['total_den'];
+                $line[] = $result['percentage'];
+                $line[] = $result['weighted_marks'];
+                fputcsv($myfile, $line);
+            }
+            fclose($myfile);
+
+            return Response::json($fullFileName);
+        }
+
     }
 
     public function updateSectionMarks(Request $request){
@@ -1252,5 +1334,26 @@ class LecturerController extends Controller
             $results[] = $result;
         }
         return Response::json($results);
+    }
+
+    public function updateFinalGrade(Request $request){
+        $values = $request->input('values');
+        $courseId = $request->input('courseId');
+
+        foreach ($values as $row) {
+            $userId = $row[0];
+            $gradeId = $row[1];
+
+            $gradeMap = UserCourseFinalGrade::where('user_id', $userId)
+                        ->where('course_id', $courseId)->first();
+            if(!$gradeMap){
+                $gradeMap = new UserCourseFinalGrade();
+                $gradeMap->user_id = $userId;
+                $gradeMap->course_id = $courseId;
+            }
+            $gradeMap->type_id = $gradeId;
+
+            $gradeMap->save();
+        }
     }
 }

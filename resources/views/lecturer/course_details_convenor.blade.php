@@ -1184,6 +1184,10 @@
                                                 <br>
                                                 <div class="div" id="searchResultsBody" hidden>
                                                 <h4>Results:</h4>
+                                                <button id="updateFinalGradeButton" type="button" class="btn btn-dark btn-round spinnerNeeded">
+                                                    <i class="spinnerPlaceholder"></i>
+                                                    Update
+                                                </button>
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <table class="table table-striped jambo_table bulk_action">
@@ -1253,9 +1257,14 @@
                                                         <label for="">&nbsp;</label><br>
                                                         <button class="btn btn-dark btn-round spinnerNeeded" type="button" id="searchCourseworkMarkButton" >
                                                             <i class="spinnerPlaceholder"></i>
+                                                            <i class="fa fa-search"></i>
                                                             Search
                                                         </button>
-                                                        <button class="btn btn-dark btn-round">Export</button>
+                                                        <button class="btn btn-dark btn-round spinnerNeeded" type="button" id="exportCourseworkMarkButton">
+                                                            <i class="spinnerPlaceholder"></i>
+                                                            <i class="fa fa-download"></i>
+                                                            Export
+                                                        </button>
                                                     </div>
                                                     <hr>
                                                 </div>
@@ -1333,9 +1342,14 @@
                                                         <label for="">&nbsp;</label><br>
                                                         <button class="btn btn-dark btn-round spinnerNeeded" type="button" id="searchSubcourseworkMarkButton" >
                                                             <i class="spinnerPlaceholder"></i>
+                                                            <i class="fa fa-search"></i>
                                                             Search
                                                         </button>
-                                                        <button class="btn btn-dark btn-round">Export</button>
+                                                        <button class="btn btn-dark btn-round spinnerNeeded" type="button" id="exportSubcourseworkMarkButton">
+                                                            <i class="spinnerPlaceholder"></i>
+                                                            <i class="fa fa-download"></i>
+                                                            Export
+                                                        </button>
                                                     </div>
                                                     <hr>
                                                 </div>
@@ -1463,6 +1477,63 @@
                     }
                 });
             });*/
+
+            $('#exportSubcourseworkMarkButton').click(function(){
+                var courseworkId = $('#subcourseworkCourseworkDropdown').val();
+                var subcourseworkId = $('#subcourseworkSubcourseworkDropdown').val();
+                var studentNumber = $('#subcourseworkSearchStudentNumber').val();
+                var courseId = $('#courseId').val();
+                var offset = ($('#subcourseworkSearchPageLimit').val()=='Max'?-1:$('#subcourseworkSearchPageOffset').val()-1);
+                var thisElement = $(this);
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/getstudentssubcourseworkmarks',
+                    data:{
+                        courseworkId: courseworkId,
+                        subcourseworkId: subcourseworkId,
+                        courseId: courseId,
+                        studentNumber: studentNumber,
+                        offset: offset,
+                        download:true
+                    },
+                    success:function(data){
+                        window.open('{{asset("")}}'+data,'_blank');
+                        successOperation(thisElement);
+                    },
+                    error: function(data) {
+                        failOperation(thisElement);
+                    }
+                });
+            });
+
+            $('#exportCourseworkMarkButton').click(function(){
+                var courseworkId = $('#courseworkSearchDropdown').val();
+                var studentNumber = $('#courseworkSearchStudentNumber').val();
+                var courseId = $('#courseId').val();
+                var offset = ($('#courseworkSearchPageLimit').val()=='Max'?-1:$('#courseworkSearchPageOffset').val()-1);
+                var thisElement = $(this);
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/getstudentscourseworkmarks',
+                    data:{
+                        courseworkId: courseworkId,
+                        courseId: courseId,
+                        studentNumber: studentNumber,
+                        offset: offset,
+                        download:true
+                    },
+                    success:function(data){
+                        window.open('{{asset("")}}'+data,'_blank');
+                        successOperation(thisElement);
+                    },
+                    error: function(data){
+                        console.log(data);
+                        failOperation(thisElement);
+                    }
+                });
+            });
 
             $('.saveRowButton').click(function(){
                 var rowId = $(this).data('rowid');
@@ -2483,7 +2554,7 @@
                 $('#modalCourseworkId').val(courseworkId);
             });
 
-            $.ajax({
+/*            $.ajax({
                 type: 'POST',
                 url:'/getfinalgradetypes',
                 data:{},
@@ -2494,6 +2565,38 @@
                     }
                     $('#gradeTypes').val(optionString);
                 }
+            });*/
+
+            $('#updateFinalGradeButton').click(function(){
+                var elements = $('.studentFinalGradeDropdown');
+                var updates = [];
+                var courseId = $('#courseId').val();
+                var thisElement = $(this);
+
+                for(var i = 0; i < elements.length; i++){
+                    element = elements[i];
+                    var userId = element.getAttribute('data-userid');
+                    var value = element.value;
+                    var row = [];
+                    row[0] = userId; row[1] = value;
+                    updates[i] = row;
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: '/updatefinalgrade',
+
+                    data: {
+                        values: updates,
+                        courseId: courseId
+                    },
+                    success:function(data){
+                        successOperation(thisElement);
+                    },
+                    error:function(data){
+                        failOperation(thisElement);
+                    }
+
+                });
             });
 
             $('#searchMarkButton').click(function(){
@@ -2528,7 +2631,7 @@
                             dataString +=  '<td>'+data[i].employee_id+'</td>';
                             dataString +=  '<td>'+data[i].class_mark+'</td>';
                             dataString +=  '<td>'+data[i].year_mark+'</td>';
-                            dataString +=  '<td>DP</td>';
+                            dataString +=  '<td>'+data[i].dp_status+'</td>';
                             dataString +=  '<td>'+
                                 '<select class="studentFinalGradeDropdown" data-index="'+i+'" data-userid="'+data[i].id+'">' +
                                 '<option value="1">'+data[i].year_mark+'</option>'+
@@ -2574,9 +2677,11 @@
                         download:true
                     },
                     success:function(data){
+                        window.open('{{asset("")}}'+data,'_blank');
                         successOperation(thisElement);
                     },
                     error: function(data){
+                        console.log(data);
                         failOperation(thisElement);
                     }
                 });
@@ -2801,6 +2906,7 @@
             function successOperation(element){
                 element.children('.spinnerPlaceholder').replaceWith('<i class="spinnerPlaceholder fa fa-check-circle"></i>');
             }
+
             function failOperation(element){
                 element.children('.spinnerPlaceholder').replaceWith('<i class="spinnerPlaceholder fa fa-times-circle"></i>');
             }
