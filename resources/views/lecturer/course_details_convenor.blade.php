@@ -290,11 +290,6 @@
                                     Marks Management
                                 </a>
                             </li>
-                            <li role="presentation" class="">
-                                <a href="#tab_content_export" role="tab" id="export-tab" data-toggle="tab" aria-expanded="false">
-                                    Export
-                                </a>
-                            </li>
                         </ul>
                     </div>
                 </div>
@@ -1099,7 +1094,7 @@
                                                             <label for="studentFile">Coursework*:</label>
                                                             <select name="uploadCoursework" id="uploadCourseworkDropdown" class="form-control">
                                                                 <option></option>
-                                                                <option value="0"><i>Final Marks</i></option>
+                                                                <option value="0"><i>Final Grade</i></option>
                                                                 @foreach($course['courseworks'] as $coursework)
                                                                     <option value="{{$coursework['id']}}">{{$coursework['name']}}</option>
                                                                 @endforeach
@@ -1377,57 +1372,34 @@
                                     </div>
                                 </div>
 
-                            </div>
-
-                            <div role="tabpanel" class="tab-pane fade" id="tab_content_export" aria-labelledby="profile-tab">
-
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="x_panel" style="height: auto;">
                                             <div class="x_title">
                                                 <h2>Quick Export</h2>
                                                 <ul class="nav navbar-right panel_toolbox">
-                                                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                                    <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a>
                                                     </li>
                                                 </ul>
                                                 <div class="clearfix"></div>
                                             </div>
-                                            <div class="x_content collapse" style="display: block;">
+                                            <div class="x_content collapse" style="display: none;">
                                                 <div class="row">
-                                                    <div class="col-md-3">
-                                                        <button class="btn btn-dark btn-round">DP List</button>
+                                                    <div class="col-md-4" style="text-align: center">
+                                                        <button class="btn btn-dark btn-round spinnerNeeded" type="button" id="exportDPListButton">
+                                                            <i class="spinnerPlaceholder"></i>
+                                                            DP List</button>
                                                     </div>
-                                                    <div class="col-md-3">
-                                                        <button class="btn btn-dark btn-round">Students' List</button>
+                                                    <div class="col-md-4" style="text-align: center">
+                                                        <button class="btn btn-dark btn-round spinnerNeeded" type="button" id="exportStudentsListButton">
+                                                            <i class="spinnerPlaceholder"></i>
+                                                            Students' List</button>
                                                     </div>
-                                                    <div class="col-md-3">
-                                                        <button class="btn btn-dark btn-round">Participants' List</button>
+                                                    <div class="col-md-4" style="text-align: center">
+                                                        <button class="btn btn-dark btn-round spinnerNeeded" type="button" id="exportFinalGradeButton">
+                                                            <i class="spinnerPlaceholder"></i>
+                                                            Final Grades</button>
                                                     </div>
-                                                    <div class="col-md-3">
-                                                        <button class="btn btn-dark btn-round">Final Results</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="x_panel" style="height: auto;">
-                                            <div class="x_title">
-                                               <h2>Custom Export</h2>
-                                                <ul class="nav navbar-right panel_toolbox">
-                                                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                                                    </li>
-                                                </ul>
-                                                <div class="clearfix"></div>
-                                            </div>
-                                            <div class="x_content collapse" style="display: block;">
-                                                <div class="row">
-                                                    <i><h5>A list of columns will be displayed which the user can choose to
-                                                        include in the exported file.
-                                                        </h5></i>
                                                 </div>
                                             </div>
                                         </div>
@@ -1435,6 +1407,8 @@
                                 </div>
 
                             </div>
+
+
                         </div>
                 </div>
             </div>
@@ -1451,32 +1425,69 @@
             }
         });
         $(document).ready(function(){
-/*
-            $('#addStudentFileButton').click(function(){
+
+            $('#exportDPListButton').click(function(){
+                var courseId = $('#courseId').val();
                 var thisElement = $(this);
 
-                var input = document.getElementById("studentsFile");
-
-               var file = input.files[0];
-
-               var formData = new FormData();
-               formData.append('file', file.size);
-               console.log(file);
-
                 $.ajax({
-                   type: 'POST',
-                   url: '/updatestudentslist',
-                   data: formData,
-                   processData: false,
-                   contentType: false,
-                   success: function(data){
-                       successOperation(thisElement);
-                   },
-                    error: function(data){
-                       failOperation(thisElement);
+                    type: 'POST',
+                    url: '/downloaddplist',
+                    data:{
+                        courseId: courseId,
+                        download:true
+                    },
+                    success:function(data){
+                        window.open('{{asset("")}}'+data,'_blank');
+                        successOperation(thisElement);
+                    },
+                    error: function(data) {
+                        failOperation(thisElement);
                     }
                 });
-            });*/
+            });
+
+            $('#exportStudentsListButton').click(function(){
+                var courseId = $('#courseId').val();
+                var thisElement = $(this);
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/getstudents',
+                    data:{
+                        courseId: courseId,
+                        download:true
+                    },
+                    success:function(data){
+                        window.open('{{asset("")}}'+data,'_blank');
+                        successOperation(thisElement);
+                    },
+                    error: function(data) {
+                        failOperation(thisElement);
+                    }
+                });
+            });
+
+            $('#exportFinalGradeButton').click(function(){
+                var courseId = $('#courseId').val();
+                var thisElement = $(this);
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/downloadfinalgrade',
+                    data:{
+                        courseId: courseId,
+                        download:true
+                    },
+                    success:function(data){
+                        window.open('{{asset("")}}'+data,'_blank');
+                        successOperation(thisElement);
+                    },
+                    error: function(data) {
+                        failOperation(thisElement);
+                    }
+                });
+            });
 
             $('#exportSubcourseworkMarkButton').click(function(){
                 var courseworkId = $('#subcourseworkCourseworkDropdown').val();
@@ -2272,7 +2283,7 @@
 
                 $.ajax({
                     type: 'POST',
-                    url: 'getteachingassistants',
+                    url: '/getteachingassistants',
                     data:{
                         courseId: courseId
                     },
@@ -2309,7 +2320,7 @@
 
                 $.ajax({
                     type: 'POST',
-                    url: 'getstudents',
+                    url: '/getstudents',
                     data:{
                         courseId: courseId
                     },
@@ -2346,7 +2357,7 @@
 
                 $.ajax({
                     type: 'POST',
-                    url: 'getlecturers',
+                    url: '/getlecturers',
                     data:{
                         courseId: courseId
                     },
@@ -2392,7 +2403,7 @@
 
                 $.ajax({
                    type: 'POST',
-                   url: 'getconvenors',
+                   url: '/getconvenors',
                    data:{
                        courseId: courseId
                    },
@@ -2988,3 +2999,31 @@
         })
     </script>
 @endsection
+
+{{--<div role="tabpanel" class="tab-pane fade" id="tab_content_export" aria-labelledby="profile-tab">
+
+
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="x_panel" style="height: auto;">
+                                            <div class="x_title">
+                                               <h2>Custom Export</h2>
+                                                <ul class="nav navbar-right panel_toolbox">
+                                                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                                    </li>
+                                                </ul>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                            <div class="x_content collapse" style="display: block;">
+                                                <div class="row">
+                                                    <i><h5>A list of columns will be displayed which the user can choose to
+                                                        include in the exported file.
+                                                        </h5></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>--}}

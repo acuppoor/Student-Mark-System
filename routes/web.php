@@ -22,9 +22,9 @@ Route::post('/conveningcourses/{courseId}/addlecturer', 'PagesController@addLect
 Route::post('/conveningcourses/{courseId}/addta', 'PagesController@addTA');
 Route::post('/participantslist', 'PagesController@participantsList');
 Route::post('/getconvenors', 'PagesController@getConvenors');
-Route::post('/conveningcourses/getconvenors', 'PagesController@getConvenors');
-Route::post('/conveningcourses/getlecturers', 'PagesController@getLecturers');
-Route::post('/conveningcourses/getstudents', 'PagesController@getStudents');
+Route::post('//getteachingassistants', 'PagesController@getTAs');
+Route::post('/getlecturers', 'PagesController@getLecturers');
+Route::post('/getstudents', 'PagesController@getStudents');
 Route::post('/conveningcourses/getteachingassistants', 'PagesController@getTAs');
 Route::post('/createsubminimumrow', 'PagesController@createSubminimumRow');
 Route::post('/deletesubminimumrow', 'PagesController@deleteSubminimumRow');
@@ -55,6 +55,9 @@ Route::post('/updatestudentslist', 'PagesController@updateStudentsList');
 Route::post('/uploadsectionmarks', 'PagesController@uploadSectionMarks');
 Route::post('/getfinalgradetypes', 'PagesController@getGradeTypes');
 Route::post('/updatefinalgrade', 'PagesController@updateFinalGrade');
+Route::post('/downloadfinalgrade', 'PagesController@downloadFinalGrade');
+Route::post('/downloadstudentslist', 'PagesController@downloadFinalGrade');
+Route::post('/downloaddplist', 'PagesController@downloadDPList');
 
 
 Route::get('/lecturingcourses', 'PagesController@lecturerCourses')->name("lecturer_courses");
