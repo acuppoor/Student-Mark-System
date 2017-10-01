@@ -1,7 +1,4 @@
 <?php
-
-
-
 Route::get('/', function(){return view('menu');});
 Route::get('/contact', 'ContactController@index')->name('contact');
 
@@ -59,6 +56,11 @@ Route::post('/downloadfinalgrade', 'PagesController@downloadFinalGrade');
 Route::post('/downloadstudentslist', 'PagesController@downloadFinalGrade');
 Route::post('/downloaddplist', 'PagesController@downloadDPList');
 
+Route::post('/getdepartments', 'PagesController@getDepartments');
+Route::post('/adddepartmentadmin', 'PagesController@addDepartmentAdmin');
+Route::post('/addfaculty', 'PagesController@addFaculty');
+Route::post('/adddepartment', 'PagesController@addDepartment');
+
 
 Route::get('/lecturingcourses', 'PagesController@lecturerCourses')->name("lecturer_courses");
 Route::post('/lecturingcourses/filter', 'PagesController@lecturerCourses');
@@ -72,7 +74,7 @@ Route::get('/searchmarks', 'PagesController@searchMarks')->name("search_marks");
 Route::post('/searchmarks/search', 'PagesController@getMarks');
 
 Route::get('/admin', 'PagesController@admin')->name("admin");
-Route::get('/faculties&departments', 'PagesController@admin')->name("faculties");
+Route::get('/faculties&departments', 'PagesController@faculties')->name("faculties");
 
 Route::get('/courseconvenor/courseedit', function(){return view('lecturer.courseedit');});
 

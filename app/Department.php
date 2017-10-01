@@ -17,4 +17,8 @@ class Department extends Model
     public function users(){
         return $this->hasMany('App\User');
     }
+
+    public function adminMaps(){
+        return $this->hasMany('App\DeptAdminDeptMap');
+    }
 }

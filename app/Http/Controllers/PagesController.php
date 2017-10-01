@@ -1064,4 +1064,103 @@ class PagesController extends Controller
         }
     }
 
+    public function faculties(){
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login');
+        }
+        $roleID = Auth::user()->role_id;
+        switch ($roleID){
+            case 1:
+            case 2:
+                return view('student.access_denied');
+            case 3:
+            case 4:
+                return view('lecturer.access_denied');
+            case 5:
+                return view('departmentadmin.access_denied');
+            case 6:
+                return app('App\Http\Controllers\SysAdminController')->getFaculties();
+        }
+    }
+
+    public function getDepartments(Request $request){
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login');
+        }
+        $roleID = Auth::user()->role_id;
+        switch ($roleID){
+            case 1:
+            case 2:
+                return view('student.access_denied');
+            case 3:
+            case 4:
+                return view('lecturer.access_denied');
+            case 5:
+                return view('departmentadmin.access_denied');
+            case 6:
+                return app('App\Http\Controllers\SysAdminController')->getDepartments($request);
+        }
+    }
+
+    public function addDepartmentAdmin(Request $request){
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login');
+        }
+        $roleID = Auth::user()->role_id;
+        switch ($roleID){
+            case 1:
+            case 2:
+                return view('student.access_denied');
+            case 3:
+            case 4:
+                return view('lecturer.access_denied');
+            case 5:
+                return view('departmentadmin.access_denied');
+            case 6:
+                return app('App\Http\Controllers\SysAdminController')->addDepartmentAdmin($request);
+        }
+    }
+
+    public function addFaculty(Request $request){
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login');
+        }
+        $roleID = Auth::user()->role_id;
+        switch ($roleID){
+            case 1:
+            case 2:
+                return view('student.access_denied');
+            case 3:
+            case 4:
+                return view('lecturer.access_denied');
+            case 5:
+                return view('departmentadmin.access_denied');
+            case 6:
+                return app('App\Http\Controllers\SysAdminController')->addFaculty($request);
+        }
+    }
+
+    public function addDepartment(Request $request){
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login');
+        }
+        $roleID = Auth::user()->role_id;
+        switch ($roleID){
+            case 1:
+            case 2:
+                return view('student.access_denied');
+            case 3:
+            case 4:
+                return view('lecturer.access_denied');
+            case 5:
+                return view('departmentadmin.access_denied');
+            case 6:
+                return app('App\Http\Controllers\SysAdminController')->addDepartment($request);
+        }
+    }
 }
