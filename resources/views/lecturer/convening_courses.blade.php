@@ -79,7 +79,7 @@
             </div>
             @php ($courseCount = count($courses))
             <h4>Results: {{$courseCount <= 0? 'None Found!':''}}</h4>
-        @for($i = 0; $i < $courseCount; $i+=2)
+            @for($i = 0; $i < $courseCount; $i+=2)
                 <div class="row">
                     @for($j = $i; $j < ($i+2<=$courseCount? $i+2 : $courseCount); $j++)
                         <div class="col-md-6 col-sm-6 col-xs-12">

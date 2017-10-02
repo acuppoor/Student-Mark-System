@@ -52,6 +52,10 @@ class User extends Authenticatable
     }
 
     public function departmentMaps(){
-        return $this->hasMany('App\UserDepartmentMap')   ;
+        return $this->hasMany('App\UserDepartmentMap')  ;
+    }
+
+    public function departmentAdminMap(){
+        return $this->hasOne('App\DeptAdminDeptMap', 'user_id', 'id');
     }
 }

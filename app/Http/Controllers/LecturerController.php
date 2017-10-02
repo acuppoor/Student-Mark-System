@@ -7,6 +7,7 @@ use App\Course;
 use App\CourseType;
 use App\Coursework;
 use App\CourseworkType;
+use App\DeptAdminDeptMap;
 use App\FinalGradeType;
 use App\LecturerCourseMap;
 use App\Mail\InvitationMail;
@@ -112,7 +113,7 @@ class LecturerController extends Controller
             $subminimums[] = $subminimum;
         }
         $courseDetails['subminimums'] = $subminimums;
-        return $courseDetails;
+        return view('lecturer.course_details_convenor')->with('courses', $courseDetails);
     }
 
     public function createCoursework(Request $request){
@@ -151,7 +152,7 @@ class LecturerController extends Controller
             }
             $subcourseworkIds = $subcoursework->id;
         }
-
+        SubminimumColumnMap::where('coursework_id', $courseworkId)->delete();
         SectionUserMarkMap::destroy($mapIds);
         Section::destroy($sectionIds);
         SubCoursework::destroy($subcourseworkIds);
@@ -217,15 +218,9 @@ class LecturerController extends Controller
     public function deleteSection(Request $request)
     {
         $sectionId = $request->input('sectionId');
-        $section = Section::where('id', $sectionId);
-        $mapIds = [];
-        $sectionUserMaps = $section->userMarkMap;
-        foreach ($sectionUserMaps as $sectionUserMap) {
-            $mapIds[] = $sectionUserMap->id;
-        }
-
-        SectionUserMarkMap::destroy($mapIds);
-        Section::destroy($sectionId);
+        $section = Section::where('id', $sectionId)->first();
+        SectionUserMarkMap::where('section_id', $sectionId)->delete();
+        $section->delete();
     }
 
     public function createSubminimum(Request $request){
@@ -316,7 +311,7 @@ class LecturerController extends Controller
 
 //            $downloadFile = Storage::disk('exports')->get($fileName);
 //            return Response::download(public_path().'/'.$fullFileName);
-            return Response::json($fileName);
+            return Response::json($fullFileName);
         }
     }
 
@@ -435,8 +430,21 @@ class LecturerController extends Controller
         return ($pos===0||$pos>=1) || strtolower($haystack)==strtolower($needle);
     }
 
-    public function updateCourseInfo(Request $request, $courseId){
+    public function updateCourseInfo(Request $request){
+        $courseId = $request->input('courseId');
+
+        $userId = Auth::user()->id;
         $course = Course::where('id', $courseId)->first();
+        $department = $course->department;
+        $deptAdminCourseMap = DeptAdminDeptMap::where('user_id', $userId)
+                            ->where('department_id', $department->id)->first();
+        $convenorCourseMap = ConvenorCourseMap::where('user_id', $userId)
+                            ->where('course_id', $courseId)->first();
+
+        if(!$courseId || !$course || (!$deptAdminCourseMap && !$convenorCourseMap) ||
+            ($deptAdminCourseMap && $deptAdminCourseMap->status ==0) || ($convenorCourseMap && $convenorCourseMap->status==0)){
+            throwException();
+        }
         $course->name = $request->input('name');
         $course->code = $request->input('code');
         $course->type_id = CourseType::where('name', $request->input('type'))->first()->id;
@@ -444,12 +452,24 @@ class LecturerController extends Controller
         $course->start_date = $request->input('startDate');
         $course->end_date = $request->input('endDate');
         $course->term_number = $request->input('term');
-
         $course->save();
-        return Response::json("Success");
     }
 
-    public function addCourseConvenor(Request $request, $courseId){
+    public function addCourseConvenor(Request $request){
+        $courseId = $request->input('courseId');
+
+        $userLoggedIn = Auth::user()->id;
+        $course = Course::where('id', $courseId)->first();
+        $department = $course->department;
+        $deptAdminCourseMap = DeptAdminDeptMap::where('user_id', $userLoggedIn)
+            ->where('department_id', $department->id)->first();
+        $convenorCourseMap = ConvenorCourseMap::where('user_id', $userLoggedIn)
+            ->where('course_id', $courseId)->first();
+        if(!$courseId || !$course || (!$deptAdminCourseMap && !$convenorCourseMap) ||
+            ($deptAdminCourseMap && $deptAdminCourseMap->status ==0) || ($convenorCourseMap && $convenorCourseMap->status==0)){
+            throwException();
+        }
+
         $email = $request->input('email');
         $user = User::where('email', $email)->firstOrCreate(
             ['email'=> $email],
@@ -457,37 +477,70 @@ class LecturerController extends Controller
             );
         $user->role_id = 4;
         $user->approved = 1; $user->save();
-//        print_r($user);die();
-        $convenorCourseMap = new ConvenorCourseMap();
-        $convenorCourseMap->user_id = $user->id;
-        $convenorCourseMap->course_id = $courseId;
+
+        $convenorCourseMap = ConvenorCourseMap::where('course_id', $courseId)
+                            ->where('user_id', $user->id)->first();
+        if(!$convenorCourseMap) {
+            $convenorCourseMap = new ConvenorCourseMap();
+            $convenorCourseMap->user_id = $user->id;
+            $convenorCourseMap->course_id = $courseId;
+        }
         $convenorCourseMap->status = 1;
         $convenorCourseMap->save();
 
-        Mail::to($email)->send(new InvitationMail());
-
-        return Response::json("Success");
+//        Mail::to($email)->send(new InvitationMail());
     }
 
-    public function addLecturer(Request $request, $courseId){
+    public function addLecturer(Request $request){
+        $courseId = $request->input('courseId');
+
+        $userLoggedIn = Auth::user()->id;
+        $course = Course::where('id', $courseId)->first();
+        $department = $course->department;
+        $deptAdminCourseMap = DeptAdminDeptMap::where('user_id', $userLoggedIn)
+            ->where('department_id', $department->id)->first();
+        $convenorCourseMap = ConvenorCourseMap::where('user_id', $userLoggedIn)
+            ->where('course_id', $courseId)->first();
+        if(!$courseId || !$course || (!$deptAdminCourseMap && !$convenorCourseMap) ||
+            ($deptAdminCourseMap && $deptAdminCourseMap->status ==0) || ($convenorCourseMap && $convenorCourseMap->status==0)){
+            throwException();
+        }
+
         $email = $request->input('email');
         $user = User::where('email', $email)->firstOrCreate(
             ['email'=> $email],
             ['account_registered' => 0]
         );
         $user->approved = 1;
-        $user->role_id = 3; $user->save();
-//        print_r($user);die();
-        $lecturerCourseMap = new LecturerCourseMap();
-        $lecturerCourseMap->user_id = $user->id;
-        $lecturerCourseMap->course_id = $courseId;
+        $user->role_id = $user->role_id==4? 4:3;
+        $user->save();
+
+        $lecturerCourseMap = LecturerCourseMap::where('user_id', $user->id)
+                            ->where('course_id', $courseId)->first();
+        if(!$lecturerCourseMap) {
+            $lecturerCourseMap = new LecturerCourseMap();
+            $lecturerCourseMap->user_id = $user->id;
+            $lecturerCourseMap->course_id = $courseId;
+        }
         $lecturerCourseMap->status = 1;
         $lecturerCourseMap->save();
-
-        return Response::json("Success");
     }
 
-    public function addTA(Request $request, $courseId){
+    public function addTA(Request $request){
+        $courseId = $request->input('courseId');
+
+        $userLoggedIn = Auth::user()->id;
+        $course = Course::where('id', $courseId)->first();
+        $department = $course->department;
+        $deptAdminCourseMap = DeptAdminDeptMap::where('user_id', $userLoggedIn)
+            ->where('department_id', $department->id)->first();
+        $convenorCourseMap = ConvenorCourseMap::where('user_id', $userLoggedIn)
+            ->where('course_id', $courseId)->first();
+        if(!$courseId || !$course || (!$deptAdminCourseMap && !$convenorCourseMap) ||
+            ($deptAdminCourseMap && $deptAdminCourseMap->status ==0) || ($convenorCourseMap && $convenorCourseMap->status==0)){
+            throwException();
+        }
+
         $email = $request->input('email');
         $user = User::where('email', $email)->firstOrCreate(
             ['email'=> $email],
@@ -495,13 +548,16 @@ class LecturerController extends Controller
         );
         $user->approved = 1;
         $user->role_id = 2; $user->save();
-        $taCourseMap = new TACourseMap();
-        $taCourseMap->user_id = $user->id;
-        $taCourseMap->course_id = $courseId;
+
+        $taCourseMap = TACourseMap::where('user_id', $user->id)
+                        ->where('course_id', $courseId)->first();
+        if(!$taCourseMap) {
+            $taCourseMap = new TACourseMap();
+            $taCourseMap->user_id = $user->id;
+            $taCourseMap->course_id = $courseId;
+        }
         $taCourseMap->status = 1;
         $taCourseMap->save();
-
-        return Response::json("Success");
     }
 
     public function participantsList(Request $request){
@@ -709,7 +765,7 @@ class LecturerController extends Controller
         $s = new SubminimumColumnMap();
         $s->coursework_id = $coursework;
         $s->subminimum_id = $id;
-        $s->subcoursework_id = $subcoursework;
+        $s->subcoursework_id = $subcoursework?$subcoursework:-1;
         $s->weighting = $weighting;
         $s->save();
     }
@@ -794,7 +850,7 @@ class LecturerController extends Controller
                 $subcourseworkFinalMark = $subcourseworkD!=0?($subcourseworkN*$subcourseworkWeighting)/$subcourseworkD:0;
                 $courseworkTotalMark += $subcourseworkFinalMark;
 
-                $subcourseworks[] = $subcourseworkFinalMark;
+                $subcourseworks[] = round($subcourseworkFinalMark, 2);
             }
             $result['subcourseworks'] = $subcourseworks;
             $result['total_marks'] = $courseworkTotalMark;
@@ -896,18 +952,18 @@ class LecturerController extends Controller
                 $mark['id'] = $section->id;
                 $sectionMap = SectionUserMarkMap::where('user_id', $user->id)
                     ->where('section_id', $section->id)->first();
-                $mark['numerator'] = $sectionMap? $sectionMap->marks:0;
-                $mark['denominator'] = $section->max_marks;
+                $mark['numerator'] = $sectionMap? round($sectionMap->marks, 2):0;
+                $mark['denominator'] = round($section->max_marks, 2);
                 $subcourseworkD += $section->max_marks;
                 $subcourseworkN += $mark['numerator'];
                 $marks[] = $mark;
             }
             $subcourseworkFinalMark = $subcourseworkD!=0?($subcourseworkN*$subcourseworkWeighting)/$subcourseworkD:0;
             $result['sections'] = $marks;
-            $result['total_num'] = $subcourseworkN;
-            $result['total_den'] = $subcourseworkD;
-            $result['percentage'] = $subcourseworkD!=0?($subcourseworkN*100.0)/$subcourseworkD:0;
-            $result['weighted_marks'] = $subcourseworkFinalMark;
+            $result['total_num'] = round($subcourseworkN, 2);
+            $result['total_den'] = round($subcourseworkD, 2);
+            $result['percentage'] = round($subcourseworkD!=0?($subcourseworkN*100.0)/$subcourseworkD:0, 2);
+            $result['weighted_marks'] = round($subcourseworkFinalMark, 2);
             $records[] = $result;
         }
         $results['marks'] = $records;
@@ -1399,18 +1455,18 @@ class LecturerController extends Controller
                     $submCourseworks[$coursework->id] = $submCoursework;
                 }
             }
-            $result['class_mark'] = $classmark;
-            $result['year_mark'] = $yearmark;
+            $result['class_mark'] = round($classmark, 2);
+            $result['year_mark'] = round($yearmark, 2);
             $finalGrade = UserCourseFinalGrade::where('user_id', $student->id)
                 ->where('course_id', $courseId)->first();
             if($finalGrade){
                 if($finalGrade->type_id == 1){
-                    $result['final_grade'] = $yearmark;
+                    $result['final_grade'] = round($yearmark, 2);
                 } else {
                     $result['final_grade'] = FinalGradeType::where('id', $finalGrade->type_id)->first()->name;
                 }
             } else {
-                $result['final_grade'] = $yearmark;
+                $result['final_grade'] = round($yearmark, 2);
             }
 
             $result['dp_status'] = 'DP';
@@ -1511,7 +1567,7 @@ class LecturerController extends Controller
             $campusId = $record['student_number'];
             $employeeId = $record['employee_id'];
             $status = $record['dp_status'];
-            fputcsv($myfile, [$employeeId, $campusId, $status]);
+            fputcsv($myfile, [$employeeId, $campusId, $courseYear, $status]);
         }
         fclose($myfile);
         return Response::json($fullFileName);

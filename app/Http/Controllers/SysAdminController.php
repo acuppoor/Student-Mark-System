@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Course;
 use App\Department;
 use App\DeptAdminDeptMap;
 use App\Faculty;
@@ -176,4 +177,48 @@ class SysAdminController extends Controller
             throwException('Department not found!');
         }
     }
+
+    private function isSimilar($haystack, $needle){
+        $pos = strpos(strtolower($haystack), strtolower($needle));
+        return ($pos===0||$pos>=1) || strtolower($haystack)==strtolower($needle);
+    }
+
+    public function getCourses(Request $request){
+        if($request->input('courseYear')){
+            $currentYear = date($request->input('courseYear').'-01-01');
+        } else {
+            $currentYear = date('Y-01-01');
+        }
+        $selectedCourses = Course::where('start_date', '>=', $currentYear)->get();
+
+        $courses = [];
+        foreach ($selectedCourses as $crs) {
+
+            $course = [];
+            $course['year'] = explode('-', $crs->start_date)[0];
+            $course['type'] = $crs->type->name;
+
+            if($request && (
+                    ($request->input('courseCode') && !$this->isSimilar($crs->name, $request->input('courseCode'))) ||
+                    ($request->input('courseDepartment') && $crs->department->code.' - '.$crs->department->name != $request->input('courseDepartment')) ||
+                    ($request->input('courseYear') && $course['year'] != $request->input('courseYear')) ||
+                    ($request->input('courseType') && $course['type'] != $request->input('courseType'))
+                )){
+                continue;
+            }
+            $course['id'] = $crs->id;
+            $course['name'] = $crs->name;
+            $course['description'] = $crs->description;
+            $course['code'] = $crs->code;
+            $course['term_number'] = $crs->term_number;
+            $course['start_date'] = $crs->start_date;
+            $course['end_date'] = $crs->end_date;
+            $course['department'] = $crs->department->name;
+            $course['faculty'] = $crs->department->faculty->name;
+            $courses[] = $course;
+        }
+
+        return view('systemadmin.courses')->with('courses', $courses);
+    }
+
 }

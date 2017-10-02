@@ -30,7 +30,7 @@
                 <div class="col-md-12">
                     <div class="x_panel">
                         <div class="x_title">
-                            <form action="/courses/filter" method="POST">
+                            <form action="/courses" method="POST">
                                 {{ csrf_field() }}
                                 <div class="col-md-2 form-group pull-left top_search">
                                     <label for="courseCode">Course Code:</label>
@@ -73,9 +73,9 @@
                                     <input type="hidden" id="courseDepartmentInput" value="{{request('courseDepartment')}}">
                                 </div>
                                 <div class="col-md-3 form-group pull-left top_search">
-                                    <p>&nbsp;</p>
+                                    <label for="">&nbsp;</label><br>
                                     <button class="btn btn-round btn-dark" id="searchButton">Search</button>
-                                    <a href="{{route('ta_courses')}}">Reset Results</a>
+                                    <a href="{{route('other_courses')}}">Reset Results</a>
                                 </div>
                             </form>
                             <div class="clearfix"></div>
@@ -83,15 +83,15 @@
                     </div>
                 </div>
             </div>
-            <h4>Results:</h4>
             @php ($courseCount = count($courses))
+            <h4>Results: {{$courseCount <= 0? 'None Found!':''}}</h4>
             @for($i = 0; $i < $courseCount; $i+=2)
                 <div class="row">
                     @for($j = $i; $j < ($i+2<=$courseCount? $i+2 : $courseCount); $j++)
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <div class="x_panel">
                                 <div class="x_title">
-                                    <a href="{{url('/courses/'.$courses[$j]['id'])}}"><h2>{{($j+1) . '. ' . $courses[$j]['name']. ' (' . $courses[$j]['year'] .')'}}</h2></a>
+                                    <a><h2>{{($j+1) . '. ' . $courses[$j]['name']. ' (' . $courses[$j]['year'] .')'}}</h2></a>
                                     <ul class="nav navbar-right panel_toolbox">
                                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a>
                                         </li>

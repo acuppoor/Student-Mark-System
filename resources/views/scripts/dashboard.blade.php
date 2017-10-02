@@ -42,3 +42,5 @@
 <script src="{{asset('gentelella/production/js/maps/jquery-jvectormap-world-mill-en.js')}}"></script>
 <script src="{{asset('gentelella/production/js/maps/jquery-jvectormap-us-aea-en.js')}}"></script>
 <script src="{{asset('gentelella/production/js/maps/gdp-data.js')}}"></script>
+
+<script src="{{asset('gentelella/custom.js')}}"></script>

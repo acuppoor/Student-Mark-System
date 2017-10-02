@@ -2894,9 +2894,9 @@
 
                 $.ajax({
                     type: 'POST',
-                    url: courseId+'/update',
+                    url: '/update',
                     data: {
-                        _token: token,
+                        courseId: courseId,
                         name: courseName,
                         code: courseCode,
                         type: courseType,
@@ -2916,6 +2916,7 @@
 
             function successOperation(element){
                 element.children('.spinnerPlaceholder').replaceWith('<i class="spinnerPlaceholder fa fa-check-circle"></i>');
+                document.getElementById('reloadPageButton').style.display = 'block';
             }
 
             function failOperation(element){

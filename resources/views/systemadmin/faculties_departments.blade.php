@@ -160,7 +160,7 @@
                                     <thead>
                                     <tr class="headings">
                                         <th class="column-title">#</th>
-                                        <th class="column-title">Name</th>
+                                        <th class="column-title">Name*:</th>
                                         <th class="column-title"> &nbsp;</th>
                                     </tr>
                                     </thead>

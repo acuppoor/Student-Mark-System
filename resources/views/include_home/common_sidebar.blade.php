@@ -17,6 +17,8 @@
         </div>
         <!-- /sidebar menu -->
 
+        <button class="btn btn-warning" type="button" id="reloadPageButton" style="display: none">Reload Page</button>
+
         <!-- /menu footer buttons -->
         <div class="sidebar-footer hidden-small">
             <a data-toggle="tooltip" data-placement="top" title="Logout" href="{{ route('logout') }}"

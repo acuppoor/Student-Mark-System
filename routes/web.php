@@ -13,16 +13,16 @@ Route::get('tacourses/{courseId}', 'PagesController@getTaCourse');
 Route::get('/conveningcourses', 'PagesController@conveningCourses')->name("convening_courses");
 Route::post('/conveningcourses/filter', 'PagesController@conveningCourses');
 Route::get('/conveningcourses/{courseId}', 'PagesController@getCourseDetails');
-Route::post('/conveningcourses/{courseId}/update', 'PagesController@updateCourseInfo');
-Route::post('/conveningcourses/{courseId}/addconvenor', 'PagesController@addCourseConvenor');
-Route::post('/conveningcourses/{courseId}/addlecturer', 'PagesController@addLecturer');
-Route::post('/conveningcourses/{courseId}/addta', 'PagesController@addTA');
+Route::post('/updatecourse', 'PagesController@updateCourseInfo');
+Route::post('/addconvenor', 'PagesController@addCourseConvenor');
+Route::post('/addlecturer', 'PagesController@addLecturer');
+Route::post('/addta', 'PagesController@addTA');
 Route::post('/participantslist', 'PagesController@participantsList');
 Route::post('/getconvenors', 'PagesController@getConvenors');
 Route::post('//getteachingassistants', 'PagesController@getTAs');
 Route::post('/getlecturers', 'PagesController@getLecturers');
 Route::post('/getstudents', 'PagesController@getStudents');
-Route::post('/conveningcourses/getteachingassistants', 'PagesController@getTAs');
+Route::post('/getteachingassistants', 'PagesController@getTAs');
 Route::post('/createsubminimumrow', 'PagesController@createSubminimumRow');
 Route::post('/deletesubminimumrow', 'PagesController@deleteSubminimumRow');
 Route::post('/createcoursework', 'PagesController@createCoursework');
@@ -66,12 +66,15 @@ Route::post('/updatedepartment', 'PagesController@updateDepartment');
 Route::post('/deletedepartment', 'PagesController@deleteDepartment');
 
 
+Route::get('/courses', 'PagesController@otherCourses')->name("other_courses");
+Route::post('/courses', 'PagesController@otherCourses');
+Route::post('/createcourse', 'PagesController@createCourse');
+Route::post('/deletecourse', 'PagesController@deleteCourse');
+Route::get('/admincourses/{courseId}', 'PagesController@getCourseDetails');
+
 Route::get('/lecturingcourses', 'PagesController@lecturerCourses')->name("lecturer_courses");
 Route::post('/lecturingcourses/filter', 'PagesController@lecturerCourses');
 Route::get('/lecturingcourses/{courseId}', 'PagesController@lecturerCourses');
-Route::get('/courses', 'PagesController@otherCourses')->name("other_courses");
-Route::post('/courses/filter', 'PagesController@otherCourses');
-Route::get('/courses/{courseId}', 'PagesController@otherCourses');
 
 
 Route::get('/searchmarks', 'PagesController@searchMarks')->name("search_marks");
