@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\ConvenorCourseMap;
+use App\LecturerCourseMap;
+use App\TACourseMap;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -189,18 +192,26 @@ class PagesController extends Controller
             return view('auth.login');
         }
         $roleID = Auth::user()->role_id;
-        switch ($roleID){
-            case 1:
-            case 2:
-                return view('student.access_denied');
-            case 3:
-            case 4:
-                return app('App\Http\Controllers\LecturerController')->getCourseDetails($courseId);
-            case 5:
-                return app('App\Http\Controllers\DeptAdminController')->getCourseDetails($courseId);
-            case 6:
-                return view('systemadmin.courses');
+        if($roleID == 5){
+            return app('App\Http\Controllers\DeptAdminController')->getCourseDetails($courseId);
+        } else if($roleID == 6){
+            return view('systemadmin.course_details_super')->with('course', app('App\Http\Controllers\LecturerController')->getCourseDetails($courseId));
         }
+
+        $convenorMap = ConvenorCourseMap::where('course_id', $courseId)->where('user_id', Auth::user()->id)->first();
+        $lecturerMap = LecturerCourseMap::where('course_id', $courseId)->where('user_id', Auth::user()->id)->first();
+        $taMap = TACourseMap::where('course_id', $courseId)->where('user_id', Auth::user()->id)->first();
+
+        if($convenorMap){
+            return view('lecturer.course_details_convenor')->with('course', app('App\Http\Controllers\LecturerController')->getCourseDetails($courseId));
+        } else if($lecturerMap){
+            return view('lecturer.course_details_lecturer')->with('course', app('App\Http\Controllers\LecturerController')->getCourseDetails($courseId));
+        } else if($taMap){
+            return view('student.access_denied');
+        } else if($roleID == 3){
+            return view('lecturer.course_details_other')->with('course', app('App\Http\Controllers\LecturerController')->getCourseDetails($courseId));
+        }
+        return view('student.access_denied');
     }
 
     public function createCourse(Request $request){
@@ -332,15 +343,13 @@ class PagesController extends Controller
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1:
-            case 2:
                 return view('student.access_denied');
+            case 2:
             case 3:
-                return view('lecturer.access_denied');
             case 4:
+            case 6:
             case 5:
                 return app('App\Http\Controllers\LecturerController')->participantsList($request);
-            case 6:
-                return view('systemadmin.access_denied');
         }
     }
 
@@ -432,15 +441,13 @@ class PagesController extends Controller
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1:
-            case 2:
                 return view('student.access_denied');
+            case 2:
             case 3:
-                return view('lecturer.access_denied');
             case 4:
+            case 6:
             case 5:
                 return app('App\Http\Controllers\LecturerController')->getConvenors($request);
-            case 6:
-                return view('systemadmin.access_denied');
         }
     }
 
@@ -452,15 +459,13 @@ class PagesController extends Controller
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1:
-            case 2:
                 return view('student.access_denied');
+            case 2:
             case 3:
-                return view('lecturer.access_denied');
             case 4:
+            case 6:
             case 5:
                 return app('App\Http\Controllers\LecturerController')->getLecturers($request);
-            case 6:
-                return view('systemadmin.access_denied');
         }
     }
 
@@ -472,15 +477,13 @@ class PagesController extends Controller
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1:
-            case 2:
                 return view('lecturer.access_denied');
             case 3:
-                return view('lecturer.access_denied');
+            case 2:
             case 4:
+            case 6:
             case 5:
                 return app('App\Http\Controllers\LecturerController')->getStudents($request);
-            case 6:
-                return view('systemadmin.access_denied');
         }
     }
 
@@ -492,14 +495,13 @@ class PagesController extends Controller
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1:
-            case 2:
                 return view('student.access_denied');
+            case 2:
             case 3:
             case 4:
+            case 6:
             case 5:
                 return app('App\Http\Controllers\LecturerController')->getTAs($request);
-            case 6:
-                return view('systemadmin.courses');
         }
     }
 
@@ -631,15 +633,13 @@ class PagesController extends Controller
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1:
-            case 2:
                 return view('student.access_denied');
+            case 2:
             case 3:
-                return view('lecturer.access_denied');
             case 5:
             case 4:
-                return app('App\Http\Controllers\LecturerController')->getSubCourseworks($request);
             case 6:
-                return view('systemadmin.lecturer');
+            return app('App\Http\Controllers\LecturerController')->getSubCourseworks($request);
         }
     }
 
@@ -1022,15 +1022,13 @@ class PagesController extends Controller
         $roleID = Auth::user()->role_id;
         switch ($roleID) {
             case 1:
-            case 2:
                 return view('student.access_denied');
+            case 2:
             case 3:
-                return view('lecturer.access_denied');
             case 5:
+            case 6:
             case 4:
                 return app('App\Http\Controllers\LecturerController')->downloadFinalGrade($request);
-            case 6:
-                return view('systemadmin.access_denied');
         }
 
     }
@@ -1043,14 +1041,13 @@ class PagesController extends Controller
         $roleID = Auth::user()->role_id;
         switch ($roleID) {
             case 1:
-            case 2:
                 return view('student.access_denied');
+            case 2:
             case 3:
             case 5:
+            case 6:
             case 4:
                 return app('App\Http\Controllers\LecturerController')->downloadDPList($request);
-            case 6:
-                return view('systemadmin.access_denied');
         }
 
     }

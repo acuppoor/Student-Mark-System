@@ -67,7 +67,7 @@
                                     <input type="hidden" id="courseDepartmentInput" value="{{request('courseDepartment')}}">
                                 </div>
                                 <div class="col-md-3 form-group pull-left top_search">
-                                    <p>&nbsp;</p>
+                                    <label for="">&nbsp;</label><br>
                                     <button class="btn btn-round btn-dark" id="searchButton">Search</button>
                                     <a href="{{route('ta_courses')}}">Reset Results</a>
                                 </div>

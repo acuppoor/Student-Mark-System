@@ -31,10 +31,6 @@ use Maatwebsite\Excel\Facades\Excel;
 class LecturerController extends Controller
 {
     public function getCourseDetails($courseId){
-        return $this->getCourseInfo($courseId);
-    }
-
-    private function getCourseInfo($courseId){
         $course = Course::where('id', $courseId)->first();
         $courseDetails =  array(
             'id' => $courseId,
@@ -113,7 +109,8 @@ class LecturerController extends Controller
             $subminimums[] = $subminimum;
         }
         $courseDetails['subminimums'] = $subminimums;
-        return view('lecturer.course_details_convenor')->with('courses', $courseDetails);
+//        return view('lecturer.course_details_convenor')->with('course', $courseDetails);
+        return $courseDetails;
     }
 
     public function createCoursework(Request $request){
@@ -853,7 +850,7 @@ class LecturerController extends Controller
                 $subcourseworks[] = round($subcourseworkFinalMark, 2);
             }
             $result['subcourseworks'] = $subcourseworks;
-            $result['total_marks'] = $courseworkTotalMark;
+            $result['total_marks'] = round($courseworkTotalMark, 2);
             $marks[] = $result;
         }
         $results['marks'] = $marks;
@@ -1477,7 +1474,7 @@ class LecturerController extends Controller
                 $total = 0;
                 foreach ($subminimum['rows'] as $row) {
                     $cwrk = $submCourseworks[$row['coursework_id']];
-                    if($row['subcoursework_id']){
+                    if($row['subcoursework_id'] && $row['subcoursework_id']!=-1){
                         $subcwrkMarks = $cwrk['subs'][$row['subcoursework_id']];
                         $total += ($subcwrkMarks*$row['weighting']/100.0);
                     } else {

@@ -67,7 +67,7 @@
                                     <input type="hidden" id="courseDepartmentInput" value="{{request('courseDepartment')}}">
                                 </div>
                                 <div class="col-md-3 form-group pull-left top_search">
-                                    <p>&nbsp;</p>
+                                    <label>&nbsp;</label><br>
                                     <button class="btn btn-round btn-dark" id="searchButton">Search</button>
                                     <a href="{{route('ta_courses')}}">Reset Results</a>
                                 </div>
@@ -77,8 +77,8 @@
                     </div>
                 </div>
             </div>
-            <h4>Results:</h4>
             @php ($courseCount = count($courses))
+            <h4>Results: {{$courseCount <= 0? 'None Found!':''}}</h4>
             @for($i = 0; $i < $courseCount; $i+=2)
                 <div class="row">
                     @for($j = $i; $j < ($i+2<=$courseCount? $i+2 : $courseCount); $j++)

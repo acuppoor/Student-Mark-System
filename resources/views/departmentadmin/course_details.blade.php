@@ -542,6 +542,10 @@
                                                             <div class="clearfix"></div>
                                                         </div>
                                                         <div class="x_content" style="display: block;" id="searchParticipantsResults">
+                                                            <button class="btn btn-dark btn-round spinnerNeeded" type="button" id="approveParticipantsButton">
+                                                                <i class="spinnerPlaceholder"></i>
+                                                                Approve Selected
+                                                            </button>
                                                             <table class="table table-striped jambo_table bulk_action">
                                                                 <thead>
                                                                     <tr class="headings">
@@ -561,11 +565,6 @@
                                                                 <tbody id="searchParticipantsResultsBody">
                                                                 </tbody>
                                                             </table>
-
-                                                            <button class="btn btn-dark btn-round spinnerNeeded" type="button" id="approveParticipantsButton">
-                                                                <i class="spinnerPlaceholder"></i>
-                                                                Approve Selected
-                                                            </button>
                                                         </div>
                                                     </div>
                                                 </div>

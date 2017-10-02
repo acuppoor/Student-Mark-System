@@ -8,7 +8,7 @@ Route::get('/mymarks', 'PagesController@myMarks')->name("my_marks");
 Route::post('/mymarks/filter', 'PagesController@myMarksFilter');
 Route::get('/tacourses', 'PagesController@taCourses')->name("ta_courses");
 Route::post('/tacourses/filter', 'PagesController@taCoursesFilter');
-Route::get('tacourses/{courseId}', 'PagesController@getTaCourse');
+Route::get('/tacourses/{courseId}', 'PagesController@getCourseDetails');
 
 Route::get('/conveningcourses', 'PagesController@conveningCourses')->name("convening_courses");
 Route::post('/conveningcourses/filter', 'PagesController@conveningCourses');
@@ -74,7 +74,8 @@ Route::get('/admincourses/{courseId}', 'PagesController@getCourseDetails');
 
 Route::get('/lecturingcourses', 'PagesController@lecturerCourses')->name("lecturer_courses");
 Route::post('/lecturingcourses/filter', 'PagesController@lecturerCourses');
-Route::get('/lecturingcourses/{courseId}', 'PagesController@lecturerCourses');
+Route::get('/lecturingcourses/{courseId}', 'PagesController@getCourseDetails');
+Route::get('/othercourses/{courseId}', 'PagesController@getCourseDetails');
 
 
 Route::get('/searchmarks', 'PagesController@searchMarks')->name("search_marks");

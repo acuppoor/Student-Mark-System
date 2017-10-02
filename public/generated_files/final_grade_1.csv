@@ -1,9 +1,9 @@
 Emplid,"Campus ID",Name,Term,"Class Nbr",Subject,"Catalog Nbr","Acad Prog","Final Grade"
-1234567,cppkus001,"Cuppoor, Kushal",1171,9654,CSC,1016S,EB812,0
-1499355,cppkus007,"undefined, undefined",1171,9654,CSC,1016S,EB806,0
-1449356,cppkus002,"undefined, undefined",1171,9654,CSC,1016S,EB807,0
-1645687,cppkus003,"undefined, undefined",1171,9654,CSC,1016S,EB808,0
-2738409,cppkus004,"undefined, undefined",1171,9654,CSC,1016S,EB809,0
-4758392,cppkus005,"undefined, undefined",1171,9654,CSC,1016S,EB810,0
-5830243,cppkus006,"undefined, undefined",1171,9654,CSC,1016S,EB811,0
-1234569,cppkus008,"undefined, undefined",1171,9654,CSC,1016S,EB812,0
+1234567,cppkus001,"Cuppoor, Kushal",1171,9654,CSC,1016S,EB812,1.31
+1499355,cppkus007,"undefined, undefined",1171,9654,CSC,1016S,EB806,ASF
+1449356,cppkus002,"undefined, undefined",1171,9654,CSC,1016S,EB807,0.09
+1645687,cppkus003,"undefined, undefined",1171,9654,CSC,1016S,EB808,0.38
+2738409,cppkus004,"undefined, undefined",1171,9654,CSC,1016S,EB809,1.27
+4758392,cppkus005,"undefined, undefined",1171,9654,CSC,1016S,EB810,0.64
+5830243,cppkus006,"undefined, undefined",1171,9654,CSC,1016S,EB811,0.76
+1234569,cppkus008,"undefined, undefined",1171,9654,CSC,1016S,EB812,1.02

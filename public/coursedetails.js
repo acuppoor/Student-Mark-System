@@ -651,6 +651,8 @@ $(document).ready(function(){
         var offset = ($('#subcourseworkSearchPageLimit').val()=='Max'?-1:$('#subcourseworkSearchPageOffset').val()-1);
         var thisElement = $(this);
 
+        var valid = $(this).data('valid');
+
         $.ajax({
             type: 'POST',
             url: '/getstudentssubcourseworkmarks',
@@ -684,8 +686,12 @@ $(document).ready(function(){
                     dataString += '<tr class="even pointer">';
                     dataString +=  '<td>'+record.student_number+'</td>';
                     dataString +=  '<td>'+record.employee_id+'</td>';
-                    for(var j = 0; j < record.sections.length; j++){
-                        dataString +=  '<td><input type="number" min="0" max="'+record.sections[j].denominator+'" data-studentnumber="'+record.student_number+'" data-sectionid="'+record.sections[j].id+'" style="width:50px"class="sectionMarkInput" value="'+record.sections[j].numerator + '"> / ' + record.sections[j].denominator +'</td>';
+                    for(var j = 0; j < record.sections.length; j++) {
+                        if (valid) {
+                            dataString += '<td>'+record.sections[j].numerator + ' / ' + record.sections[j].denominator +'</td>';
+                        } else {
+                            dataString += '<td><input type="number" min="0" max="' + record.sections[j].denominator + '" data-studentnumber="' + record.student_number + '" data-sectionid="' + record.sections[j].id + '" style="width:50px"class="sectionMarkInput" value="' + record.sections[j].numerator + '"> / ' + record.sections[j].denominator + '</td>';
+                        }
                     }
                     if(record.sections.length <= 0 ){
                         dataString += '<td><i>No Section Found</i></td>';
@@ -699,7 +705,7 @@ $(document).ready(function(){
 
                 $('#subcourseworkSearchResultsTable').replaceWith(dataString);
                 $('#subcourseworkSearchResultsTable').show();
-                successOperation(thisElement);
+                successOperation(thisElement, false);
             },
             error: function(data) {
                 failOperation(thisElement);
