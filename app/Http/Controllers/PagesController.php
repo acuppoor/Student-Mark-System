@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\ConvenorCourseMap;
 use App\Course;
+use App\DeptAdminDeptMap;
 use App\LecturerCourseMap;
 use App\TACourseMap;
 use App\UserDepartmentMap;
@@ -193,6 +194,11 @@ class PagesController extends Controller
     }
 
     /**
+     * checks if department admin is an admin for the department of the course
+     * or if the user is a system admin, then just return the details without further check
+     * or if the user is a convenor for the course, then return the details with full access
+     * or if the user is a lecturer/TA, then return the details with limitied access
+     * for any other user, access is denied
      * returns the course management page with the course details
      * @param $courseId
      * @return $this|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
@@ -208,9 +214,9 @@ class PagesController extends Controller
             if(!$course){
                 return view('departmentadmin.access_denied');
             }
-            $deptMap = UserDepartmentMap::where('user_id', Auth::user()->id)
+            $deptMap = DeptAdminDeptMap::where('user_id', Auth::user()->id)
                     ->where('department_id', $course->department->id)->first();
-            if($deptMap) {
+            if($deptMap && $deptMap->status == 1) {
                 return app('App\Http\Controllers\DeptAdminController')->getCourseDetails($courseId);
             } else {
                 return view('departmentadmin.access_denied');
