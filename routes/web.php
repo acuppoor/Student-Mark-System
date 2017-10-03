@@ -5,7 +5,7 @@ Route::get('/contact', 'ContactController@index')->name('contact');
 Route::get('/home', 'PagesController@home')->name("home");
 
 Route::get('/mymarks', 'PagesController@myMarks')->name("my_marks");
-Route::post('/mymarks/filter', 'PagesController@myMarksFilter');
+Route::post('/mymarks', 'PagesController@myMarksFilter');
 Route::get('/tacourses', 'PagesController@taCourses')->name("ta_courses");
 Route::post('/tacourses/filter', 'PagesController@taCoursesFilter');
 Route::get('/tacourses/{courseId}', 'PagesController@getCourseDetails');
@@ -76,10 +76,11 @@ Route::get('/lecturingcourses', 'PagesController@lecturerCourses')->name("lectur
 Route::post('/lecturingcourses/filter', 'PagesController@lecturerCourses');
 Route::get('/lecturingcourses/{courseId}', 'PagesController@getCourseDetails');
 Route::get('/othercourses/{courseId}', 'PagesController@getCourseDetails');
+Route::post('/resetpassword', 'PagesController@resetPassword');
 
 
 Route::get('/searchmarks', 'PagesController@searchMarks')->name("search_marks");
-Route::post('/searchmarks/search', 'PagesController@getMarks');
+Route::post('/searchmarks', 'PagesController@getMarks');
 
 Route::get('/admin', 'PagesController@admin')->name("admin");
 Route::get('/faculties&departments', 'PagesController@faculties')->name("faculties");

@@ -87,11 +87,11 @@ class PagesController extends Controller
                 return view('student.searchmarks')->with('courses', app('App\Http\Controllers\StudentController')->getMarks($request));
             case 3:
             case 4:
-                return view('lecturer.searchmarks');
+                return view('lecturer.searchmarks')->with('courses', app('App\Http\Controllers\StudentController')->getMarks($request));
             case 5:
-                return view('departmentadmin.searchmarks');
+                return view('departmentadmin.searchmarks')->with('courses', app('App\Http\Controllers\StudentController')->getMarks($request));
             case 6:
-                return view('systemadmin.searchmarks');
+                return view('systemadmin.searchmarks')->with('courses', app('App\Http\Controllers\StudentController')->getMarks($request));
         }
     }
 
@@ -207,7 +207,7 @@ class PagesController extends Controller
         } else if($lecturerMap){
             return view('lecturer.course_details_lecturer')->with('course', app('App\Http\Controllers\LecturerController')->getCourseDetails($courseId));
         } else if($taMap){
-            return view('student.access_denied');
+            return view('student.course_details_ta')->with('course', app('App\Http\Controllers\LecturerController')->getCourseDetails($courseId));
         } else if($roleID == 3){
             return view('lecturer.course_details_other')->with('course', app('App\Http\Controllers\LecturerController')->getCourseDetails($courseId));
         }
@@ -361,8 +361,10 @@ class PagesController extends Controller
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1:
+                throwException();
             case 2:
-                return view('student.access_denied');
+                /*return view('student.access_denied');*/
+
             case 3:
                 return view('lecturer.access_denied');
             case 4:
@@ -1307,6 +1309,26 @@ class PagesController extends Controller
                 return view('departmentadmin.access_denied');
             case 6:
                 return app('App\Http\Controllers\SysAdminController')->deleteDepartment($request);
+        }
+    }
+
+    public function resetPassword(Request $request){
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login');
+        }
+        $roleID = Auth::user()->role_id;
+        switch ($roleID){
+            case 1:
+            case 2:
+                return view('student.access_denied');
+            case 3:
+            case 4:
+                return view('lecturer.access_denied');
+            case 5:
+                return view('systemadmin.access_denied');
+            case 6:
+                return app('App\Http\Controllers\SysAdminController')->resetPassword($request);
         }
     }
 }

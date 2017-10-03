@@ -221,4 +221,16 @@ class SysAdminController extends Controller
         return view('systemadmin.courses')->with('courses', $courses);
     }
 
+    public function resetPassword(Request $request){
+        $email = $request->input('email');
+        $user = User::where('email', $email)->first();
+
+        if(!$email || !$user || !$request->input('password')){
+            throwException();
+        }
+
+        $password = bcrypt($request->input('password'));
+        $user->password = $password;
+        $user->save();
+    }
 }

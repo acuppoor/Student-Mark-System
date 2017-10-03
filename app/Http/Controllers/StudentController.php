@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Course;
 use App\Coursework;
+use App\FinalGradeType;
 use App\SectionUserMarkMap;
 use App\SubCourseworkUserMarkMap;
+use App\TACourseMap;
 use App\User;
+use App\UserCourseFinalGrade;
+use App\UserCourseMap;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
@@ -43,7 +48,7 @@ class StudentController extends Controller
             $course['type'] = $crs->type->name;
 
             if($request && (
-                ($request->input('courseCode') && !$this->isSimilar($crs->name, $request->input('courseCode'))) ||
+                ($request->input('courseCode') && !$this->isSimilar($crs->code, $request->input('courseCode'))) ||
                 ($request->input('courseDepartment') && $crs->department->code.' - '.$crs->department->name != $request->input('courseDepartment')) ||
                 ($request->input('courseYear') && $course['year'] != $request->input('courseYear')) ||
                 ($request->input('courseType') && $course['type'] != $request->input('courseType'))
@@ -74,33 +79,187 @@ class StudentController extends Controller
         $courseYear = $request->input('courseYear');
         $courseCode = $request->input('courseCode');
 
-        $user = User::where('student_number', $studentNumber)->first();
-        if(!$user || ($user->role_id != 1 && $user->role_id != 2)){
-            return array();
+        $student = User::where('student_number', $studentNumber)->orWhere('employee_id', $studentNumber)->first();
+        if(!$studentNumber || !$student){return;}
+
+        $taMaps = Auth::user()->courseTAMaps;
+        $possibleCourses = [];
+        foreach ($taMaps as $taMap) {
+            if($taMap->status == 0){continue;}
+            $crs = $taMap->course;
+            if(($courseCode && $this->isSimilar($crs->code, $courseCode)) && ($courseYear && explode('-', $crs->start_date)[0]==$courseYear)) {
+                $possibleCourses[] = $crs;
+            } else if(!$courseCode && $courseYear && explode('-', $crs->start_date)[0]==$courseYear) {
+                $possibleCourses[] = $crs;
+            } else if(!$courseYear && $courseCode && $this->isSimilar($crs->code, $courseCode)){
+                $possibleCourses[] = $crs;
+            } else if(!$courseCode && !$courseYear) {
+                $possibleCourses[] = $crs;
+            }
         }
 
         $courses = [];
-        foreach ($user->courseMaps as $courseMap) {
-            $crs = $courseMap->course;
-            if(explode('-', $crs['start_date'])[0] != $courseYear ||
-                ($courseCode && !$this->isSimilar($crs['code'], $courseCode))
-            ){
+        $userId = $student->id;
+        foreach ($possibleCourses as $possibleCourse) {
+            $courseId = $possibleCourse->id;
+            $studentCourseMap = UserCourseMap::where('user_id', $userId)->where('course_id', $courseId)->first();
+            if(!$studentCourseMap){
                 continue;
             }
-
-            $course = [];
-            $course['code'] = $crs->code;
-            $course['year'] = explode('-', $crs['start_date'])[0];
-            // get the marks for the student. will follow same approach as student viewing their own marks.
-            // once students' marks are optimised, then this one can be completed.
-            $courses[] = $course;
+            $courses[] = $possibleCourse;
         }
-        return $courses;
+
+
+        $results = [];
+        foreach ($courses as $course){
+            $classMark = 0.0;
+            $yearMark = 0.0;
+            $result = [];
+            $result['courseName'] = $course->code;
+            $result['year'] = $courseYear;
+            $courseworks = [];
+            $cwrks = $course->courseworks;
+
+
+            // DP Calculation starts
+            $subms = $course->subminimums;
+            $subminimums = [];
+            foreach ($subms as $subm) {
+                if($subm->for_dp == 1){
+                    $subminimum = [];
+                    $subminimum['threshold'] = $subm->threshold;
+                    $rows = [];
+                    $rws = $subm->subminimumRows;
+                    foreach ($rws as $rw) {
+                        $row = [];
+                        $row['coursework_id'] = $rw->coursework_id;
+                        $row['subcoursework_id'] = $rw->subcoursework_id;
+                        $row['weighting'] = $rw->weighting;
+                        $rows[] = $row;
+                    }
+                    $subminimum['rows'] = $rows;
+                    $subminimums[] = $subminimum;
+                }
+            }
+            $submCourseworks = [];
+            // DP Calculation stops
+
+
+            foreach ($cwrks as $cwrk){
+                if($cwrk->display_to_students > (date('Y').'-'.date('m').'-'.date('d'))){
+                    continue;
+                }
+
+                $weightingYear = $cwrk->weighting_in_yearmark;
+                $weightingClass = $cwrk->weighting_in_classrecord;
+
+                $courseworkTotalMark = 0;
+
+                $subcourseworks = [];
+                $submSubcourseworks = [];
+
+                foreach ($cwrk->subcourseworks as $subcwrk) {
+                    if($subcwrk->display_to_students > (date('Y').'-'.date('m').'-'.date('d'))){
+                        continue;
+                    }
+
+                    $subcoursework = [];
+                    $subcoursework['name'] = $subcwrk->name;
+                    $subcoursework['max_marks'] = round($subcwrk->max_marks, 2);
+                    $subcoursework['weighting'] = round($subcwrk->weighting_in_coursework, 2);
+
+                    $subcourseworkFinalMark = 0.0;
+                    $subcourseworkMarkN = 0.0;
+                    $subcourseworkMarkD = 0.0;
+
+                    $sections = [];
+                    foreach ($subcwrk->sections as $sctn){
+                        $mark = SectionUserMarkMap::where('section_id', $sctn->id)
+                            ->where('user_id', Auth::user()->id)->first();
+
+                        $mark = $mark? $mark->marks:0;
+
+                        $subcourseworkMarkD += $sctn->max_marks;
+                        $subcourseworkMarkN += $mark;
+
+                        $section['name'] = $sctn->name;
+                        $section['marks'] = round($mark, 2);
+                        $section['max_marks'] = round($sctn->max_marks, 2);
+                        $sections[] = $section;
+                    }
+                    $subcourseworkFinalMark = $subcourseworkMarkD==0?0:($subcourseworkMarkN/$subcourseworkMarkD)*$subcwrk->weighting_in_coursework;
+                    $subcoursework['numerator'] = round($subcourseworkMarkN, 2);
+                    $subcoursework['denominator'] = round($subcourseworkMarkD, 2);
+                    $subcoursework['weighted_marks'] = round($subcourseworkFinalMark, 2);
+                    $subcoursework['sections'] = $sections;
+                    $subcourseworks[] = $subcoursework;
+                    $courseworkTotalMark += $subcourseworkFinalMark;
+                    $submSubcourseworks[$subcwrk->id] = $subcourseworkMarkD!=0?($subcourseworkMarkN*100.0)/$subcourseworkMarkD:0;
+                }
+
+                $coursework['name'] = $cwrk->name;
+                $coursework['subcourseworks'] = $subcourseworks;
+                $coursework['total_marks'] = round($courseworkTotalMark, 2);
+                $coursework['weighting_classrecord'] = round($cwrk->weighting_in_classrecord, 2);
+                $coursework['weighting_yearmark'] = round($cwrk->weighting_in_yearmark, 2);
+                $coursework['weighted_mark_class'] = round(($courseworkTotalMark * $weightingClass / 100.0), 2);
+                $coursework['weighted_mark_year'] = round(($courseworkTotalMark * $weightingYear / 100.0), 2);
+                $classMark += $coursework['weighted_mark_class'];
+                $yearMark += $coursework['weighted_mark_year'];
+                $courseworks[] = $coursework;
+
+                $submCoursework = [];
+                $submCoursework['total'] = $courseworkTotalMark;
+                $submCoursework['subs'] = $submSubcourseworks;
+                $submCourseworks[$cwrk->id] = $submCoursework;
+
+            }
+            $result['courseworks'] = $courseworks;
+            $result['class_mark'] = round($classMark, 2);
+            $result['year_mark'] = round($yearMark, 2);
+
+            $finalGrade = UserCourseFinalGrade::where('user_id',Auth::user()->id)
+                ->where('course_id', $course->id)->first();
+            if($finalGrade){
+                if($finalGrade->type_id == 1){
+                    $result['final_mark'] = round($yearMark, 2);
+                } else {
+                    $result['final_mark'] = FinalGradeType::where('id', $finalGrade->type_id)->first()->name;
+                }
+            } else {
+                $result['final_mark'] = round($yearMark, 2);
+            }
+
+            $result['dp_status'] = 'DP';
+//            print_r($subminimums); print_r($submCourseworks); die();
+
+            foreach ($subminimums as $subminimum) {
+                $threshold = $subminimum['threshold'];
+                $total = 0;
+                foreach ($subminimum['rows'] as $row) {
+                    $cwrk = $submCourseworks[$row['coursework_id']];
+                    if($row['subcoursework_id'] && $row['subcoursework_id']!=-1){
+                        $subcwrkMarks = $cwrk['subs'][$row['subcoursework_id']];
+                        $total += ($subcwrkMarks*$row['weighting']/100.0);
+                    } else {
+                        $total += ($cwrk['total']*$row['weighting']/100.0);
+                    }
+                }
+                if($total<$threshold){
+                    $result['dp_status'] = 'DPR';
+                    break;
+                }
+            }
+
+            $results[] = $result;
+        }
+        return $results;
+
     }
 
-
-    private function isSimilar($wordOne, $wordTwo){
-        return true;
+    private function isSimilar($haystack, $needle){
+        $pos = strpos(strtolower($haystack), strtolower($needle));
+        return ($pos===0||$pos>=1) || strtolower($haystack)==strtolower($needle);
     }
 
     private function getCourses($courseCode=null, $year = null, $type=null, $department=null){ // student
@@ -118,7 +277,7 @@ class StudentController extends Controller
             $courseYear = (explode('-', $course->start_date))[0];
             if(
                 $courseYear != $year ||
-                ($courseCode && !$this->isSimilar($courseCode, $course->code)) ||
+                ($courseCode && !$this->isSimilar($course->code, $courseCode)) ||
                 ($type && $course->type->name != $type) ||
                 ($department && ($course->department->code . ' - ' . $course->department->name) != $department)
             ){
@@ -131,16 +290,44 @@ class StudentController extends Controller
             $result['year'] = $courseYear;
             $courseworks = [];
             $cwrks = $course->courseworks;
+
+
+            // DP Calculation starts
+            $subms = $course->subminimums;
+            $subminimums = [];
+            foreach ($subms as $subm) {
+                if($subm->for_dp == 1){
+                    $subminimum = [];
+                    $subminimum['threshold'] = $subm->threshold;
+                    $rows = [];
+                    $rws = $subm->subminimumRows;
+                    foreach ($rws as $rw) {
+                        $row = [];
+                        $row['coursework_id'] = $rw->coursework_id;
+                        $row['subcoursework_id'] = $rw->subcoursework_id;
+                        $row['weighting'] = $rw->weighting;
+                        $rows[] = $row;
+                    }
+                    $subminimum['rows'] = $rows;
+                    $subminimums[] = $subminimum;
+                }
+            }
+            $submCourseworks = [];
+            // DP Calculation stops
+
+
             foreach ($cwrks as $cwrk){
                 if($cwrk->display_to_students > (date('Y').'-'.date('m').'-'.date('d'))){
                     continue;
                 }
+
                 $weightingYear = $cwrk->weighting_in_yearmark;
                 $weightingClass = $cwrk->weighting_in_classrecord;
 
                 $courseworkTotalMark = 0;
 
                 $subcourseworks = [];
+                $submSubcourseworks = [];
 
                 foreach ($cwrk->subcourseworks as $subcwrk) {
                     if($subcwrk->display_to_students > (date('Y').'-'.date('m').'-'.date('d'))){
@@ -149,8 +336,8 @@ class StudentController extends Controller
 
                     $subcoursework = [];
                     $subcoursework['name'] = $subcwrk->name;
-                    $subcoursework['max_marks'] = $subcwrk->max_marks;
-                    $subcoursework['weighting'] = $subcwrk->weighting_in_coursework;
+                    $subcoursework['max_marks'] = round($subcwrk->max_marks, 2);
+                    $subcoursework['weighting'] = round($subcwrk->weighting_in_coursework, 2);
 
                     $subcourseworkFinalMark = 0.0;
                     $subcourseworkMarkN = 0.0;
@@ -167,35 +354,74 @@ class StudentController extends Controller
                         $subcourseworkMarkN += $mark;
 
                         $section['name'] = $sctn->name;
-                        $section['marks'] = $mark;
-                        $section['max_marks'] = $sctn->max_marks;
+                        $section['marks'] = round($mark, 2);
+                        $section['max_marks'] = round($sctn->max_marks, 2);
                         $sections[] = $section;
                     }
                     $subcourseworkFinalMark = $subcourseworkMarkD==0?0:($subcourseworkMarkN/$subcourseworkMarkD)*$subcwrk->weighting_in_coursework;
-                    $subcoursework['numerator'] = $subcourseworkMarkN;
-                    $subcoursework['denominator'] = $subcourseworkMarkD;
-                    $subcoursework['weighted_marks'] = $subcourseworkFinalMark;
+                    $subcoursework['numerator'] = round($subcourseworkMarkN, 2);
+                    $subcoursework['denominator'] = round($subcourseworkMarkD, 2);
+                    $subcoursework['weighted_marks'] = round($subcourseworkFinalMark, 2);
                     $subcoursework['sections'] = $sections;
                     $subcourseworks[] = $subcoursework;
                     $courseworkTotalMark += $subcourseworkFinalMark;
+                    $submSubcourseworks[$subcwrk->id] = $subcourseworkMarkD!=0?($subcourseworkMarkN*100.0)/$subcourseworkMarkD:0;
                 }
 
                 $coursework['name'] = $cwrk->name;
                 $coursework['subcourseworks'] = $subcourseworks;
-                $coursework['total_marks'] = $courseworkTotalMark;
-                $coursework['weighting_classrecord'] = $cwrk->weighting_in_classrecord;
-                $coursework['weighting_yearmark'] = $cwrk->weighting_in_yearmark;
-                $coursework['weighted_mark_class'] = $courseworkTotalMark * $weightingClass / 100.0;
-                $coursework['weighted_mark_year'] = $courseworkTotalMark * $weightingYear / 100.0;
+                $coursework['total_marks'] = round($courseworkTotalMark, 2);
+                $coursework['weighting_classrecord'] = round($cwrk->weighting_in_classrecord, 2);
+                $coursework['weighting_yearmark'] = round($cwrk->weighting_in_yearmark, 2);
+                $coursework['weighted_mark_class'] = round(($courseworkTotalMark * $weightingClass / 100.0), 2);
+                $coursework['weighted_mark_year'] = round(($courseworkTotalMark * $weightingYear / 100.0), 2);
                 $classMark += $coursework['weighted_mark_class'];
                 $yearMark += $coursework['weighted_mark_year'];
                 $courseworks[] = $coursework;
+
+                $submCoursework = [];
+                $submCoursework['total'] = $courseworkTotalMark;
+                $submCoursework['subs'] = $submSubcourseworks;
+                $submCourseworks[$cwrk->id] = $submCoursework;
+
             }
             $result['courseworks'] = $courseworks;
-            $result['class_mark'] = $classMark;
-            $result['year_mark'] = $yearMark;
-            $result['final_mark'] = $yearMark;
+            $result['class_mark'] = round($classMark, 2);
+            $result['year_mark'] = round($yearMark, 2);
+
+            $finalGrade = UserCourseFinalGrade::where('user_id',Auth::user()->id)
+                ->where('course_id', $course->id)->first();
+            if($finalGrade){
+                if($finalGrade->type_id == 1){
+                    $result['final_mark'] = round($yearMark, 2);
+                } else {
+                    $result['final_mark'] = FinalGradeType::where('id', $finalGrade->type_id)->first()->name;
+                }
+            } else {
+                $result['final_mark'] = round($yearMark, 2);
+            }
+
             $result['dp_status'] = 'DP';
+//            print_r($subminimums); print_r($submCourseworks); die();
+
+            foreach ($subminimums as $subminimum) {
+                $threshold = $subminimum['threshold'];
+                $total = 0;
+                foreach ($subminimum['rows'] as $row) {
+                    $cwrk = $submCourseworks[$row['coursework_id']];
+                    if($row['subcoursework_id'] && $row['subcoursework_id']!=-1){
+                        $subcwrkMarks = $cwrk['subs'][$row['subcoursework_id']];
+                        $total += ($subcwrkMarks*$row['weighting']/100.0);
+                    } else {
+                        $total += ($cwrk['total']*$row['weighting']/100.0);
+                    }
+                }
+                if($total<$threshold){
+                    $result['dp_status'] = 'DPR';
+                    break;
+                }
+            }
+
             $results[] = $result;
         }
         return $results;
