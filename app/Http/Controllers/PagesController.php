@@ -63,7 +63,7 @@ class PagesController extends Controller
                 return view('student.searchmarks')->with('courses', array());
             case 3:
             case 4:
-                return view('lecturer.searchmarks');
+                return view('lecturer.searchmarks')->with('courses', array());
             case 5:
                 return view('departmentadmin.searchmarks');
             case 6:
@@ -87,7 +87,7 @@ class PagesController extends Controller
                 return view('student.searchmarks')->with('courses', app('App\Http\Controllers\StudentController')->getMarks($request));
             case 3:
             case 4:
-                return view('lecturer.searchmarks')->with('courses', app('App\Http\Controllers\StudentController')->getMarks($request));
+                return view('lecturer.searchmarks')->with('courses', app('App\Http\Controllers\LecturerController')->getMarks($request));
             case 5:
                 return view('departmentadmin.searchmarks')->with('courses', app('App\Http\Controllers\StudentController')->getMarks($request));
             case 6:

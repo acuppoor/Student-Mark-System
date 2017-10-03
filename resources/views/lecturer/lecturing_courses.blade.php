@@ -24,7 +24,7 @@
                 <div class="col-md-12">
                     <div class="x_panel">
                         <div class="x_title">
-                            <form action="/lecturingcourses/filter" method="POST">
+                            <form action="/lecturingcourses" method="POST">
                                 {{ csrf_field() }}
                                 <div class="col-md-2 form-group pull-left top_search">
                                     <label for="courseCode">Course Code:</label>
@@ -68,8 +68,8 @@
                                 </div>
                                 <div class="col-md-3 form-group pull-left top_search">
                                     <label>&nbsp;</label><br>
-                                    <button class="btn btn-round btn-dark" id="searchButton">Search</button>
-                                    <a href="{{route('ta_courses')}}">Reset Results</a>
+                                    <button class="btn btn-round btn-dark" id="searchButton"><i class="fa fa-search"></i>Search</button>
+                                    <a href="{{route('lecturer_courses')}}">Reset Results</a>
                                 </div>
                             </form>
                             <div class="clearfix"></div>
@@ -85,7 +85,7 @@
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <div class="x_panel">
                                 <div class="x_title">
-                                    <a href="{{url('/lecturingcourses/'.$courses[$j]['id'])}}"><h2>{{($j+1) . '. ' . $courses[$j]['name']. ' (' . $courses[$j]['year'] .')'}}</h2></a>
+                                    <a href="{{url('/lecturingcourses/'.$courses[$j]['id'])}}"><h2>{{($j+1) . '. ' . $courses[$j]['code']. ' (' . $courses[$j]['year'] .')'}}</h2></a>
                                     <ul class="nav navbar-right panel_toolbox">
                                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a>
                                         </li>

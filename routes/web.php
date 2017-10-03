@@ -73,19 +73,16 @@ Route::post('/deletecourse', 'PagesController@deleteCourse');
 Route::get('/admincourses/{courseId}', 'PagesController@getCourseDetails');
 
 Route::get('/lecturingcourses', 'PagesController@lecturerCourses')->name("lecturer_courses");
-Route::post('/lecturingcourses/filter', 'PagesController@lecturerCourses');
+Route::post('/lecturingcourses', 'PagesController@lecturerCourses');
 Route::get('/lecturingcourses/{courseId}', 'PagesController@getCourseDetails');
 Route::get('/othercourses/{courseId}', 'PagesController@getCourseDetails');
 Route::post('/resetpassword', 'PagesController@resetPassword');
-
 
 Route::get('/searchmarks', 'PagesController@searchMarks')->name("search_marks");
 Route::post('/searchmarks', 'PagesController@getMarks');
 
 Route::get('/admin', 'PagesController@admin')->name("admin");
 Route::get('/faculties&departments', 'PagesController@faculties')->name("faculties");
-
-Route::get('/courseconvenor/courseedit', function(){return view('lecturer.courseedit');});
 
 Route::get('/faqs', function(){return view('faq');})->name('FAQs');
 Route::get('/privacypolicy', function(){return view('privacypolicy');})->name('privacy_policy');

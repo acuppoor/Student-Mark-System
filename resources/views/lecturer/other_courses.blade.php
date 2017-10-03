@@ -24,7 +24,7 @@
                 <div class="col-md-12">
                     <div class="x_panel">
                         <div class="x_title">
-                            <form action="/courses/filter" method="POST">
+                            <form action="/courses" method="POST">
                                 {{ csrf_field() }}
                                 <div class="col-md-2 form-group pull-left top_search">
                                     <label for="courseCode">Course Code:</label>
@@ -68,8 +68,8 @@
                                 </div>
                                 <div class="col-md-3 form-group pull-left top_search">
                                     <label>&nbsp;</label><br>
-                                    <button class="btn btn-round btn-dark" id="searchButton">Search</button>
-                                    <a href="{{route('ta_courses')}}">Reset Results</a>
+                                    <button class="btn btn-round btn-dark" id="searchButton"><i class="fa fa-search"></i>Search</button>
+                                    <a href="{{route('other_courses')}}">Reset Results</a>
                                 </div>
                             </form>
                             <div class="clearfix"></div>
