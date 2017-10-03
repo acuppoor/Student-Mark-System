@@ -20,6 +20,7 @@ use App\TACourseMap;
 use App\User;
 use App\UserCourseFinalGrade;
 use App\UserCourseMap;
+use App\UserDepartmentMap;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Mail;
@@ -30,8 +31,16 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class LecturerController extends Controller
 {
+    /**
+     * returns the full course details to the client including subminimums
+     * no further checks needed because they are being done in PagesController
+     * @param $courseId
+     * @return array
+     */
     public function getCourseDetails($courseId){
         $course = Course::where('id', $courseId)->first();
+        if(!$course){return array();}
+
         $courseDetails =  array(
             'id' => $courseId,
             'students_count' => UserCourseMap::where('course_id', $courseId)->count(),
@@ -113,6 +122,12 @@ class LecturerController extends Controller
         return $courseDetails;
     }
 
+    /**
+     * Before a coursework is created, it is checked if the course exists
+     * Then it is verified if the client is a convenor for the course or a deptAdmin for the
+     * department of the course. System Admin can also create coursework
+     * @param Request $request
+     */
     public function createCoursework(Request $request){
         $name = $request->input('name');
         $type = $request->input('type');
@@ -120,6 +135,24 @@ class LecturerController extends Controller
         $classWeighting = $request->input('classWeighting');
         $yearWeighting = $request->input('yearWeighting');
         $courseId = $request->input('courseId');
+
+        $roleId = Auth::user()->role_id;
+        $course = Course::where('id', $courseId)->first();
+        if(!$course){throwException();}
+
+        if($roleId == 4){
+            $convenorMap = ConvenorCourseMap::where('user_id', Auth::user()->id)
+                        ->where('course_id', $courseId)->first();
+            if(!$convenorMap || ($convenorMap && $convenorMap->status==0)){
+                throwException();
+            }
+        } else if ($roleId == 5){
+            $deptMap = UserDepartmentMap::where('user_id', Auth::user()->id)
+                        ->where('department_id', $course->department->id)->first();
+            if(!$deptMap){
+                throwException();
+            }
+        }
 
         $coursework = new Coursework();
         $coursework->name = $name;
@@ -131,29 +164,48 @@ class LecturerController extends Controller
         $coursework->save();
     }
 
+    /**
+     * First verifies whether user is allowed to delete.
+     * Then all assosciated SubminimumColumnMaps, SectionMark, Sections, Subcourseworks assosciated with the coursework
+     * are deleted and then the coursework is deleted.
+     * @param Request $request
+     */
     public function deleteCoursework(Request $request){
         $courseworkId = $request->input('courseworkId');
-        $subcourseworkIds = [];
-        $sectionIds = [];
-        $mapIds = [];
         $subcourseworks = SubCoursework::where('coursework_id', $courseworkId)->get();
 
-        foreach($subcourseworks as $subcoursework){
-            $sections = $subcoursework->sections;
-            foreach ($sections as $section){
-                $sectionUserMaps = $section->userMarkMap;
-                foreach ($sectionUserMaps as $sectionUserMap) {
-                    $mapIds[] = $sectionUserMap->id;
-                }
-                $sectionIds[] = $section->id;
+        $roleId = Auth::user()->role_id;
+
+        $coursework = Coursework::where('id', $courseworkId)->first();
+        if(!$coursework){throwException();}
+
+        if($roleId == 4){
+            $convenorMap = ConvenorCourseMap::where('user_id', Auth::user()->id)
+                ->where('course_id', $coursework->course->id)->first();
+            if(!$convenorMap || ($convenorMap && $convenorMap->status==0)){
+                throwException(); // not a convenor or was a convenor
             }
-            $subcourseworkIds = $subcoursework->id;
+        } else if ($roleId == 5){
+            $deptMap = UserDepartmentMap::where('user_id', Auth::user()->id)
+                ->where('department_id', $coursework->course->department->id)->first();
+            if(!$deptMap){
+                // user is not a dept admin for the dept of the course
+                throwException();
+            }
+        }
+
+        foreach($subcourseworks as $subcoursework){
+            foreach ($subcoursework->sections as $section) {
+                foreach ($section->userMarkMap as $item) {
+                    $item->delete();
+                }
+                $section->delete();
+            }
+            SubminimumColumnMap::where('subcoursework_id', $subcoursework->id)->delete();
+            $subcoursework->delete();
         }
         SubminimumColumnMap::where('coursework_id', $courseworkId)->delete();
-        SectionUserMarkMap::destroy($mapIds);
-        Section::destroy($sectionIds);
-        SubCoursework::destroy($subcourseworkIds);
-        Coursework::destroy($courseworkId);
+        $coursework->delete();
     }
 
     public function createSubcoursework(Request $request){
@@ -326,6 +378,7 @@ class LecturerController extends Controller
         $courses = [];
 
         foreach ($courseMaps as $courseMap) {
+            if($courseMap->status == 0){continue;}
             $crs = $courseMap->course;
             $course = [];
             $course['year'] = explode('-', $crs->start_date)[0];
@@ -364,6 +417,7 @@ class LecturerController extends Controller
         $courseMaps = Auth::user()->convenorCourseMaps;
         $courses = [];
         foreach ($courseMaps as $courseMap) {
+            if($courseMap->status == 0){continue;}
             $crs = $courseMap->course;
             $course = [];
             $course['year'] = explode('-', $crs->start_date)[0];
@@ -1594,6 +1648,12 @@ class LecturerController extends Controller
         return Response::json($fullFileName);
     }
 
+    /**
+     * This returns a specific students marks when search using the searchMarks page
+     * looks for all the courses that is mapped to the user and is in the dept of the convenor/lecturer and returns the marks
+     * @param Request $request
+     * @return array
+     */
     public function getMarks(Request $request){
         $studentNumber = $request->input('studentNumber');
         $courseYear = $request->input('courseYear');

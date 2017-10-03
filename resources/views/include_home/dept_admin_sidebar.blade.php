@@ -10,8 +10,8 @@
         <li>
             <a href="{{route('search_marks')}}"><i class="fa fa-search"></i> Search Marks</a>
         </li>
-        <li>
+        {{--<li>
             <a href="{{route('admin')}}"><i class="fa fa-cogs"></i> Admin</a>
-        </li>
+        </li>--}}
     </ul>
 @endsection

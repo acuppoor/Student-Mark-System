@@ -16,10 +16,92 @@
     </ul>
 @endsection
 @section('additional_nav_contents')
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
     <li class="">
-        <a><button class="btn btn-round btn-dark"><span class="glyphicon glyphicon-plus"></span>New Course</button>
+        <a>
+            <button class="btn btn-dark btn-round" data-toggle="modal" data-target="#courseworkModal">
+                <span class="glyphicon glyphicon-plus"></span>
+                New Course
+            </button>
         </a>
     </li>
+
+    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="courseworkModal" style="display: none;">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">New Coursework</h4>
+                </div>
+                <form method="" action="">
+                    <div class="modal-body">
+                        {{csrf_field()}}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="courseName">Name*:</label>
+                                <input type="text" id="courseName" class="form-control" name="courseName" required="">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="courseCode">Course Code*:</label>
+                                <input type="text" id="courseCode" class="form-control" name="courseCode" required="">
+                            </div>
+
+                        </div>
+                        <br/>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="courseType">Course Type* :</label>
+                                <select id="courseType" class="form-control" required="">
+                                    @foreach(\App\CourseType::all() as $type)
+                                        <option value="{{$type->id}}" >{{$type->name}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <select id="createCourseDepartment" class="form-control" name="courseDepartment">
+                                    <option {{request('courseDepartment')?'':'selected'}}></option>
+                                    @foreach(\App\Department::all() as $department)
+                                        @php($value = $department->code . " - " . $department->name)
+                                        <option {{$department->id}} {{request('courseDepartment')==$value?'selected':''}}>{{$value}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="courseTerm">Term*:</label>
+                                <input type="text" id="courseTerm" class="form-control" name="courseTerm" required="">
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="courseStartDate">Start Date*:</label>
+                                <input type="date" id="courseStartDate" class="date-picker form-control" value="{{date('Y-m-d')}}">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="courseEndDate">End Date:</label>
+                                <input type="date" id="courseEndDate" class="date-picker form-control">
+                            </div>
+                        </div>
+                        <br/>
+                        <label for="courseDescription">Description:</label>
+                        <textarea id="courseDescription" class="form-control" rows="3"></textarea>
+                        <br>
+                        <br/>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-dark btn-round spinnerNeeded" id="createCourseButton" type="button">
+                            <i class="spinnerPlaceholder"></i>
+                            Create
+                        </button>
+                        <button type="button" class="btn btn-default btn-round" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 @section('content')
@@ -63,7 +145,7 @@
                                 </div>
                                 <div class="col-md-3">
                                     <label for="department">Department:</label>
-                                    <select id="department" class="form-control" id="courseDepartment" name="courseDepartment">
+                                    <select class="form-control" id="courseDepartment" name="courseDepartment">
                                         <option {{request('courseDepartment')?'':'selected'}}></option>
                                         @foreach(\App\Department::all() as $department)
                                             @php($value = $department->code . " - " . $department->name)
@@ -74,7 +156,7 @@
                                 </div>
                                 <div class="col-md-3 form-group pull-left top_search">
                                     <label for="">&nbsp;</label><br>
-                                    <button class="btn btn-round btn-dark" id="searchButton">Search</button>
+                                    <button class="btn btn-round btn-dark" id="searchButton"><i class="fa fa-search"></i>Search</button>
                                     <a href="{{route('other_courses')}}">Reset Results</a>
                                 </div>
                             </form>
@@ -91,8 +173,15 @@
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <div class="x_panel">
                                 <div class="x_title">
-                                    <a href="{{url('/admincourses/'.$courses[$j]['id'])}}"><h2>{{($j+1) . '. ' . $courses[$j]['name']. ' (' . $courses[$j]['year'] .')'}}</h2></a>
+                                    <a href="{{url('/admincourses/'.$courses[$j]['id'])}}"><h2>{{($j+1) . '. ' . $courses[$j]['code']. ' (' . $courses[$j]['year'] .')'}}</h2></a>
                                     <ul class="nav navbar-right panel_toolbox">
+                                        <li>
+                                            <button type='button' data-courseid="{{$courses[$j]['id']}}" class="deleteCourse btn btn-dark btn-round spinnerNeeded">
+                                                <i class="spinnerPlaceholder"></i>
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </li>
+                                        <li>&nbsp;</li>
                                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a>
                                         </li>
                                     </ul>
@@ -145,4 +234,99 @@
             @endfor
         </div>
     </div>
+@endsection
+
+@section('scripts')
+    <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $(document).ready(function(){
+
+
+            $('.deleteCourse').click(function(){
+                var courseId = $(this).data('courseid');
+                var thisElement = $(this);
+                var confirmation = confirm('Are you sure you want to delete the course? All its courseworks, subcourseworks and ' +
+                    'sections will be deleted permanently.');
+
+                if(!confirmation){
+                    nullOperation(thisElement);
+                    return;
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: '/deletecourse',
+                    data:{courseId: courseId},
+                    success: function (data) {
+                        successOperation(thisElement);
+                    },
+                    error: function (data) {
+                        failOperation(thisElement);
+                    }
+                });
+            });
+
+            $('#createCourseButton').click(function(){
+                var courseName = $('#courseName').val();
+                var courseCode = $('#courseCode').val();
+                var courseType = $('#courseType').val();
+                var startDate = $('#courseStartDate').val();
+                var endDate = $('#courseEndDate').val();
+                var courseDescription = $('#courseDescription').val();
+                var courseTerm = $('#courseTerm').val();
+                var department = $('#createCourseDepartment').val();
+                var thisElement = $(this);
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/createcourse',
+                    data: {
+                        name: courseName,
+                        code: courseCode,
+                        type: courseType,
+                        startDate: startDate,
+                        endDate: endDate,
+                        description: courseDescription,
+                        term: courseTerm,
+                        department: department
+                    },
+                    success: function (data) {
+                        successOperation(thisElement);
+                        $('#courseName').val('');
+                        $('#courseCode').val('');
+                        $('#courseStartDate').val("{{date('Y-m-d')}}");
+                        $('#courseEndDate').val('');
+                        $('#courseDescription').val('');
+                        $('#courseTerm').val('');
+                        $('#createCourseDepartment').val('');
+                    },
+                    error: function (data){
+                        failOperation(thisElement);
+                    }
+                });
+            });
+
+            function successOperation(element){
+                document.getElementById('reloadPageButton').style.display = 'block';
+                element.children('.spinnerPlaceholder').replaceWith('<i class="spinnerPlaceholder fa fa-check-circle"></i>');
+            }
+
+            function failOperation(element){
+                element.children('.spinnerPlaceholder').replaceWith('<i class="spinnerPlaceholder fa fa-times-circle"></i>');
+            }
+
+            function nullOperation(element){
+                element.children('.spinnerPlaceholder').replaceWith('<i class="spinnerPlaceholder"></i>');
+            }
+
+            $('.spinnerNeeded').click(function(){
+                $(this).children('.spinnerPlaceholder').replaceWith('<i class="spinnerPlaceholder fa fa-spinner fa-spin"></i>');
+
+            });
+        });
+    </script>
+
 @endsection

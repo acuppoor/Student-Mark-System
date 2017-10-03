@@ -68,7 +68,7 @@
                                 </div>
                                 <div class="col-md-3 form-group pull-left top_search">
                                     <label for="">&nbsp;</label><br>
-                                    <button class="btn btn-round btn-dark" id="searchButton">Search</button>
+                                    <button class="btn btn-round btn-dark" id="searchButton"><i class="fa fa-search"></i>Search</button>
                                     <a href="{{route('ta_courses')}}">Reset Results</a>
                                 </div>
                             </form>
@@ -85,7 +85,7 @@
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <div class="x_panel">
                                 <div class="x_title">
-                                    <a href="{{url('/conveningcourses/'.$courses[$j]['id'])}}"><h2>{{($j+1) . '. ' . $courses[$j]['name']. ' (' . $courses[$j]['year'] .')'}}</h2></a>
+                                    <a href="{{url('/conveningcourses/'.$courses[$j]['id'])}}"><h2>{{($j+1) . '. ' . $courses[$j]['code']. ' (' . $courses[$j]['year'] .')'}}</h2></a>
                                     <ul class="nav navbar-right panel_toolbox">
                                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a>
                                         </li>

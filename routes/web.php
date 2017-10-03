@@ -1,5 +1,5 @@
 <?php
-Route::get('/', function(){return view('menu');});
+Route::get('/', 'PagesController@home');
 Route::get('/contact', 'ContactController@index')->name('contact');
 
 Route::get('/home', 'PagesController@home')->name("home");

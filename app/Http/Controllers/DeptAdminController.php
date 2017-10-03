@@ -7,10 +7,13 @@ use App\Course;
 use App\Coursework;
 use App\CourseworkType;
 use App\DeptAdminDeptMap;
+use App\FinalGradeType;
 use App\LecturerCourseMap;
 use App\SectionUserMarkMap;
 use App\SubCoursework;
 use App\TACourseMap;
+use App\User;
+use App\UserCourseFinalGrade;
 use App\UserCourseMap;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -210,4 +213,5 @@ class DeptAdminController extends Controller
         }
         $course->delete();
     }
+
 }

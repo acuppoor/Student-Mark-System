@@ -145,7 +145,7 @@
                                 </div>
                                 <div class="col-md-3 form-group pull-left top_search">
                                     <label for="">&nbsp;</label><br>
-                                    <button class="btn btn-round btn-dark" id="searchButton">Search</button>
+                                    <button class="btn btn-round btn-dark" id="searchButton"><i class="fa fa-search"></i>Search</button>
                                     <a href="{{route('ta_courses')}}">Reset Results</a>
                                 </div>
                             </form>
@@ -162,7 +162,7 @@
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <div class="x_panel">
                                 <div class="x_title">
-                                    <a href="{{url('/admincourses/'.$courses[$j]['id'])}}"><h2>{{($j+1) . '. ' . $courses[$j]['name']. ' (' . $courses[$j]['year'] .')'}}</h2></a>
+                                    <a href="{{url('/admincourses/'.$courses[$j]['id'])}}"><h2>{{($j+1) . '. ' . $courses[$j]['code']. ' (' . $courses[$j]['year'] .')'}}</h2></a>
                                     <ul class="nav navbar-right panel_toolbox">
                                         <li>
                                             <button type='button' data-courseid="{{$courses[$j]['id']}}" class="deleteCourse btn btn-dark btn-round spinnerNeeded">

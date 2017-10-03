@@ -17,75 +17,46 @@
 @endsection
 
 @section('content')
+
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
     <div class="right_col" role="main">
         <div class="row">
-        </div>
-    </div>
-@endsection
-
-{{--
-@extends('layouts.dashboard.main')
-
-@section('title')
-    Search Marks
-@endsection
-
-@section('content')
-<div class="wrapper">
---}}
-{{--    @include('include.dashboard.sidepanel')--}}{{--
-
-
-    <div class="sidebar" data-background-color="black" data-active-color="danger">
-        <div class="sidebar-wrapper">
-            <div class="logo">
-                <a href="/" class="simple-text">
-                    <img src="{{url('images/uct.png')}}" style="width: 50px; height: 50px">
-                    &nbsp;
-                    Mark System
-                </a>
-            </div>
-            <ul class="nav">
-                <li id="dashboard_tab">
-                    <a href="/departmentadmin">
-                        <i class="ti-panel"></i>
-                        <p>Dashboard</p>
-                    </a>
-                </li>
-                <li id="department_admin_tab">
-                    <a href="/departmentadmin/courses">
-                        <i class="ti-panel"></i>
-                        <p>Courses</p>
-                    </a>
-                </li>
-                <li id="department_admin_tab" class="active">
-                    <a href="/departmentadmin/searchmarks">
-                        <i class="ti-panel"></i>
-                        <p>Search Marks</p>
-                    </a>
-                </li>
-                <li id="department_admin_tab">
-                    <a href="/departmentadmin/admin">
-                        <i class="ti-panel"></i>
-                        <p>Admin</p>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="main-panel">
-        @include('include.dashboard.nav')
-        <div class="row" style="background-color: whitesmoke">
-            <div class="card">
+            <div class="row">
                 <div class="col-md-12">
-                    / <a href="">Search Marks</a>
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <form action="/searchmarks" method="POST">
+                                {{ csrf_field() }}
+                                <div class="col-md-3">
+                                    <label for="fullname">Student/Employee Number *:</label>
+                                    <input type="text" class="form-control" name="studentNumber" value="{{request('studentNumber')}}">
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="">Course Code:</label>
+                                    <input type="text" class="form-control" name="courseCode" value="{{request('courseCode')}}">
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="year_dropdown">Year:</label>
+                                    <select class="form-control" name="courseYear">
+                                        <?php
+                                        $currentYear = (int) date("Y");
+                                        for ($i = $currentYear; $i >= 2015; $i--){
+                                            echo("<option ".(request("courseYear")==$i?"selected":"").">".$i."</option>");
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+                                <div class="col-md-2 form-group pull-left top_search">
+                                    <label>&nbsp;</label><br>
+                                    <button class="btn btn-round btn-dark btn-xl" type="submit"><i class="fa fa-search"></i>Search</button>
+                                </div>
+                                <div class="clearfix"></div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
+            @include('include_home.searchmarksbody')
         </div>
-        @include('include.dashboard.search')
-        @include('include.dashboard.footer')
     </div>
-</div>
 @endsection
---}}
