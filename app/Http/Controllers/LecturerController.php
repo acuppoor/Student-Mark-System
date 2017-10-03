@@ -666,7 +666,7 @@ class LecturerController extends Controller
 
         if(!$courseId || !$course ||
             ((($deptAdminCourseMap && $deptAdminCourseMap->status ==0) ||
-            ($convenorCourseMap && $convenorCourseMap->status==0)) && Auth::user()->role_id != 6)){
+            ($convenorCourseMap && $convenorCourseMap->status==0)) || Auth::user()->role_id != 6)){
             throwException();
         }
         $course->name = $request->input('name');
@@ -698,7 +698,7 @@ class LecturerController extends Controller
             ->where('course_id', $courseId)->first();
         if(!$courseId || !$course ||
             ((($deptAdminCourseMap && $deptAdminCourseMap->status ==0) || ($convenorCourseMap && $convenorCourseMap->status==0))
-            && Auth::user()->role_id != 6)
+            || Auth::user()->role_id != 6)
             ){
             throwException();
         }
@@ -782,7 +782,7 @@ class LecturerController extends Controller
 
         if(!$courseId || !$course ||
             ((($deptAdminCourseMap && $deptAdminCourseMap->status ==0) || ($convenorCourseMap && $convenorCourseMap->status==0))
-                && Auth::user()->role_id != 6)
+                || Auth::user()->role_id != 6)
         ){
             throwException();
         }
@@ -840,7 +840,7 @@ class LecturerController extends Controller
             ->where('course_id', $courseId)->first();
         if(!$courseId || !$course ||
             ((($deptAdminCourseMap && $deptAdminCourseMap->status ==0) || ($convenorCourseMap && $convenorCourseMap->status==0))
-                && Auth::user()->role_id != 6)
+                || Auth::user()->role_id != 6)
         ){
             throwException();
         }
@@ -1078,7 +1078,7 @@ class LecturerController extends Controller
     }
 
     /**
-     * returns 
+     * returns TAs for the course, results can be refined depending on the request
      * @param Request $request
      * @return array
      */
@@ -1102,11 +1102,36 @@ class LecturerController extends Controller
         return $tas;
     }
 
+    /**
+     * this creates a subminimum 'row' for a subminimum.
+     * For e.g, for a subminimum of 'Tests(50%) and Assignments(50%) >= 45% for DP',
+     * Tests(50%) will be a row, with 'Tests' being the coursework and 50% being the weighting
+     * A row must have a coursework and can have subcoursework.
+     * The permission of the user is checked and then the subminimum is looked for.
+     * A row is then mapped to the subminimum
+     * @param Request $request
+     */
     public function createSubminimumRow(Request $request){
         $id = $request->input('subminimumId');
         $coursework = $request->input('coursework');
         $subcoursework = $request->input('subcoursework');
         $weighting = $request->input('weighting');
+
+        $userId = Auth::user()->id;
+        $subminimum = Subminimum::where('id', $id)->first();
+        if(!$subminimum){
+            throwException();
+        }
+        $deptAdminCourseMap = DeptAdminDeptMap::where('user_id', $userId)
+            ->where('department_id', $subminimum->course->department->id)->first();
+        $convenorCourseMap = ConvenorCourseMap::where('user_id', $userId)
+            ->where('course_id', $subminimum->course->department->id)->first();
+
+        if((($deptAdminCourseMap && $deptAdminCourseMap->status ==0) ||
+                    ($convenorCourseMap && $convenorCourseMap->status==0)) || Auth::user()->role_id != 6){
+            throwException();
+        }
+
         $s = new SubminimumColumnMap();
         $s->coursework_id = $coursework;
         $s->subminimum_id = $id;
@@ -1115,17 +1140,65 @@ class LecturerController extends Controller
         $s->save();
     }
 
+    /**
+     * Once the permission of the user has been cleared, the subminimumrow is deleted
+     * @param Request $request
+     */
     public function deleteSubminimumRow(Request $request){
         $id = $request->input('id');
-        SubminimumColumnMap::destroy($id);
+
+        $userId = Auth::user()->id;
+        $row = SubminimumColumnMap::where('id', $id)->first();
+        if(!$row){
+            throwException();
+        }
+        $deptAdminCourseMap = DeptAdminDeptMap::where('user_id', $userId)
+            ->where('department_id', $row->subminimum->course->department->id)->first();
+        $convenorCourseMap = ConvenorCourseMap::where('user_id', $userId)
+            ->where('course_id', $row->subminimum->course->department->id)->first();
+
+        if((($deptAdminCourseMap && $deptAdminCourseMap->status ==0) ||
+                ($convenorCourseMap && $convenorCourseMap->status==0)) || Auth::user()->role_id != 6){
+            throwException();
+        }
+        $row->delete();
     }
 
+    /*
+     * Once the user permission has been cleared, the subminimum is searched to verify that it exist
+     * the rows assosciated to it are deleted, then the actual subminimum is deleted.
+     * @param Request $request
+     */
     public function deleteSubminimum(Request $request){
         $id = $request->input('id');
+        $userId = Auth::user()->id;
+
+        $subminimum = Subminimum::where('id', $id)->first();
+        if(!$subminimum){
+            throwException();
+        }
+        $deptAdminCourseMap = DeptAdminDeptMap::where('user_id', $userId)
+            ->where('department_id', $subminimum->course->department->id)->first();
+        $convenorCourseMap = ConvenorCourseMap::where('user_id', $userId)
+            ->where('course_id', $subminimum->course->department->id)->first();
+
+        if((($deptAdminCourseMap && $deptAdminCourseMap->status ==0) ||
+                ($convenorCourseMap && $convenorCourseMap->status==0)) || Auth::user()->role_id != 6){
+            throwException();
+        }
         SubminimumColumnMap::where('subminimum_id', $id)->delete();
-        Subminimum::destroy($id);
+        $subminimum->delete();
     }
 
+    /**
+     * Various parameters are passed into the Request, and using them, the coursework marks are calculated
+     * limit by default is 30 records, unless maximum has been specified by the user. If maximum has not been chosen, then
+     * the returned results will be determined by the offset and limit.
+     * If the download option has been chosen, the name of the file will be returned for the download to start
+     * otherwise an array of marks for students are returned
+     * @param Request $request
+     * @return mixed
+     */
     public function getStudentsCourseworkMarks(Request $request){
         $courseId = $request->input('courseId');
         $courseworkId = $request->input('courseworkId');
@@ -1234,6 +1307,13 @@ class LecturerController extends Controller
         }
     }
 
+    /**
+     * Same concept of the funtion getStudentsCourseworkMarks
+     * Limits(default is 30) and offset can be set as well.
+     *
+     * @param Request $request
+     * @return mixed
+     */
     public function getStudentsSubcourseworkMarks(Request $request){
         $courseId = $request->input('courseId');
         $courseworkId = $request->input('courseworkId');
@@ -1348,8 +1428,32 @@ class LecturerController extends Controller
 
     }
 
+    /**
+     * A list of sections, userIds and newMarks are obtained and before the SectionUserMarkMap table is updated,
+     *it is verified that the user initiating the update is permitted to perform the transaction.
+     * @param Request $request
+     */
     public function updateSectionMarks(Request $request){
         $data = $request->input('data');
+
+        if($data){
+            $sectionId = $data[0]['section_id'];
+            $section = Section::where('id', $sectionId);
+            $course = $section->subCoursework->coursework->course;
+            if(!$course){
+                throwException(); // a section eventually has to be for a course
+            }
+            $deptAdminCourseMap = DeptAdminDeptMap::where('user_id', Auth::user()->id)
+                ->where('department_id', $course->department->id)->first();
+            $convenorCourseMap = ConvenorCourseMap::where('user_id', Auth::user()->id)
+                ->where('course_id', $course->department->id)->first();
+
+            if((($deptAdminCourseMap && $deptAdminCourseMap->status ==0) ||
+                    ($convenorCourseMap && $convenorCourseMap->status==0)) || Auth::user()->role_id != 6){
+                throwException();
+            }
+
+        }
 
         foreach($data as $record) {
             $studentNumber = $record['student_number'];
@@ -1370,9 +1474,13 @@ class LecturerController extends Controller
         }
     }
 
+    /**
+     * takes in a list of userIds and approve them
+     * @param Request $request
+     */
     public function approveUsers(Request $request){
         $userIds = $request->input('userIds');
-//        User::where('id', 'IN', $userIds)->update(['approved'=>0]);
+
         foreach ($userIds as $userId) {
             $user = User::where('id', $userId)->first();
             $user->approved = 1;
@@ -1380,11 +1488,34 @@ class LecturerController extends Controller
         }
     }
 
+    /**Takes in a list of userIds, a courseId and a status.
+     * A mass update is performed to setting their access as a course convenor to the course.
+     * A course convenor, however, cannot update his own status
+     * @param Request $request
+     */
     public function convenorsAccess(Request $request){
         $userIds = $request->input('userIds');
         $status = $request->input('access');
         $courseId = $request->input('courseId');
+
+        $course = Course::where('id', $courseId)->first();
+        if(!$course){
+            throwException(); // a section eventually has to be for a course
+        }
+        $deptAdminCourseMap = DeptAdminDeptMap::where('user_id', Auth::user()->id)
+            ->where('department_id', $course->department->id)->first();
+        $convenorCourseMap = ConvenorCourseMap::where('user_id', Auth::user()->id)
+            ->where('course_id', $course->department->id)->first();
+
+        if((($deptAdminCourseMap && $deptAdminCourseMap->status ==0) ||
+                ($convenorCourseMap && $convenorCourseMap->status==0)) || Auth::user()->role_id != 6){
+            throwException();
+        }
+
         foreach ($userIds as $userId) {
+            if($userId == Auth::user()->id){
+                continue; // convenor cannot modify their own status for a course
+            }
             $map = ConvenorCourseMap::where('id', $userId)->where('course_id', $courseId)->first();
             if(!$map){
                 $map = new ConvenorCourseMap();
@@ -1395,10 +1526,30 @@ class LecturerController extends Controller
         }
     }
 
+    /**
+     * Takes in a list of UserIds, a courseId and a status.
+     * Mass update is performed to grant/revoke lecturers' access to the course
+     * @param Request $request
+     */
     public function lecturersAccess(Request $request){
         $userIds = $request->input('userIds');
         $status = $request->input('access');
         $courseId = $request->input('courseId');
+
+        $course = Course::where('id', $courseId)->first();
+        if(!$course){
+            throwException(); // a section eventually has to be for a course
+        }
+        $deptAdminCourseMap = DeptAdminDeptMap::where('user_id', Auth::user()->id)
+            ->where('department_id', $course->department->id)->first();
+        $convenorCourseMap = ConvenorCourseMap::where('user_id', Auth::user()->id)
+            ->where('course_id', $course->department->id)->first();
+
+        if((($deptAdminCourseMap && $deptAdminCourseMap->status ==0) ||
+                ($convenorCourseMap && $convenorCourseMap->status==0)) || Auth::user()->role_id != 6){
+            throwException();
+        }
+
         foreach ($userIds as $userId) {
             $map = LecturerCourseMap::where('id', $userId)->where('course_id', $courseId)->first();
             if(!$map){
@@ -1410,10 +1561,30 @@ class LecturerController extends Controller
         }
     }
 
+    /**
+     * takes in a list of userIds, status and courseId
+     * Mass update is carried out to grant/revoke TAs' access to the course
+     * @param Request $request
+     */
     public function tasAccess(Request $request){
         $userIds = $request->input('userIds');
         $status = $request->input('access');
         $courseId = $request->input('courseId');
+
+        $course = Course::where('id', $courseId)->first();
+        if(!$course){
+            throwException(); // a section eventually has to be for a course
+        }
+        $deptAdminCourseMap = DeptAdminDeptMap::where('user_id', Auth::user()->id)
+            ->where('department_id', $course->department->id)->first();
+        $convenorCourseMap = ConvenorCourseMap::where('user_id', Auth::user()->id)
+            ->where('course_id', $course->department->id)->first();
+
+        if((($deptAdminCourseMap && $deptAdminCourseMap->status ==0) ||
+                ($convenorCourseMap && $convenorCourseMap->status==0)) || Auth::user()->role_id != 6){
+            throwException();
+        }
+
         foreach ($userIds as $userId) {
             $map = TACourseMap::where('id', $userId)->where('course_id', $courseId)->first();
             if(!$map){
@@ -1425,6 +1596,11 @@ class LecturerController extends Controller
         }
     }
 
+    /**
+     * It's checked if the coursework exists, if yes and if the user is permitted to do the operation,
+     * the new details are obtained from the Request and the table is updated with the new details.
+     * @param Request $request
+     */
     public function updateCoursework(Request $request){
         $courseworkId = $request->input('courseworkId');
         $name = $request->input('name');
@@ -1434,6 +1610,20 @@ class LecturerController extends Controller
         $weightingClass = $request->input('weightingClass');
 
         $coursework = Coursework::where('id', $courseworkId)->first();
+
+        if(!$coursework){
+            throwException(); // a section eventually has to be for a course
+        }
+        $deptAdminCourseMap = DeptAdminDeptMap::where('user_id', Auth::user()->id)
+            ->where('department_id', $coursework->course->department->id)->first();
+        $convenorCourseMap = ConvenorCourseMap::where('user_id', Auth::user()->id)
+            ->where('course_id', $coursework->course->department->id)->first();
+
+        if((($deptAdminCourseMap && $deptAdminCourseMap->status ==0) ||
+                ($convenorCourseMap && $convenorCourseMap->status==0)) || Auth::user()->role_id != 6){
+            throwException();
+        }
+
         $coursework->name = $name;
         $coursework->coursework_type_id = CourseworkType::where('name', $type)->first()->id;
         $coursework->display_to_students = $releaseDate;
@@ -1443,6 +1633,11 @@ class LecturerController extends Controller
 
     }
 
+    /**
+     * if subcoursework exists and user is permitted to perform the operation,
+     * the new details are obtained from the Request oobject and the database is updated.
+     * @param Request $request
+     */
     public function updateSubcoursework(Request $request){
         $subcourseworkId = $request->input('subcourseworkId');
         $name = $request->input('name');
@@ -1453,6 +1648,20 @@ class LecturerController extends Controller
         $displayPercentage = $request->input('displayPercentage');
 
         $subcoursework = SubCoursework::where('id', $subcourseworkId)->first();
+
+        if(!$subcoursework){
+            throwException(); // a section eventually has to be for a course
+        }
+        $deptAdminCourseMap = DeptAdminDeptMap::where('user_id', Auth::user()->id)
+            ->where('department_id', $subcoursework->coursework->course->department->id)->first();
+        $convenorCourseMap = ConvenorCourseMap::where('user_id', Auth::user()->id)
+            ->where('course_id', $subcoursework->coursework->course->department->id)->first();
+
+        if((($deptAdminCourseMap && $deptAdminCourseMap->status ==0) ||
+                ($convenorCourseMap && $convenorCourseMap->status==0)) || Auth::user()->role_id != 6){
+            throwException();
+        }
+
         $subcoursework->name = $name;
         $subcoursework->display_to_students = $releaseDate;
         $subcoursework->display_marks = $displayMarks;
@@ -1463,18 +1672,40 @@ class LecturerController extends Controller
 
     }
 
+    /**
+     * if user is permitted to do the update and the section does exist, the details are udpated.
+     * @param Request $request
+     */
     public function updateSection(Request $request){
         $sectionId = $request->input('sectionId');
         $name = $request->input('name');
         $maxMarks = $request->input('maxMarks');
 
         $section = Section::where('id', $sectionId)->first();
+
+        if(!$section){
+            throwException(); // a section eventually has to be for a course
+        }
+        $deptAdminCourseMap = DeptAdminDeptMap::where('user_id', Auth::user()->id)
+            ->where('department_id', $section->subcoursework->coursework->course->department->id)->first();
+        $convenorCourseMap = ConvenorCourseMap::where('user_id', Auth::user()->id)
+            ->where('course_id', $section->subcoursework->coursework->course->department->id)->first();
+
+        if((($deptAdminCourseMap && $deptAdminCourseMap->status ==0) ||
+                ($convenorCourseMap && $convenorCourseMap->status==0)) || Auth::user()->role_id != 6){
+            throwException();
+        }
+
         $section->name = $name;
         $section->max_marks = $maxMarks;
         $section->save();
 
     }
 
+    /**
+     * if user is permitted to do the update and the subminimum does exist, the details are udpated.
+     * @param Request $request
+     */
     public function updateSubminimum(Request $request){
         $subminimumId = $request->input('subminimumId');
         $name = $request->input('name');
@@ -1482,32 +1713,80 @@ class LecturerController extends Controller
         $threshold = $request->input('threshold');
 
         $subminimum = Subminimum::where('id', $subminimumId)->first();
+
+        if(!$subminimum){
+            throwException(); // a section eventually has to be for a course
+        }
+        $deptAdminCourseMap = DeptAdminDeptMap::where('user_id', Auth::user()->id)
+            ->where('department_id', $subminimum->course->department->id)->first();
+        $convenorCourseMap = ConvenorCourseMap::where('user_id', Auth::user()->id)
+            ->where('course_id', $subminimum->course->department->id)->first();
+
+        if((($deptAdminCourseMap && $deptAdminCourseMap->status ==0) ||
+                ($convenorCourseMap && $convenorCourseMap->status==0)) || Auth::user()->role_id != 6){
+            throwException();
+        }
+
         $subminimum->name = $name;
         $subminimum->for_dp = $type;
         $subminimum->threshold = $threshold;
         $subminimum->save();
     }
 
+    /**if user is permitted to do the update and the row does exist, the details are udpated.
+     * @param Request $request
+     */
     public function updateSubminimumRow(Request $request){
         $rowId = $request->input('rowId');
         $coursework = $request->input('coursework');
         $subcoursework = $request->input('subcoursework');
         $weighting = $request->input('weighting');
 
-//        echo($coursework);die();
-
         $row = SubminimumColumnMap::where('id', $rowId)->first();
+
+        if(!$row){
+            throwException(); // a section eventually has to be for a course
+        }
+        $deptAdminCourseMap = DeptAdminDeptMap::where('user_id', Auth::user()->id)
+            ->where('department_id', $row->subminimum->course->department->id)->first();
+        $convenorCourseMap = ConvenorCourseMap::where('user_id', Auth::user()->id)
+            ->where('course_id', $row->subminimum->course->department->id)->first();
+
+        if((($deptAdminCourseMap && $deptAdminCourseMap->status ==0) ||
+                ($convenorCourseMap && $convenorCourseMap->status==0)) || Auth::user()->role_id != 6){
+            throwException();
+        }
+
         $row->coursework_id = $coursework;
         $row->subcoursework_id = $subcoursework?$subcoursework:-1;
         $row->weighting = $weighting;
         $row->save();
     }
 
+    /**
+     * The request takes in a list of student details and students are then mapped to the course.
+     * If no student account is found with the details, a new one is created with default password: 1234567
+     * File must be a .csv file with the following columns: emplid, campus id, term, subject, catalog nbr, class nbr
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function updateStudentsList(Request $request){
         $file = $request->file('file');
         $courseId = $request->input('courseId');
         $course = Course::find($courseId)->first();
 
+        if(!$course){
+            throwException(); // a section eventually has to be for a course
+        }
+        $deptAdminCourseMap = DeptAdminDeptMap::where('user_id', Auth::user()->id)
+            ->where('department_id', $course->department->id)->first();
+        $convenorCourseMap = ConvenorCourseMap::where('user_id', Auth::user()->id)
+            ->where('course_id', $course->department->id)->first();
+
+        if((($deptAdminCourseMap && $deptAdminCourseMap->status ==0) ||
+                ($convenorCourseMap && $convenorCourseMap->status==0)) || Auth::user()->role_id != 6){
+            throwException();
+        }
 
         $path = Storage::putFileAs('file', $file, 'students_list_'.$courseId.'.csv');
 
@@ -1566,6 +1845,13 @@ class LecturerController extends Controller
         return redirect()->back();
     }
 
+    /**
+     * The request takes in a list of student details and students are then mapped to the course, if not already.
+     * If no student account is found with the details, a new one is created with default password: 1234567
+     * File must be a .csv file with the following columns: emplid, campus id, term, subject, catalog nbr, class nbr, final_grade
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function uploadSectionMarks(Request $request){
         $file = $request->file('marksFile');
         $courseId = $request->input('courseId');
@@ -1576,6 +1862,16 @@ class LecturerController extends Controller
         $section = Section::where('id', $sectionId)->first();
         $subcoursework = SubCoursework::where('id', $subcourseworkId)->first();
         $coursework = Coursework::where('id', $courseworkId)->first();
+
+        $deptAdminCourseMap = DeptAdminDeptMap::where('user_id', Auth::user()->id)
+            ->where('department_id', $section->subCoursework->coursework->course->department->id)->first();
+        $convenorCourseMap = ConvenorCourseMap::where('user_id', Auth::user()->id)
+            ->where('course_id', $section->subCoursework->coursework->course->department->id)->first();
+
+        if((($deptAdminCourseMap && $deptAdminCourseMap->status ==0) ||
+                ($convenorCourseMap && $convenorCourseMap->status==0)) || Auth::user()->role_id != 6){
+            throwException();
+        }
 
         $validation =   $courseworkId==0 || ($coursework && $subcoursework && $section &&
                         $section->subcoursework_id == $subcourseworkId &&
@@ -1658,6 +1954,10 @@ class LecturerController extends Controller
         return redirect()->back();
     }
 
+    /**
+     * return a list of the 18 gradetypes available, useful for ajax request
+     * @return mixed
+     */
     public function getGradeTypes(){
         $results = [];
         foreach (FinalGradeType::all() as $item) {
@@ -1669,9 +1969,28 @@ class LecturerController extends Controller
         return Response::json($results);
     }
 
+    /**
+     * Takes in a courseId, a list containing userId and gradeId.
+     * By default, a student will see his final grade points. This can be changed to a symbol such as 'AB', 'OSS'
+     * @param Request $request
+     */
     public function updateFinalGrade(Request $request){
         $values = $request->input('values');
         $courseId = $request->input('courseId');
+
+        $course = Course::where('id', $courseId)->first();
+        if(!$course){
+            throwException(); // a section eventually has to be for a course
+        }
+        $deptAdminCourseMap = DeptAdminDeptMap::where('user_id', Auth::user()->id)
+            ->where('department_id', $course->department->id)->first();
+        $convenorCourseMap = ConvenorCourseMap::where('user_id', Auth::user()->id)
+            ->where('course_id', $course->department->id)->first();
+
+        if((($deptAdminCourseMap && $deptAdminCourseMap->status ==0) ||
+                ($convenorCourseMap && $convenorCourseMap->status==0)) || Auth::user()->role_id != 6){
+            throwException();
+        }
 
         foreach ($values as $row) {
             $userId = $row[0];
@@ -1690,6 +2009,12 @@ class LecturerController extends Controller
         }
     }
 
+    /**returns a list of students with their class marks, year marks, DP status and Final Grade
+     * @param $studentNumber
+     * @param $courseId
+     * @param $offsetRaw
+     * @return array
+     */
     public function getStudentMarksList($studentNumber, $courseId, $offsetRaw){
         $limit = 30;
         $offset = $offsetRaw*$limit;
@@ -1853,6 +2178,11 @@ class LecturerController extends Controller
         return $returnResults;
     }
 
+    /**
+     * Generates a csv file for final grade and return the file name for the download to start
+     * @param Request $request
+     * @return mixed
+     */
     public function downloadFinalGrade(Request $request){
         $courseId = $request->input('courseId');
 
@@ -1890,6 +2220,11 @@ class LecturerController extends Controller
         return Response::json($fullFileName);
     }
 
+    /**
+     * generates a csv file for the DP status and return the file name for the download to start
+     * @param Request $request
+     * @return mixed
+     */
     public function downloadDPList(Request $request){
         $courseId = $request->input('courseId');
 
