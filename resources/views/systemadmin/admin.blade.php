@@ -53,6 +53,37 @@
                     </div>
                 </div>
             </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="x_panel" style="height: auto;">
+                        <div class="x_title">
+                            <h2>Approve Account</h2>
+                            <ul class="nav navbar-right panel_toolbox">
+                                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                </li>
+                            </ul>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content collapse" style="display: block;">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label for="">Email*:</label>
+                                    <input type="email" class="form-control" id="emailAddressApprove">
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="">&nbsp;</label><br>
+                                    <button class="btn btn-dark btn-round spinnerNeeded" id="approveAccountButton" type="button">
+                                        <i class="spinnerPlaceholder"></i>
+                                        <i class="fa fa-check-square-o"></i>
+                                        Approve
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 @endsection
@@ -67,6 +98,25 @@
             }
         });
         $(document).ready(function() {
+
+            $('#approveAccountButton').click(function () {
+                var email = $('#emailAddressApprove').val();
+                var thisElement = $(this);
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/approveaccount',
+                    data: {
+                        email: email
+                    },
+                    success: function (data) {
+                        successOperation(thisElement, false);
+                    },
+                    error: function (data) {
+                        failOperation(thisElement);
+                    }
+                })
+            });
 
             $('#resetButtonPwdReset').click(function () {
                 var email = $('#emailAddressPwdReset').val();

@@ -24,9 +24,6 @@ class ContactController extends Controller
      */
     public function index()
     {
-        if(Auth::check() && Auth::user()->approved){
-            return redirect()->route("home");
-        }
         return view('contact');
     }
 }

@@ -162,7 +162,7 @@
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <div class="x_panel">
                                 <div class="x_title">
-                                    <a href="{{url('/admincourses/'.$courses[$j]['id'])}}"><h2>{{($j+1) . '. ' . $courses[$j]['code']. ' (' . $courses[$j]['year'] .')'}}</h2></a>
+                                    <a href="{{url('/admincourses/'.$courses[$j]['id'])}}"><h2><u>{{($j+1) . '. ' . $courses[$j]['code']. ' (' . $courses[$j]['year'] .')'}}</u></h2></a>
                                     <ul class="nav navbar-right panel_toolbox">
                                         <li>
                                             <button type='button' data-courseid="{{$courses[$j]['id']}}" class="deleteCourse btn btn-dark btn-round spinnerNeeded">

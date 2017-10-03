@@ -7,7 +7,7 @@ Route::get('/home', 'PagesController@home')->name("home");
 Route::get('/mymarks', 'PagesController@myMarks')->name("my_marks");
 Route::post('/mymarks', 'PagesController@myMarksFilter');
 Route::get('/tacourses', 'PagesController@taCourses')->name("ta_courses");
-Route::post('/tacourses/filter', 'PagesController@taCoursesFilter');
+Route::post('/tacourses', 'PagesController@taCoursesFilter');
 Route::get('/tacourses/{courseId}', 'PagesController@getCourseDetails');
 
 Route::get('/conveningcourses', 'PagesController@conveningCourses')->name("convening_courses");
@@ -80,6 +80,7 @@ Route::post('/resetpassword', 'PagesController@resetPassword');
 
 Route::get('/searchmarks', 'PagesController@searchMarks')->name("search_marks");
 Route::post('/searchmarks', 'PagesController@getMarks');
+Route::post('/approveaccount', 'PagesController@approveByEmail');
 
 Route::get('/admin', 'PagesController@admin')->name("admin");
 Route::get('/faculties&departments', 'PagesController@faculties')->name("faculties");

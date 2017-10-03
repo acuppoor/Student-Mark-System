@@ -42,6 +42,9 @@ class StudentController extends Controller
     public function taFilter($request){
         $courses = [];
         foreach (Auth::user()->courseTAMaps as $courseMap){
+            if($courseMap->status == 0){
+                continue;
+            }
             $crs = $courseMap->course;
             $course = [];
             $course['year'] = explode('-', $crs->start_date)[0];
@@ -70,9 +73,9 @@ class StudentController extends Controller
 //        return Response::json($courses);
     }
 
-    public function getTaCourse($courseId){
+   /* public function getTaCourse($courseId){
 
-    }
+    }*/
 
     public function getMarks(Request $request){
         $studentNumber = $request->input('studentNumber');

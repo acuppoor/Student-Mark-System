@@ -24,7 +24,7 @@
                 <div class="col-md-12">
                     <div class="x_panel">
                         <div class="x_title">
-                            <form action="/tacourses/filter" method="POST">
+                            <form action="/tacourses" method="POST">
                                 {{ csrf_field() }}
                                 <div class="col-md-2 form-group pull-left top_search">
                                     <label for="courseCode">Course Code:</label>
@@ -85,7 +85,7 @@
                         <div class="col-md-6 col-sm-6 col-xs-12">
                             <div class="x_panel">
                                 <div class="x_title">
-                                    <a href="{{url('/tacourses/'.$courses[$j]['id'])}}"><h2>{{($j+1) . '. ' . $courses[$j]['code']. ' (' . $courses[$j]['year'] .')'}}</h2>&nbsp;<i>(Click to Manage)</i></a>
+                                    <a href="{{url('/tacourses/'.$courses[$j]['id'])}}"><h2><u>{{($j+1) . '. ' . $courses[$j]['code']. ' (' . $courses[$j]['year'] .')'}}</u></h2></a>
                                     <ul class="nav navbar-right panel_toolbox">
                                         <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a>
                                         </li>

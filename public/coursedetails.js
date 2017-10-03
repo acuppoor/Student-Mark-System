@@ -151,7 +151,6 @@ $(document).ready(function(){
                 successOperation(thisElement, false);
             },
             error: function(data){
-                console.log(data);
                 failOperation(thisElement);
             }
         });
@@ -342,7 +341,7 @@ $(document).ready(function(){
 
     });
 
-    $('.approveTAsButton').click(function(){
+    $('#approveTAsButton').click(function(){
         var userIds = [];
         var count = 0;
         var thisElement = $(this);
@@ -626,7 +625,6 @@ $(document).ready(function(){
             };
             sections[i] = section;
         }
-        console.log(sections);
         $.ajax({
             type: 'POST',
             url: '/updatesectionmarks',
@@ -965,7 +963,6 @@ $(document).ready(function(){
                 $('#studentsListResultsBody').replaceWith(dataString);
             },
             error: function(data){
-//                    console.log(data);
             }
         });
         refreshDone(thisElement);
@@ -1002,7 +999,6 @@ $(document).ready(function(){
                 $('#lecturersListResultsBody').replaceWith(dataString);
             },
             error: function(data){
-//                    console.log(data);
             }
         });
         refreshDone(thisElement);
@@ -1048,7 +1044,6 @@ $(document).ready(function(){
                 $('#convenorsListResultsBody').replaceWith(dataString);
             },
             error: function(data){
-//                    console.log(data);
             }
         });
         refreshDone(thisElement);
@@ -1295,13 +1290,10 @@ $(document).ready(function(){
                 download:true
             },
             success:function(data){
-                alert(data);
-                alert($('#assetPath').val());
                 window.open($('#assetPath').val()+data,'_blank');
                 successOperation(thisElement, false);
             },
             error: function(data){
-                console.log(data);
                 failOperation(thisElement);
             }
         });

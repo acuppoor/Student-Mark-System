@@ -666,7 +666,7 @@ class LecturerController extends Controller
 
         if(!$courseId || !$course ||
             ((($deptAdminCourseMap && $deptAdminCourseMap->status ==0) ||
-            ($convenorCourseMap && $convenorCourseMap->status==0)) || Auth::user()->role_id != 6)){
+            ($convenorCourseMap && $convenorCourseMap->status==0)) && Auth::user()->role_id != 6)){
             throwException();
         }
         $course->name = $request->input('name');
@@ -698,29 +698,33 @@ class LecturerController extends Controller
             ->where('course_id', $courseId)->first();
         if(!$courseId || !$course ||
             ((($deptAdminCourseMap && $deptAdminCourseMap->status ==0) || ($convenorCourseMap && $convenorCourseMap->status==0))
-            || Auth::user()->role_id != 6)
+            && Auth::user()->role_id != 6)
             ){
             throwException();
         }
 
         $email = $request->input('email');
-        $user = User::where('email', $email)->firstOrCreate(
-            ['email'=> $email],
-            ['account_registered' => 0],
-            ['student_number' => $this->getRandomWord(9)],
-            ['employee_id'=> $this->getRandomNumber(7)],
-            ['role_id' => 4]
-            );
+        $user = User::where('email', $email)->first();
+        if(!$user){
+            $user = new User();
+            $user->email = $email;
+            $user->account_registered = 0;
+            $user->student_number = $this->getRandomWord(9);
+            $user->employee_id = $this->getRandomNumber(7);
+            $user->role_id = 5;
+        }
         $user->role_id = 4;
         $user->approved = 1; $user->save();
 
         // adding user to the department
         $departmentMap = UserDepartmentMap::where('user_id', $user->id)
-                        ->where('department_id', $department->id)->firstOrCreate(
-                            ['user_id' => $user->id],
-                            ['department_id' => $department->id],
-                            ['status' => 1]
-            );
+                        ->where('department_id', $department->id)->first();
+        if(!$departmentMap){
+            $departmentMap = new UserDepartmentMap();
+            $departmentMap->user_id = $user->id;
+            $departmentMap->department_id = $department->id;
+            $departmentMap->status = 1;
+        }
         $departmentMap->status = 1; $departmentMap->save();
 
         // checks if to-be-convenor is already a courseconvenor for the course
@@ -782,31 +786,32 @@ class LecturerController extends Controller
 
         if(!$courseId || !$course ||
             ((($deptAdminCourseMap && $deptAdminCourseMap->status ==0) || ($convenorCourseMap && $convenorCourseMap->status==0))
-                || Auth::user()->role_id != 6)
+                && Auth::user()->role_id != 6)
         ){
             throwException();
         }
 
         $email = $request->input('email');
-        $user = User::where('email', $email)->firstOrCreate(
-            ['email'=> $email],
-            ['account_registered' => 0],
-            ['student_number' => $this->getRandomWord(9)],
-            ['employee_id'=> $this->getRandomNumber(7)],
-            ['role_id' => 3]
-        );
-        $user->approved = 1;
-        $user->role_id = $user->role_id==4? 4:3;
-        $user->save();
-
+        $user = User::where('email', $email)->first();
+        if(!$user){
+            $user = new User();
+            $user->email = $email;
+            $user->account_registered = 0;
+            $user->student_number = $this->getRandomWord(9);
+            $user->employee_id = $this->getRandomNumber(7);
+            $user->role_id = 3;
+        }
+        $user->approved = 1; $user->save();
 
         // adding user to the department
         $departmentMap = UserDepartmentMap::where('user_id', $user->id)
-            ->where('department_id', $department->id)->firstOrCreate(
-                ['user_id' => $user->id],
-                ['department_id' => $department->id],
-                ['status' => 1]
-            );
+            ->where('department_id', $department->id)->first();
+        if(!$departmentMap){
+            $departmentMap = new UserDepartmentMap();
+            $departmentMap->user_id = $user->id;
+            $departmentMap->department_id = $department->id;
+            $departmentMap->status = 1;
+        }
         $departmentMap->status = 1; $departmentMap->save();
 
         // adding user as a lecturer to the course
@@ -840,30 +845,34 @@ class LecturerController extends Controller
             ->where('course_id', $courseId)->first();
         if(!$courseId || !$course ||
             ((($deptAdminCourseMap && $deptAdminCourseMap->status ==0) || ($convenorCourseMap && $convenorCourseMap->status==0))
-                || Auth::user()->role_id != 6)
+                && Auth::user()->role_id != 6)
         ){
             throwException();
         }
 
         $email = $request->input('email');
-        $user = User::where('email', $email)->firstOrCreate(
-            ['email'=> $email],
-            ['account_registered' => 0],
-            ['student_number' => $this->getRandomWord(9)],
-            ['employee_id'=> $this->getRandomNumber(7)],
-            ['role_id' => 2]
-        );
+        $user = User::where('email', $email)->first();
+        if(!$user){
+            $user = new User();
+            $user->email = $email;
+            $user->account_registered = 0;
+            $user->student_number = $this->getRandomWord(9);
+            $user->employee_id = $this->getRandomNumber(7);
+            $user->role_id = 5;
+        }
         $user->approved = 1;
         $user->role_id = 2; $user->save();
 
 
         // adding user to the department
         $departmentMap = UserDepartmentMap::where('user_id', $user->id)
-            ->where('department_id', $department->id)->firstOrCreate(
-                ['user_id' => $user->id],
-                ['department_id' => $department->id],
-                ['status' => 1]
-            );
+            ->where('department_id', $department->id)->first();
+        if(!$departmentMap){
+            $departmentMap = new UserDepartmentMap();
+            $departmentMap->user_id = $user->id;
+            $departmentMap->department_id = $department->id;
+            $departmentMap->status = 1;
+        }
         $departmentMap->status = 1; $departmentMap->save();
 
 
@@ -1128,7 +1137,7 @@ class LecturerController extends Controller
             ->where('course_id', $subminimum->course->department->id)->first();
 
         if((($deptAdminCourseMap && $deptAdminCourseMap->status ==0) ||
-                    ($convenorCourseMap && $convenorCourseMap->status==0)) || Auth::user()->role_id != 6){
+                    ($convenorCourseMap && $convenorCourseMap->status==0)) && Auth::user()->role_id != 6){
             throwException();
         }
 
@@ -1158,7 +1167,7 @@ class LecturerController extends Controller
             ->where('course_id', $row->subminimum->course->department->id)->first();
 
         if((($deptAdminCourseMap && $deptAdminCourseMap->status ==0) ||
-                ($convenorCourseMap && $convenorCourseMap->status==0)) || Auth::user()->role_id != 6){
+                ($convenorCourseMap && $convenorCourseMap->status==0)) && Auth::user()->role_id != 6){
             throwException();
         }
         $row->delete();
@@ -1183,7 +1192,7 @@ class LecturerController extends Controller
             ->where('course_id', $subminimum->course->department->id)->first();
 
         if((($deptAdminCourseMap && $deptAdminCourseMap->status ==0) ||
-                ($convenorCourseMap && $convenorCourseMap->status==0)) || Auth::user()->role_id != 6){
+                ($convenorCourseMap && $convenorCourseMap->status==0)) && Auth::user()->role_id != 6){
             throwException();
         }
         SubminimumColumnMap::where('subminimum_id', $id)->delete();
@@ -1449,7 +1458,7 @@ class LecturerController extends Controller
                 ->where('course_id', $course->department->id)->first();
 
             if((($deptAdminCourseMap && $deptAdminCourseMap->status ==0) ||
-                    ($convenorCourseMap && $convenorCourseMap->status==0)) || Auth::user()->role_id != 6){
+                    ($convenorCourseMap && $convenorCourseMap->status==0)) && Auth::user()->role_id != 6){
                 throwException();
             }
 
@@ -1508,7 +1517,7 @@ class LecturerController extends Controller
             ->where('course_id', $course->department->id)->first();
 
         if((($deptAdminCourseMap && $deptAdminCourseMap->status ==0) ||
-                ($convenorCourseMap && $convenorCourseMap->status==0)) || Auth::user()->role_id != 6){
+                ($convenorCourseMap && $convenorCourseMap->status==0)) && Auth::user()->role_id != 6){
             throwException();
         }
 
@@ -1516,7 +1525,7 @@ class LecturerController extends Controller
             if($userId == Auth::user()->id){
                 continue; // convenor cannot modify their own status for a course
             }
-            $map = ConvenorCourseMap::where('id', $userId)->where('course_id', $courseId)->first();
+            $map = ConvenorCourseMap::where('user_id', $userId)->where('course_id', $courseId)->first();
             if(!$map){
                 $map = new ConvenorCourseMap();
                 $map->user_id = $userId; $map->course_id = $courseId;
@@ -1546,12 +1555,12 @@ class LecturerController extends Controller
             ->where('course_id', $course->department->id)->first();
 
         if((($deptAdminCourseMap && $deptAdminCourseMap->status ==0) ||
-                ($convenorCourseMap && $convenorCourseMap->status==0)) || Auth::user()->role_id != 6){
+                ($convenorCourseMap && $convenorCourseMap->status==0)) && Auth::user()->role_id != 6){
             throwException();
         }
 
         foreach ($userIds as $userId) {
-            $map = LecturerCourseMap::where('id', $userId)->where('course_id', $courseId)->first();
+            $map = LecturerCourseMap::where('user_id', $userId)->where('course_id', $courseId)->first();
             if(!$map){
                 $map = new LecturerCourseMap();
                 $map->user_id = $userId; $map->course_id = $courseId;
@@ -1581,12 +1590,12 @@ class LecturerController extends Controller
             ->where('course_id', $course->department->id)->first();
 
         if((($deptAdminCourseMap && $deptAdminCourseMap->status ==0) ||
-                ($convenorCourseMap && $convenorCourseMap->status==0)) || Auth::user()->role_id != 6){
+                ($convenorCourseMap && $convenorCourseMap->status==0)) && Auth::user()->role_id != 6){
             throwException();
         }
 
         foreach ($userIds as $userId) {
-            $map = TACourseMap::where('id', $userId)->where('course_id', $courseId)->first();
+            $map = TACourseMap::where('user_id', $userId)->where('course_id', $courseId)->first();
             if(!$map){
                 $map = new TACourseMap();
                 $map->user_id = $userId; $map->course_id = $courseId;
@@ -1620,7 +1629,7 @@ class LecturerController extends Controller
             ->where('course_id', $coursework->course->department->id)->first();
 
         if((($deptAdminCourseMap && $deptAdminCourseMap->status ==0) ||
-                ($convenorCourseMap && $convenorCourseMap->status==0)) || Auth::user()->role_id != 6){
+                ($convenorCourseMap && $convenorCourseMap->status==0)) && Auth::user()->role_id != 6){
             throwException();
         }
 
@@ -1658,7 +1667,7 @@ class LecturerController extends Controller
             ->where('course_id', $subcoursework->coursework->course->department->id)->first();
 
         if((($deptAdminCourseMap && $deptAdminCourseMap->status ==0) ||
-                ($convenorCourseMap && $convenorCourseMap->status==0)) || Auth::user()->role_id != 6){
+                ($convenorCourseMap && $convenorCourseMap->status==0)) && Auth::user()->role_id != 6){
             throwException();
         }
 
@@ -1692,7 +1701,7 @@ class LecturerController extends Controller
             ->where('course_id', $section->subcoursework->coursework->course->department->id)->first();
 
         if((($deptAdminCourseMap && $deptAdminCourseMap->status ==0) ||
-                ($convenorCourseMap && $convenorCourseMap->status==0)) || Auth::user()->role_id != 6){
+                ($convenorCourseMap && $convenorCourseMap->status==0)) && Auth::user()->role_id != 6){
             throwException();
         }
 
@@ -1723,7 +1732,7 @@ class LecturerController extends Controller
             ->where('course_id', $subminimum->course->department->id)->first();
 
         if((($deptAdminCourseMap && $deptAdminCourseMap->status ==0) ||
-                ($convenorCourseMap && $convenorCourseMap->status==0)) || Auth::user()->role_id != 6){
+                ($convenorCourseMap && $convenorCourseMap->status==0)) && Auth::user()->role_id != 6){
             throwException();
         }
 
@@ -1753,7 +1762,7 @@ class LecturerController extends Controller
             ->where('course_id', $row->subminimum->course->department->id)->first();
 
         if((($deptAdminCourseMap && $deptAdminCourseMap->status ==0) ||
-                ($convenorCourseMap && $convenorCourseMap->status==0)) || Auth::user()->role_id != 6){
+                ($convenorCourseMap && $convenorCourseMap->status==0)) && Auth::user()->role_id != 6){
             throwException();
         }
 
@@ -1784,7 +1793,7 @@ class LecturerController extends Controller
             ->where('course_id', $course->department->id)->first();
 
         if((($deptAdminCourseMap && $deptAdminCourseMap->status ==0) ||
-                ($convenorCourseMap && $convenorCourseMap->status==0)) || Auth::user()->role_id != 6){
+                ($convenorCourseMap && $convenorCourseMap->status==0)) && Auth::user()->role_id != 6){
             throwException();
         }
 
@@ -1869,7 +1878,7 @@ class LecturerController extends Controller
             ->where('course_id', $section->subCoursework->coursework->course->department->id)->first();
 
         if((($deptAdminCourseMap && $deptAdminCourseMap->status ==0) ||
-                ($convenorCourseMap && $convenorCourseMap->status==0)) || Auth::user()->role_id != 6){
+                ($convenorCourseMap && $convenorCourseMap->status==0)) && Auth::user()->role_id != 6){
             throwException();
         }
 
@@ -1988,7 +1997,7 @@ class LecturerController extends Controller
             ->where('course_id', $course->department->id)->first();
 
         if((($deptAdminCourseMap && $deptAdminCourseMap->status ==0) ||
-                ($convenorCourseMap && $convenorCourseMap->status==0)) || Auth::user()->role_id != 6){
+                ($convenorCourseMap && $convenorCourseMap->status==0)) && Auth::user()->role_id != 6){
             throwException();
         }
 

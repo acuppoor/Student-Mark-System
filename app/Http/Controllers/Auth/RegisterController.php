@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
@@ -50,7 +51,7 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'firstName' => 'required|string|max:255',
             'lastName' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => 'required|string|email|max:255',
             'studentNumber' => 'required|string|min:9|max:9',
             'employeeID' => 'required|string|min:7|max:7',
             'password' => 'required|string|min:6|confirmed',
@@ -65,17 +66,43 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        User::create([
-            'firstName' => $data['firstName'],
-            'lastName' => $data['lastName'],
-            'email' => $data['email'],
-            'studentNumber' => $data['studentNumber'],
-            'employeeID' => $data['employeeID'],
-            'approved' => 0,
-            'role_id' => 1,
-            'password' => bcrypt($data['password'])
-        ]);
+        $user = User::where('student_number', $data['studentNumber'])
+            ->where('email', $data['email'])->first();
 
-        return redirect()->route('login');
+        if(!$user) {
+            $user = User::where('student_number', $data['studentNumber'])->first();
+        }
+
+        if(!$user) {
+            $user = User::where('email', $data['email'])->first();
+        }
+
+        print_r($data);
+
+        if(!$user){
+           $user =  new User();
+           $user->first_name = $data['firstName'];
+            $user->last_name = $data['lastName'];
+            $user->email = $data['email'];
+            $user->student_number = $data['studentNumber'];
+            $user->employee_id = $data['employeeID'];
+            $user->approved = 0;
+            $user->role_id = 1;
+            $user->password = bcrypt($data['password']);
+            $user->account_registered = 1;
+            $user->save();
+        } else {
+            $user->first_name = $data['firstName'];
+            $user->last_name = $data['lastName'];
+            $user->email = $data['email'];
+            $user->student_number = $data['studentNumber'];
+            $user->employee_id = $data['employeeID'];
+            $user->password = bcrypt($data['password']);
+            $user->account_registered = 1;
+            $user->save();
+//            Auth::logout();
+        }
+
+        return /*redirect()->route('login')*/ $user;
     }
 }

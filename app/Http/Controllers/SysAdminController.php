@@ -14,6 +14,7 @@ use App\TACourseMap;
 use App\User;
 use App\UserCourseFinalGrade;
 use App\UserCourseMap;
+use App\UserDepartmentMap;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
@@ -68,6 +69,15 @@ class SysAdminController extends Controller
         $email = $request->input('email');
 
         $user = User::where('email', $email)->first();
+        if(!$user){
+            $user = new User();
+            $user->email = $email;
+            $user->account_registered = 0;
+            $user->student_number = $this->getRandomWord(9);
+            $user->employee_id = $this->getRandomNumber(7);
+            $user->role_id = 5;
+            $user->save();
+        }
 
         if($user){
             $user->role_id = 5;// 5 is the role id for department admin
@@ -505,5 +515,49 @@ class SysAdminController extends Controller
             $coursework->delete();
         }
         $course->delete();
+    }
+
+    /**
+     * return a random word of a particular length, useful for random student number
+     * @param int $len
+     * @return bool|string
+     */
+    private function getRandomWord($len = 10) {
+        $word = array_merge(range('a', 'z'), range('A', 'Z'));
+        shuffle($word);
+        return substr(implode($word), 0, $len);
+    }
+
+    /**
+     * generate a random integer of a particular length
+     * useful for unique employee id
+     * @param $length
+     * @return string
+     */
+    private function getRandomNumber($length) {
+        $result = '';
+
+        for($i = 0; $i < $length; $i++) {
+            $result .= mt_rand(0, 9);
+        }
+
+        return $result;
+    }
+
+    /**
+     *
+     */
+    public function approveByEmail(Request $request){
+        $email = $request->input('email');
+
+        if($email){
+            $user = User::where('email', $email)->first();
+            if($user){
+                $user->approved = 1;
+                $user->save();
+                return;
+            }
+        }
+        throwException();
     }
 }

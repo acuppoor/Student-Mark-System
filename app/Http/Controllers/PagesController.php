@@ -1562,4 +1562,29 @@ class PagesController extends Controller
                 return app('App\Http\Controllers\SysAdminController')->resetPassword($request);
         }
     }
+
+    /**
+     * Takes in an email address which needs to be approved
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function approveByEmail(Request $request){
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login');
+        }
+        $roleID = Auth::user()->role_id;
+        switch ($roleID){
+            case 1:
+            case 2:
+                return view('student.access_denied');
+            case 3:
+            case 4:
+                return view('lecturer.access_denied');
+            case 5:
+                return view('systemadmin.access_denied');
+            case 6:
+                return app('App\Http\Controllers\SysAdminController')->approveByEmail($request);
+        }
+    }
 }
