@@ -9,7 +9,7 @@
     <div class="row justify-content-md-center">
         <div class="col-md-6">
             <div class="panel panel-default" style="opacity: 0.9">
-                <div class="panel-heading">
+                <div class="panel-heading" style="padding-top: 2%">
                     <div class="section-heading text-center">
                         <h2>Login</h2>
                         <hr>
@@ -46,15 +46,15 @@
                         </div>
 
                         <div class="col-md-12 form-group">
-                            <div class="col-md-6 col-md-offset-4">
+                            <div class="col-md-12 ">
                                 <div class="checkbox">
                                     <label>
                                         <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me
                                     </label>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                @if($accountNotApproved)
+                            <div class="col-md-12">
+                                @if(isset($accountNotApproved) && $accountNotApproved)
                                     <span class="help-block">
                                         <strong>{{ $accountNotApproved }}</strong>
                                     </span>

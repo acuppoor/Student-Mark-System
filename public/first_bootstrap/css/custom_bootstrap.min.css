@@ -1,3 +1,10 @@
+.btn-primary{
+    background-color: #2A3F54;
+}
+.btn:hover{
+    background-color: #00A000;
+}
+
 .panel {
     margin-bottom: 22px;
     background-color: #fff;

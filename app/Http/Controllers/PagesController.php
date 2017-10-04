@@ -33,7 +33,7 @@ class PagesController extends Controller
     {
         if(Auth::user()->approved != 1){
             Auth::logout();
-            return view('auth.login');
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
         }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
@@ -57,7 +57,7 @@ class PagesController extends Controller
     public function searchMarks(){
         if(Auth::user()->approved != 1){
             Auth::logout();
-            return view('auth.login');
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
         }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
@@ -82,7 +82,7 @@ class PagesController extends Controller
     public function getMarks(Request $request){
         if(Auth::user()->approved != 1){
             Auth::logout();
-            return view('auth.login');
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
         }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
@@ -107,7 +107,7 @@ class PagesController extends Controller
     public function myMarks(){
         if(Auth::user()->approved != 1){
             Auth::logout();
-            return view('auth.login');
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
         }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
@@ -130,7 +130,7 @@ class PagesController extends Controller
     public function myMarksFilter(Request $request){
         if(Auth::user()->approved != 1){
             Auth::logout();
-            return view('auth.login');
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
         }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
@@ -152,7 +152,7 @@ class PagesController extends Controller
     public function lecturerCourses(Request $request=null){
         if(Auth::user()->approved != 1){
             Auth::logout();
-            return view('auth.login');
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
         }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
@@ -175,7 +175,7 @@ class PagesController extends Controller
     public function conveningCourses(Request $request=null){
         if(Auth::user()->approved != 1){
             Auth::logout();
-            return view('auth.login');
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
         }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
@@ -206,7 +206,7 @@ class PagesController extends Controller
     public function getCourseDetails($courseId){
         if(Auth::user()->approved != 1){
             Auth::logout();
-            return view('auth.login');
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
         }
         $roleID = Auth::user()->role_id;
         $course = Course::where('id', $courseId)->first();
@@ -229,7 +229,7 @@ class PagesController extends Controller
         $lecturerMap = LecturerCourseMap::where('course_id', $courseId)->where('user_id', Auth::user()->id)->first();
         $taMap = TACourseMap::where('course_id', $courseId)->where('user_id', Auth::user()->id)->first();
 
-        if($convenorMap && $convenorMap->status == 1 && ($roleID == 3 || $roleID == 4)){
+        if($convenorMap && $convenorMap->status == 1 && ( $roleID == 4)){
             return view('lecturer.course_details_convenor')->with('course', app('App\Http\Controllers\LecturerController')->getCourseDetails($courseId));
         } else if($lecturerMap && $lecturerMap->status == 1 && ($roleID == 3 || $roleID == 4)){
             return view('lecturer.course_details_lecturer')->with('course', app('App\Http\Controllers\LecturerController')->getCourseDetails($courseId));
@@ -257,7 +257,7 @@ class PagesController extends Controller
     public function createCourse(Request $request){
         if(Auth::user()->approved != 1){
             Auth::logout();
-            return view('auth.login');
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
         }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
@@ -282,7 +282,7 @@ class PagesController extends Controller
     public function deleteCourse(Request $request){
         if(Auth::user()->approved != 1){
             Auth::logout();
-            return view('auth.login');
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
         }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
@@ -306,7 +306,7 @@ class PagesController extends Controller
     public function updateCourseInfo(Request $request){
         if(Auth::user()->approved != 1){
             Auth::logout();
-            return view('auth.login');
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
         }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
@@ -330,7 +330,7 @@ class PagesController extends Controller
     public function addCourseConvenor(Request $request){
         if(Auth::user()->approved != 1){
             Auth::logout();
-            return view('auth.login');
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
         }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
@@ -354,7 +354,7 @@ class PagesController extends Controller
     public function addLecturer(Request $request){
         if(Auth::user()->approved != 1){
             Auth::logout();
-            return view('auth.login');
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
         }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
@@ -378,7 +378,7 @@ class PagesController extends Controller
     public function addTA(Request $request){
         if(Auth::user()->approved != 1){
             Auth::logout();
-            return view('auth.login');
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
         }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
@@ -402,7 +402,7 @@ class PagesController extends Controller
     public function participantsList(Request $request){
         if(Auth::user()->approved != 1){
             Auth::logout();
-            return view('auth.login');
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
         }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
@@ -425,7 +425,7 @@ class PagesController extends Controller
     public function createCoursework(Request $request){
         if(Auth::user()->approved != 1){
             Auth::logout();
-            return view('auth.login');
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
         }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
@@ -447,7 +447,7 @@ class PagesController extends Controller
     public function deleteCoursework(Request $request){
         if(Auth::user()->approved != 1){
             Auth::logout();
-            return view('auth.login');
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
         }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
@@ -469,7 +469,7 @@ class PagesController extends Controller
     public function createSubcoursework(Request $request){
         if(Auth::user()->approved != 1){
             Auth::logout();
-            return view('auth.login');
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
         }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
@@ -491,7 +491,7 @@ class PagesController extends Controller
     public function deleteSubcoursework(Request $request){
         if(Auth::user()->approved != 1){
             Auth::logout();
-            return view('auth.login');
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
         }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
@@ -514,7 +514,7 @@ class PagesController extends Controller
     public function getConvenors(Request $request){
         if(Auth::user()->approved != 1){
             Auth::logout();
-            return view('auth.login');
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
         }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
@@ -537,7 +537,7 @@ class PagesController extends Controller
     public function getLecturers(Request $request){
         if(Auth::user()->approved != 1){
             Auth::logout();
-            return view('auth.login');
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
         }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
@@ -559,7 +559,7 @@ class PagesController extends Controller
     public function getStudents(Request $request){
         if(Auth::user()->approved != 1){
             Auth::logout();
-            return view('auth.login');
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
         }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
@@ -581,7 +581,7 @@ class PagesController extends Controller
     public function getTAs(Request $request){
         if(Auth::user()->approved != 1){
             Auth::logout();
-            return view('auth.login');
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
         }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
@@ -603,7 +603,7 @@ class PagesController extends Controller
     public function createSubminimumRow(Request $request){
         if(Auth::user()->approved != 1){
             Auth::logout();
-            return view('auth.login');
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
         }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
@@ -626,7 +626,7 @@ class PagesController extends Controller
     public function createSection(Request $request){
         if(Auth::user()->approved != 1){
             Auth::logout();
-            return view('auth.login');
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
         }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
@@ -649,7 +649,7 @@ class PagesController extends Controller
     public function deleteSection(Request $request){
         if(Auth::user()->approved != 1){
             Auth::logout();
-            return view('auth.login');
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
         }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
@@ -672,7 +672,7 @@ class PagesController extends Controller
     public function createSubminimum(Request $request){
         if(Auth::user()->approved != 1){
             Auth::logout();
-            return view('auth.login');
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
         }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
@@ -695,7 +695,7 @@ class PagesController extends Controller
     public function deleteSubminimumRow(Request $request){
         if(Auth::user()->approved != 1){
             Auth::logout();
-            return view('auth.login');
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
         }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
@@ -718,7 +718,7 @@ class PagesController extends Controller
     public function deleteSubminimum(Request $request){
         if(Auth::user()->approved != 1){
             Auth::logout();
-            return view('auth.login');
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
         }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
@@ -741,7 +741,7 @@ class PagesController extends Controller
     public function getSubCourseworks(Request $request){
         if(Auth::user()->approved != 1){
             Auth::logout();
-            return view('auth.login');
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
         }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
@@ -763,7 +763,7 @@ class PagesController extends Controller
     public function getStudentsCourseworkMarks(Request $request){
         if(Auth::user()->approved != 1){
             Auth::logout();
-            return view('auth.login');
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
         }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
@@ -785,7 +785,7 @@ class PagesController extends Controller
     public function getStudentsSubcourseworkMarks(Request $request){
         if(Auth::user()->approved != 1){
             Auth::logout();
-            return view('auth.login');
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
         }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
@@ -807,7 +807,7 @@ class PagesController extends Controller
     public function updateSectionMarks(Request $request){
         if(Auth::user()->approved != 1){
             Auth::logout();
-            return view('auth.login');
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
         }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
@@ -830,7 +830,7 @@ class PagesController extends Controller
     public function approveUsers(Request $request){
         if(Auth::user()->approved != 1){
             Auth::logout();
-            return view('auth.login');
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
         }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
@@ -853,7 +853,7 @@ class PagesController extends Controller
     public function convenorsAccess(Request $request){
         if(Auth::user()->approved != 1){
             Auth::logout();
-            return view('auth.login');
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
         }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
@@ -876,7 +876,7 @@ class PagesController extends Controller
     public function lecturersAccess(Request $request){
         if(Auth::user()->approved != 1){
             Auth::logout();
-            return view('auth.login');
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
         }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
@@ -899,7 +899,7 @@ class PagesController extends Controller
     public function tasAccess(Request $request){
         if(Auth::user()->approved != 1){
             Auth::logout();
-            return view('auth.login');
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
         }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
@@ -922,7 +922,7 @@ class PagesController extends Controller
     public function updateCoursework(Request $request){
         if(Auth::user()->approved != 1){
             Auth::logout();
-            return view('auth.login');
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
         }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
@@ -945,7 +945,7 @@ class PagesController extends Controller
     public function updateSubcoursework(Request $request){
         if(Auth::user()->approved != 1){
             Auth::logout();
-            return view('auth.login');
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
         }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
@@ -966,7 +966,10 @@ class PagesController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function updateSection(Request $request){
-        $this->checkApproval();
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
+        }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1:
@@ -986,7 +989,10 @@ class PagesController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function updateSubminimum(Request $request){
-        $this->checkApproval();
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
+        }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1:
@@ -1006,7 +1012,10 @@ class PagesController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function updateSubminimumRow(Request $request){
-        $this->checkApproval();
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
+        }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1:
@@ -1026,7 +1035,10 @@ class PagesController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function updateStudentsList(Request $request){
-        $this->checkApproval();
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
+        }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1:
@@ -1046,7 +1058,10 @@ class PagesController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function uploadSectionMarks(Request $request){
-        $this->checkApproval();
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
+        }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1:
@@ -1066,7 +1081,10 @@ class PagesController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function getGradeTypes(Request $request){
-        $this->checkApproval();
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
+        }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1:
@@ -1085,7 +1103,10 @@ class PagesController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function getSections(Request $request){
-        $this->checkApproval();
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
+        }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1:
@@ -1104,7 +1125,10 @@ class PagesController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function getStudentsMarks(Request $request){
-        $this->checkApproval();
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
+        }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1:
@@ -1124,7 +1148,10 @@ class PagesController extends Controller
      * @return $this|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function otherCourses(Request $request=null){
-        $this->checkApproval();
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
+        }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1:
@@ -1145,7 +1172,10 @@ class PagesController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function updateFinalGrade(Request $request=null){
-        $this->checkApproval();
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
+        }
         $roleID = Auth::user()->role_id;
         switch ($roleID) {
             case 1:
@@ -1166,7 +1196,10 @@ class PagesController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function downloadFinalGrade(Request $request=null){
-        $this->checkApproval();
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
+        }
         $roleID = Auth::user()->role_id;
         switch ($roleID) {
             case 1:
@@ -1186,7 +1219,10 @@ class PagesController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function downloadDPList(Request $request=null){
-        $this->checkApproval();
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
+        }
         $roleID = Auth::user()->role_id;
         switch ($roleID) {
             case 1:
@@ -1205,7 +1241,10 @@ class PagesController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
      */
     public function taCourses(){
-        $this->checkApproval();
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
+        }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1:
@@ -1225,7 +1264,10 @@ class PagesController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
      */
     public function getTaCourse($courseId){
-        $this->checkApproval();
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
+        }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1:
@@ -1245,7 +1287,10 @@ class PagesController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
      */
     public function taCoursesFilter(Request $request){
-        $this->checkApproval();
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
+        }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1:
@@ -1264,7 +1309,10 @@ class PagesController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function admin(){
-        $this->checkApproval();
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
+        }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1:
@@ -1284,7 +1332,10 @@ class PagesController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function faculties(){
-        $this->checkApproval();
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
+        }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1:
@@ -1303,7 +1354,10 @@ class PagesController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function getDepartments(Request $request){
-        $this->checkApproval();
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
+        }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1:
@@ -1322,7 +1376,10 @@ class PagesController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function addDepartmentAdmin(Request $request){
-        $this->checkApproval();
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
+        }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1:
@@ -1343,7 +1400,10 @@ class PagesController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function addFaculty(Request $request){
-        $this->checkApproval();
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
+        }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1:
@@ -1364,7 +1424,10 @@ class PagesController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function addDepartment(Request $request){
-        $this->checkApproval();
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
+        }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1:
@@ -1385,7 +1448,10 @@ class PagesController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function updateFaculty(Request $request){
-        $this->checkApproval();
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
+        }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1:
@@ -1406,7 +1472,10 @@ class PagesController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function deleteFaculty(Request $request){
-        $this->checkApproval();
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
+        }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1:
@@ -1427,7 +1496,10 @@ class PagesController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function updateDepartment(Request $request){
-        $this->checkApproval();
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
+        }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1:
@@ -1448,7 +1520,10 @@ class PagesController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function deleteDepartment(Request $request){
-        $this->checkApproval();
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
+        }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1:
@@ -1469,7 +1544,10 @@ class PagesController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function resetPassword(Request $request){
-        $this->checkApproval();
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
+        }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1:
@@ -1491,7 +1569,10 @@ class PagesController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function approveByEmail(Request $request){
-        $this->checkApproval();
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
+        }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1:
@@ -1513,7 +1594,10 @@ class PagesController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function profilePage(){
-        $this->checkApproval();
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
+        }
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1:
@@ -1530,12 +1614,18 @@ class PagesController extends Controller
     }
 
     public function changePassword(Request $request){
-        $this->checkApproval();
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
+        }
         app('App\Http\Controllers\GeneralController')->changePassword($request);
     }
 
     public function updatePersonalInfo(Request $request){
-        $this->checkApproval();
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
+        }
         app('App\Http\Controllers\GeneralController')->updatePersonalInfo($request);
     }
 
@@ -1545,7 +1635,10 @@ class PagesController extends Controller
     }
 
     public function addFAQ(Request $request){
-        $this->checkApproval();
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
+        }
         if(Auth::user()->role_id != 6){
             throwException();
         }
@@ -1553,7 +1646,10 @@ class PagesController extends Controller
     }
 
     public function rejectAccount(Request $request){
-        $this->checkApproval();
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
+        }
         if(Auth::user()->role_id != 6){
             throwException();
         }
@@ -1561,7 +1657,10 @@ class PagesController extends Controller
     }
 
     public function updateFAQ(Request $request){
-        $this->checkApproval();
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
+        }
         if(Auth::user()->role_id != 6){
             throwException();
         }
@@ -1569,17 +1668,14 @@ class PagesController extends Controller
     }
 
     public function deleteFAQ(Request $request){
-        $this->checkApproval();
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
+        }
         if(Auth::user()->role_id != 6){
             throwException();
         }
         return app('App\Http\Controllers\SysAdminController')->deleteFAQ($request);
     }
 
-    private function checkApproval(){
-        if(Auth::user()->approved != 1){
-            Auth::logout();
-            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
-        }
-    }
 }
