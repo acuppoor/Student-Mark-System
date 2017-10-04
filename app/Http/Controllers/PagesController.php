@@ -1557,7 +1557,7 @@ class PagesController extends Controller
             case 4:
                 return view('lecturer.access_denied');
             case 5:
-                return view('systemadmin.access_denied');
+                return view('departmentadmin.access_denied');
             case 6:
                 return app('App\Http\Controllers\SysAdminController')->resetPassword($request);
         }
@@ -1582,9 +1582,42 @@ class PagesController extends Controller
             case 4:
                 return view('lecturer.access_denied');
             case 5:
-                return view('systemadmin.access_denied');
+                return view('departmentadmin.access_denied');
             case 6:
                 return app('App\Http\Controllers\SysAdminController')->approveByEmail($request);
         }
+    }
+
+    /**
+     * Checks if user is approved and that he is logged in. then returns the profile page
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function profilePage(){
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login');
+        }
+        $roleID = Auth::user()->role_id;
+        switch ($roleID){
+            case 1:
+            case 2:
+                return view('student.profile');
+            case 3:
+            case 4:
+                return view('lecturer.profile');
+            case 5:
+                return view('departmentadmin.profile');
+            case 6:
+                return view('systemadmin.profile');
+        }
+    }
+
+    public function changePassword(Request $request){
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login');
+        }
+        app('App\Http\Controllers\GeneralController')->changePassword($request);
     }
 }

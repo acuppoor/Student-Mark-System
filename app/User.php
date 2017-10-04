@@ -28,7 +28,7 @@ class User extends Authenticatable
     ];
 
     public function role(){
-        return $this->hasOne('App\Role');
+        return $this->hasOne('App\Role', 'id', 'type_id');
     }
 
     public function subCourseworkMarks(){

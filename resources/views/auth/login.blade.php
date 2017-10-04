@@ -5,7 +5,7 @@
 @endSection
 
 @section('content')
-<div class="container" style="padding-top: 12%">
+<div class="container" style="padding-top: 10%">
     <div class="row justify-content-md-center">
         <div class="col-md-6">
             <div class="panel panel-default" style="opacity: 0.9">
@@ -59,7 +59,7 @@
                                 <button type="submit" class="btn btn-primary btn-outline btn-xl">{{--btn btn-primary">--}}
                                     Login
                                 </button>
-                                {{--<a class="btn btn-link" href="{{ route('password.request') }}">
+                                {{--<a class="btn btn-link" href="{{ route(/*'password.request'*/'password_reset') }}">
                                         Forgot Your Password?
                                 </a>--}}
                             </div>

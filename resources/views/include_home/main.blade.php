@@ -50,7 +50,7 @@
                     </ul>
                 </div>
                 <div class="copyright pull-right pull-down">
-                    &copy; <script>document.write(new Date().getFullYear())</script>, <a target="_blank" href="http://www.uct.ac.za">UCT</a>
+                    &copy; <script>document.write(new Date().getFullYear())</script>, <a href="/">SuMaSys</a>
                 </div>
             </div>
         </footer>

@@ -81,6 +81,7 @@ Route::post('/resetpassword', 'PagesController@resetPassword');
 Route::get('/searchmarks', 'PagesController@searchMarks')->name("search_marks");
 Route::post('/searchmarks', 'PagesController@getMarks');
 Route::post('/approveaccount', 'PagesController@approveByEmail');
+Route::post('/changepassword', 'PagesController@changePassword');
 
 Route::get('/admin', 'PagesController@admin')->name("admin");
 Route::get('/faculties&departments', 'PagesController@faculties')->name("faculties");
@@ -88,7 +89,8 @@ Route::get('/faculties&departments', 'PagesController@faculties')->name("faculti
 Route::get('/faqs', function(){return view('faq');})->name('FAQs');
 Route::get('/privacypolicy', function(){return view('privacypolicy');})->name('privacy_policy');
 Route::get('/termsandconditions', function(){return view('termsandcondition');})->name('terms_and_conditions');
-
+Route::get('/resetpassword', function(){return view('auth.passwords.reset');})->name('password_reset');
+Route::get('/profile', 'PagesController@profilePage')->name('profile');
 
 Auth::routes();
 

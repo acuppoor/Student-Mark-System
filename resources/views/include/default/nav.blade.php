@@ -19,13 +19,14 @@
                         <a class="nav-link js-scroll-trigger" href="{{ route('register') }}">Register</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link js-scroll-trigger" href="/contact">Contact</a>
+                        <a class="nav-link js-scroll-trigger" href="/faqs">FAQs</a>
                     </li>
                 @else
+                    {{redirect()->route('home')}}
                     {{-- Need to modify parts below --}}
-                    <li class="dropdown">
+                   {{-- <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                            {{ Auth::user()->firstName }} <span class="caret"></span>
+                            {{ Auth::user()->first_name }} <span class="caret"></span>
                         </a>
 
                         <ul class="dropdown-menu" role="menu">
@@ -41,7 +42,7 @@
                                 </form>
                             </li>
                         </ul>
-                    </li>
+                    </li>--}}
                 @endif
             </ul>
         </div>

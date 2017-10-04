@@ -17,18 +17,21 @@
         </div>
         <!-- /sidebar menu -->
 
-        <button class="btn btn-warning" type="button" id="reloadPageButton" style="display: none">Reload Page</button>
+
 
         <!-- /menu footer buttons -->
         <div class="sidebar-footer hidden-small">
-            <a data-toggle="tooltip" data-placement="top" title="Logout" href="{{ route('logout') }}"
+            {{--<a data-toggle="tooltip" data-placement="top" title="Logout" href="{{ route('logout') }}"
                onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                 <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                     {{ csrf_field() }}
                 </form>
-            </a>
+            </a>--}}
+            <button class="btn btn-danger form-control" type="button" id="reloadPageButton" style="display: none">
+                <i class="glyphicon glyphicon-repeat"></i>
+                Reload Page</button>
         </div>
         <!-- /menu footer buttons -->
     </div>
