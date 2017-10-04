@@ -9,7 +9,7 @@
 @section('navbar_title')
     <ul class="nav navbar-nav navbar-left">
         <li class="">
-            <a href="{{url('/lecturer/courses')}}" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            <a href="{{url('/lecturingcourses')}}" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                 <h4><i class="fa fa-book"></i>&nbsp;Lecturing Courses</h4>
             </a>
         </li>

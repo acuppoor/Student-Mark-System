@@ -9,7 +9,7 @@
 @section('navbar_title')
     <ul class="nav navbar-nav navbar-left">
         <li class="">
-            <a href="{{url('/lecturer/convening_courses')}}" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            <a href="{{route('convening_courses')}}" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                 <h4><i class="fa fa-book"></i>&nbsp;Convening Courses</h4>
             </a>
         </li>
@@ -69,7 +69,7 @@
                                 <div class="col-md-3 form-group pull-left top_search">
                                     <label for="">&nbsp;</label><br>
                                     <button class="btn btn-round btn-dark" id="searchButton"><i class="fa fa-search"></i>Search</button>
-                                    <a href="{{route('ta_courses')}}">Reset Results</a>
+                                    <a href="{{route('convening_courses')}}">Reset Results</a>
                                 </div>
                             </form>
                             <div class="clearfix"></div>

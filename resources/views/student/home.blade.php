@@ -20,31 +20,30 @@
     <div class="right_col" role="main">
         <div class="row">
             <div class="row">
+
                 <div class="col-md-6 col-sm-6 col-xs-12">
                     <div class="x_panel">
                         <div class="x_title">
-                            <h2>Recent Queries</h2>
+                            <h2><a href="{{route('my_marks')}}">Viewing Own Marks</a></h2>
                             <ul class="nav navbar-right panel_toolbox">
-                                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                                </li>
-                                <li><a class="close-link"><i class="fa fa-close"></i></a>
+                                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a>
                                 </li>
                             </ul>
                             <div class="clearfix"></div>
                         </div>
-                        <div class="x_content">
+                        <div class="x_content" style="display: block">
                             <div class="dashboard-widget-content">
                                 <ul class="list-unstyled timeline widget">
                                     <li>
                                         <div class="block">
                                             <div class="block_content">
                                                 <h2 class="title">
-                                                    <a>Viewing last year's marks</a>
+                                                    <a>Searching</a>
                                                 </h2>
-                                                <div class="byline">
-                                                    <span>13 hours ago</span>
-                                                </div>
-                                                <p class="excerpt">I want to view my marks for CSC2003S which I did last year. How can I do... <a>Read&nbsp;More</a>
+                                                <p class="excerpt">
+                                                    By default, the marks for the current year courses will be displayed.
+                                                    Other marks can be searched y the course code, year and department. The marks records
+                                                    can be drilled down upto section marks.
                                                 </p>
                                             </div>
                                         </div>
@@ -53,90 +52,104 @@
                                         <div class="block">
                                             <div class="block_content">
                                                 <h2 class="title">
-                                                    <a>Can I query my marks on this system?</a>
+                                                    <a>Viewing</a>
                                                 </h2>
-                                                <div class="byline">
-                                                    <span>13 hours ago</span></a>
-                                                </div>
-                                                <p class="excerpt">I have seen my marks for a course. Should I be querying my marks using... <a>Read&nbsp;More</a>
+                                                <p class="excerpt">
+                                                    If any record has been found, it will be displayed on the page. Each result if linked to a course.
+                                                    The marks can be drilled down upto the section marks for the course.
                                                 </p>
                                             </div>
                                         </div>
                                     </li>
-
                                 </ul>
                             </div>
                         </div>
                     </div>
                 </div>
 
-            <div class="col-md-6 col-sm-4 col-xs-12">
-                <div class="x_panel tile fixed_height_320">
-                    <div class="x_title">
-                        <h2>Courses Done So Far...</h2>
-                        <ul class="nav navbar-right panel_toolbox">
-                            <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                            </li>
-                            <li><a class="close-link"><i class="fa fa-close"></i></a>
-                            </li>
-                        </ul>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="x_content">
-                        <h4>Courses Done For The Past 3 Years</h4>
-                        <div class="widget_summary">
-                            <div class="w_left w_25">
-                                <span>2017</span>
-                            </div>
-                            <div class="w_center w_55">
-                                <div class="progress">
-                                    <div class="progress-bar bg-green" role="progressbar" aria-valuenow="2" aria-valuemin="0" aria-valuemax="10" style="width: 67%;">
-                                        <span class="sr-only">2 Courses</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="w_right w_20">
-                                <span>2</span>
-                            </div>
+                @if(\Illuminate\Support\Facades\Auth::user()->role_id == 2)
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2><a href="{{route('other_courses')}}">Course Management</a></h2>
+                            <ul class="nav navbar-right panel_toolbox">
+                                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a>
+                                </li>
+                            </ul>
                             <div class="clearfix"></div>
                         </div>
-
-                        <div class="widget_summary">
-                            <div class="w_left w_25">
-                                <span>2016</span>
+                        <div class="x_content"  style="display: none">
+                            <div class="dashboard-widget-content">
+                                <ul class="list-unstyled timeline widget">
+                                    <li>
+                                        <div class="block">
+                                            <div class="block_content">
+                                                <h2 class="title">
+                                                    <a>TA Courses</a>
+                                                </h2>
+                                                <p class="excerpt">
+                                                    The <a href="{{route('ta_courses')}}">TA Courses</a> page contains a list of
+                                                    courses for which you are listed as a TA. Clicking on a course will navigate to the
+                                                    course-management page where participants, coursework, subcoursework and sections can be viewed.
+                                                    Marks (except final grade) can be uploaded through a file or can be manually updated one by one.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
                             </div>
-                            <div class="w_center w_55">
-                                <div class="progress">
-                                    <div class="progress-bar bg-green" role="progressbar" aria-valuenow="3" aria-valuemin="0" aria-valuemax="10" style="width: 100%;">
-                                        <span class="sr-only">3 Courses</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="w_right w_20">
-                                <span>3</span>
-                            </div>
-                            <div class="clearfix"></div>
-                        </div>
-                        <div class="widget_summary">
-                            <div class="w_left w_25">
-                                <span>2015</span>
-                            </div>
-                            <div class="w_center w_55">
-                                <div class="progress">
-                                    <div class="progress-bar bg-green" role="progressbar" aria-valuenow="2" aria-valuemin="0" aria-valuemax="10" style="width: 67%;">
-                                        <span class="sr-only">2 Courses</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="w_right w_20">
-                                <span>2</span>
-                            </div>
-                            <div class="clearfix"></div>
                         </div>
                     </div>
                 </div>
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2><a href="{{route('search_marks')}}">Viewing Students Marks</a></h2>
+                            <ul class="nav navbar-right panel_toolbox">
+                                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a>
+                                </li>
+                            </ul>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content" style="display: none">
+                            <div class="dashboard-widget-content">
+                                <ul class="list-unstyled timeline widget">
+                                    <li>
+                                        <div class="block">
+                                            <div class="block_content">
+                                                <h2 class="title">
+                                                    <a>Searching</a>
+                                                </h2>
+                                                <p class="excerpt">
+                                                    A student number/employee ID is compulsory for the search. Only records which matches the
+                                                    student number/employee ID exactly will be returned. Other filters such as course code,
+                                                    year and department are optional (only students' marks from the TA Courses will be returned).
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="block">
+                                            <div class="block_content">
+                                                <h2 class="title">
+                                                    <a>Viewing</a>
+                                                </h2>
+                                                <p class="excerpt">
+                                                    If any record has been found, it will be displayed on the page. Each result if linked to a course.
+                                                    The marks can be drilled down upto the section marks for the course.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @endif
+
             </div>
-        </div>
         </div>
     </div>
 @endsection

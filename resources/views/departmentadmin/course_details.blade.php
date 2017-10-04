@@ -1484,7 +1484,7 @@
                                                 <div class="col-md-4" style="text-align: center">
                                                     <button class="btn btn-dark btn-round spinnerNeeded" type="button" id="exportStudentsListButton">
                                                         <i class="spinnerPlaceholder"></i>
-                                                        Students' List</button>
+                                                        List of Students</button>
                                                 </div>
                                                 <div class="col-md-4" style="text-align: center">
                                                     <button class="btn btn-dark btn-round spinnerNeeded" type="button" id="exportFinalGradeButton">

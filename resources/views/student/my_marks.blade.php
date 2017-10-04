@@ -261,7 +261,7 @@
                                                                                 </tr>
                                                                                 @foreach($subcoursework['sections'] as $section)
                                                                                     <tr>
-                                                                                        <td><strong>{{$section['name']}}: </strong></td>
+                                                                                        <td><strong>{{$section['name']}}:&nbsp; </strong></td>
                                                                                         <td>{{$section['marks']}} / {{$section['max_marks']}}</td>
                                                                                     </tr>
                                                                                 @endforeach

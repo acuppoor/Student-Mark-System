@@ -229,13 +229,11 @@ class PagesController extends Controller
         $lecturerMap = LecturerCourseMap::where('course_id', $courseId)->where('user_id', Auth::user()->id)->first();
         $taMap = TACourseMap::where('course_id', $courseId)->where('user_id', Auth::user()->id)->first();
 
-        if($convenorMap && $convenorMap->status == 1){
+        if($convenorMap && $convenorMap->status == 1 && ($roleID == 3 || $roleID == 4)){
             return view('lecturer.course_details_convenor')->with('course', app('App\Http\Controllers\LecturerController')->getCourseDetails($courseId));
-        } else if($lecturerMap && $lecturerMap->status == 1){
+        } else if($lecturerMap && $lecturerMap->status == 1 && ($roleID == 3 || $roleID == 4)){
             return view('lecturer.course_details_lecturer')->with('course', app('App\Http\Controllers\LecturerController')->getCourseDetails($courseId));
-        } else if($taMap && $taMap->status == 1){
-            return view('student.course_details_ta')->with('course', app('App\Http\Controllers\LecturerController')->getCourseDetails($courseId));
-        } else if($roleID == 3){
+        } else if($roleID == 3 || $roleID == 4){
             if(!$course){
                 return view('lecturer.access_denied');
             }
@@ -246,6 +244,8 @@ class PagesController extends Controller
             } else {
                 return view('lecturer.access_denied');
             }
+        } else if($taMap && $taMap->status == 1 && $roleID == 2) {
+            return view('student.course_details_ta')->with('course', app('App\Http\Controllers\LecturerController')->getCourseDetails($courseId));
         }
         return view('student.access_denied');
     }
@@ -966,10 +966,7 @@ class PagesController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function updateSection(Request $request){
-        if(Auth::user()->approved != 1){
-            Auth::logout();
-            return view('auth.login');
-        }
+        $this->checkApproval();
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1:
@@ -989,10 +986,7 @@ class PagesController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function updateSubminimum(Request $request){
-        if(Auth::user()->approved != 1){
-            Auth::logout();
-            return view('auth.login');
-        }
+        $this->checkApproval();
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1:
@@ -1012,10 +1006,7 @@ class PagesController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function updateSubminimumRow(Request $request){
-        if(Auth::user()->approved != 1){
-            Auth::logout();
-            return view('auth.login');
-        }
+        $this->checkApproval();
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1:
@@ -1035,10 +1026,7 @@ class PagesController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function updateStudentsList(Request $request){
-        if(Auth::user()->approved != 1){
-            Auth::logout();
-            return view('auth.login');
-        }
+        $this->checkApproval();
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1:
@@ -1058,10 +1046,7 @@ class PagesController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function uploadSectionMarks(Request $request){
-        if(Auth::user()->approved != 1){
-            Auth::logout();
-            return view('auth.login');
-        }
+        $this->checkApproval();
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1:
@@ -1081,10 +1066,7 @@ class PagesController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function getGradeTypes(Request $request){
-        if(Auth::user()->approved != 1){
-            Auth::logout();
-            return view('auth.login');
-        }
+        $this->checkApproval();
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1:
@@ -1103,10 +1085,7 @@ class PagesController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function getSections(Request $request){
-        if(Auth::user()->approved != 1){
-            Auth::logout();
-            return view('auth.login');
-        }
+        $this->checkApproval();
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1:
@@ -1125,10 +1104,7 @@ class PagesController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function getStudentsMarks(Request $request){
-        if(Auth::user()->approved != 1){
-            Auth::logout();
-            return view('auth.login');
-        }
+        $this->checkApproval();
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1:
@@ -1148,10 +1124,7 @@ class PagesController extends Controller
      * @return $this|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function otherCourses(Request $request=null){
-        if(Auth::user()->approved != 1){
-            Auth::logout();
-            return view('auth.login');
-        }
+        $this->checkApproval();
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1:
@@ -1172,10 +1145,7 @@ class PagesController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function updateFinalGrade(Request $request=null){
-        if(Auth::user()->approved != 1){
-            Auth::logout();
-            return view('auth.login');
-        }
+        $this->checkApproval();
         $roleID = Auth::user()->role_id;
         switch ($roleID) {
             case 1:
@@ -1196,10 +1166,7 @@ class PagesController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function downloadFinalGrade(Request $request=null){
-        if(Auth::user()->approved != 1){
-            Auth::logout();
-            return view('auth.login');
-        }
+        $this->checkApproval();
         $roleID = Auth::user()->role_id;
         switch ($roleID) {
             case 1:
@@ -1219,10 +1186,7 @@ class PagesController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function downloadDPList(Request $request=null){
-        if(Auth::user()->approved != 1){
-            Auth::logout();
-            return view('auth.login');
-        }
+        $this->checkApproval();
         $roleID = Auth::user()->role_id;
         switch ($roleID) {
             case 1:
@@ -1241,10 +1205,7 @@ class PagesController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
      */
     public function taCourses(){
-        if(Auth::user()->approved != 1){
-            Auth::logout();
-            return view('auth.login');
-        }
+        $this->checkApproval();
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1:
@@ -1264,10 +1225,7 @@ class PagesController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
      */
     public function getTaCourse($courseId){
-        if(Auth::user()->approved != 1){
-            Auth::logout();
-            return view('auth.login');
-        }
+        $this->checkApproval();
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1:
@@ -1287,10 +1245,7 @@ class PagesController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
      */
     public function taCoursesFilter(Request $request){
-        if(Auth::user()->approved != 1){
-            Auth::logout();
-            return view('auth.login');
-        }
+        $this->checkApproval();
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1:
@@ -1309,10 +1264,7 @@ class PagesController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function admin(){
-        if(Auth::user()->approved != 1){
-            Auth::logout();
-            return view('auth.login');
-        }
+        $this->checkApproval();
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1:
@@ -1332,10 +1284,7 @@ class PagesController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function faculties(){
-        if(Auth::user()->approved != 1){
-            Auth::logout();
-            return view('auth.login');
-        }
+        $this->checkApproval();
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1:
@@ -1354,10 +1303,7 @@ class PagesController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function getDepartments(Request $request){
-        if(Auth::user()->approved != 1){
-            Auth::logout();
-            return view('auth.login');
-        }
+        $this->checkApproval();
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1:
@@ -1376,10 +1322,7 @@ class PagesController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function addDepartmentAdmin(Request $request){
-        if(Auth::user()->approved != 1){
-            Auth::logout();
-            return view('auth.login');
-        }
+        $this->checkApproval();
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1:
@@ -1400,10 +1343,7 @@ class PagesController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function addFaculty(Request $request){
-        if(Auth::user()->approved != 1){
-            Auth::logout();
-            return view('auth.login');
-        }
+        $this->checkApproval();
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1:
@@ -1424,10 +1364,7 @@ class PagesController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function addDepartment(Request $request){
-        if(Auth::user()->approved != 1){
-            Auth::logout();
-            return view('auth.login');
-        }
+        $this->checkApproval();
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1:
@@ -1448,10 +1385,7 @@ class PagesController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function updateFaculty(Request $request){
-        if(Auth::user()->approved != 1){
-            Auth::logout();
-            return view('auth.login');
-        }
+        $this->checkApproval();
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1:
@@ -1472,10 +1406,7 @@ class PagesController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function deleteFaculty(Request $request){
-        if(Auth::user()->approved != 1){
-            Auth::logout();
-            return view('auth.login');
-        }
+        $this->checkApproval();
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1:
@@ -1496,10 +1427,7 @@ class PagesController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function updateDepartment(Request $request){
-        if(Auth::user()->approved != 1){
-            Auth::logout();
-            return view('auth.login');
-        }
+        $this->checkApproval();
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1:
@@ -1520,10 +1448,7 @@ class PagesController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function deleteDepartment(Request $request){
-        if(Auth::user()->approved != 1){
-            Auth::logout();
-            return view('auth.login');
-        }
+        $this->checkApproval();
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1:
@@ -1544,10 +1469,7 @@ class PagesController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function resetPassword(Request $request){
-        if(Auth::user()->approved != 1){
-            Auth::logout();
-            return view('auth.login');
-        }
+        $this->checkApproval();
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1:
@@ -1569,10 +1491,7 @@ class PagesController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function approveByEmail(Request $request){
-        if(Auth::user()->approved != 1){
-            Auth::logout();
-            return view('auth.login');
-        }
+        $this->checkApproval();
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1:
@@ -1594,10 +1513,7 @@ class PagesController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function profilePage(){
-        if(Auth::user()->approved != 1){
-            Auth::logout();
-            return view('auth.login');
-        }
+        $this->checkApproval();
         $roleID = Auth::user()->role_id;
         switch ($roleID){
             case 1:
@@ -1614,26 +1530,17 @@ class PagesController extends Controller
     }
 
     public function changePassword(Request $request){
-        if(Auth::user()->approved != 1){
-            Auth::logout();
-            return view('auth.login');
-        }
+        $this->checkApproval();
         app('App\Http\Controllers\GeneralController')->changePassword($request);
     }
 
     public function updatePersonalInfo(Request $request){
-        if(Auth::user()->approved != 1){
-            Auth::logout();
-            return view('auth.login');
-        }
+        $this->checkApproval();
         app('App\Http\Controllers\GeneralController')->updatePersonalInfo($request);
     }
 
     public function getFaculties(Request $request){
-        if(Auth::user()->approved != 1){
-            Auth::logout();
-            return view('auth.login');
-        }
+        $this->checkApproval();
         return app('App\Http\Controllers\GeneralController')->getFaculties($request);
     }
 

@@ -46,7 +46,7 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-12" style="text-align: center">
                                         <label for="">&nbsp;</label><br>
                                         <button class="btn btn-dark btn-round spinnerNeeded" data-id="{{Auth::user()->id}}" id="updateUserInfoButton" type="button">
                                             <i class="spinnerPlaceholder"></i>

@@ -8,15 +8,13 @@
             <div class="x_panel">
                 <div class="x_title">
                     <div class="row">
-                        <div class="col-md-4">
+                        <div class="col-md-8">
                             <h2><?=($j+1) . '. ' . $courses[$j]['courseName']. ' (' . $courses[$j]['year'] .')'?></h2>
                         </div>
-                        <div class="col-md-4">
-                            {{--
-                                                                    <h2>Result: {{$courses[$j]['final_mark']}}</h2>
-                            --}}
+                        <div class="col-md-3" style="text-align: right">
+                            <h4><i>Final Grade: {{$courses[$j]['final_mark']}}</i></h4>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-1">
                             <ul class="nav navbar-right panel_toolbox">
                                 <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a>
                                 </li>
@@ -180,7 +178,7 @@
                                                                     </tr>
                                                                     @foreach($subcoursework['sections'] as $section)
                                                                         <tr>
-                                                                            <td><strong>{{$section['name']}}: </strong></td>
+                                                                            <td><strong>{{$section['name']}}:&nbsp;</strong></td>
                                                                             <td>{{$section['marks']}} / {{$section['max_marks']}}</td>
                                                                         </tr>
                                                                     @endforeach

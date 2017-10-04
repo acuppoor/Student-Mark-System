@@ -1448,7 +1448,7 @@ class LecturerController extends Controller
 
         if($data){
             $sectionId = $data[0]['section_id'];
-            $section = Section::where('id', $sectionId);
+            $section = Section::where('id', $sectionId)->first();
             $course = $section->subCoursework->coursework->course;
             if(!$course){
                 throwException(); // a section eventually has to be for a course
