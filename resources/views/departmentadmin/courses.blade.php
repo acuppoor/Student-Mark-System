@@ -9,7 +9,7 @@
 @section('navbar_title')
     <ul class="nav navbar-nav navbar-left">
         <li class="">
-            <a href="{{route("home")}}" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            <a href="{{route("other_courses")}}" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                 <h4><i class="fa fa-book"></i>&nbsp;Courses</h4>
             </a>
         </li>
@@ -32,7 +32,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
                     </button>
-                    <h4 class="modal-title" id="myModalLabel">New Coursework</h4>
+                    <h4 class="modal-title" id="myModalLabel">New Course</h4>
                 </div>
                 <form method="" action="">
                     <div class="modal-body">
@@ -146,7 +146,7 @@
                                 <div class="col-md-3 form-group pull-left top_search">
                                     <label for="">&nbsp;</label><br>
                                     <button class="btn btn-round btn-dark" id="searchButton"><i class="fa fa-search"></i>Search</button>
-                                    <a href="{{route('ta_courses')}}">Reset Results</a>
+                                    <a href="{{route('other_courses')}}">Reset Results</a>
                                 </div>
                             </form>
                             <div class="clearfix"></div>

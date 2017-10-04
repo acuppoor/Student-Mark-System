@@ -23,8 +23,8 @@
                 <div class="col-middle">
                     <div class="text-center text-center">
                         <h1 class="error-number">403</h1>
-                        <h2>Access denied</h2>
-                        <p>You don't have permission to access this page!
+                        <h2>Access denied/Bad Operation</h2>
+                        <p>You don't have permission to access this page or the operation does not exist!
                         </p>
                     </div>
                 </div>

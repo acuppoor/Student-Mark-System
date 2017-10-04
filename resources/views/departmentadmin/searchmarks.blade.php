@@ -9,7 +9,7 @@
 @section('navbar_title')
     <ul class="nav navbar-nav navbar-left">
         <li class="">
-            <a href="{{url('/departmentadmin')}}" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            <a href="{{url('/searchmarks')}}" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                 <h4><i class="fa fa-search"></i>&nbsp;Search</h4>
             </a>
         </li>
