@@ -82,6 +82,7 @@ Route::get('/searchmarks', 'PagesController@searchMarks')->name("search_marks");
 Route::post('/searchmarks', 'PagesController@getMarks');
 Route::post('/approveaccount', 'PagesController@approveByEmail');
 Route::post('/changepassword', 'PagesController@changePassword');
+Route::post('/updatepersonalinfo', 'PagesController@updatePersonalInfo');
 
 Route::get('/admin', 'PagesController@admin')->name("admin");
 Route::get('/faculties&departments', 'PagesController@faculties')->name("faculties");

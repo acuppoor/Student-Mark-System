@@ -1620,4 +1620,12 @@ class PagesController extends Controller
         }
         app('App\Http\Controllers\GeneralController')->changePassword($request);
     }
+
+    public function updatePersonalInfo(Request $request){
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login');
+        }
+        app('App\Http\Controllers\GeneralController')->updatePersonalInfo($request);
+    }
 }

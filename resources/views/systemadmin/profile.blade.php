@@ -37,27 +37,27 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <label for="">First Name*:</label>
-                                        <input type="text" class="form-control" id="firstName">
+                                        <input type="text" class="form-control" id="firstName" value="{{Auth::user()->first_name}}">
                                     </div>
                                     <div class="col-md-6">
                                         <label for="">Last Name*:</label>
-                                        <input type="text" class="form-control" id="lastName">
+                                        <input type="text" class="form-control" id="lastName" value="{{Auth::user()->last_name}}">
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <label for="">Student/Staff Number*:</label>
-                                        <input type="text" class="form-control" id="studentNumber">
+                                        <input type="text" class="form-control" id="studentNumber" value="{{Auth::user()->student_number}}">
                                     </div>
                                     <div class="col-md-6">
                                         <label for="">Employee Id*:</label>
-                                        <input type="text" class="form-control" id="employeeId">
+                                        <input type="text" class="form-control" id="employeeId" value="{{Auth::user()->employee_id}}">
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <label for="">Email*:</label>
-                                        <input type="email" class="form-control" id="emailAddress">
+                                        <input type="email" class="form-control" id="emailAddress" value="{{Auth::user()->email}}">
                                     </div>
                                     <div class="col-md-6">
                                         <label for="">Role*:</label>
@@ -67,7 +67,7 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <label for="">&nbsp;</label><br>
-                                        <button class="btn btn-dark btn-round spinnerNeeded" id="updateUserInfoButton" type="button">
+                                        <button class="btn btn-dark btn-round spinnerNeeded" data-id="{{Auth::user()->id}}" id="updateUserInfoButton" type="button">
                                             <i class="spinnerPlaceholder"></i>
                                             <i class="fa fa-save"></i>
                                             Save
@@ -135,17 +135,24 @@
         $(document).ready(function() {
 
             $('#updateUserInfoButton').click(function () {
-                
+                var firstName = $('#firstName').val();
+                var lastName = $('#lastName').val();
+                var studentNumber = $('#studentNumber').val();
+                var employeeId = $('#employeeId').val();
+                var email = $('#emailAddress').val();
+                var userId = $(this).data('id');
 
                 var thisElement = $(this);
 
                 $.ajax({
                     type: 'POST',
-                    url: '/changepassword',
+                    url: '/updatepersonalinfo',
                     data: {
-                        oldPassword: oldPassword,
-                        newPasswordOne: newPasswordOne,
-                        newPasswordTwo: newPasswordTwo,
+                        firstName: firstName,
+                        lastName: lastName,
+                        studentNumber: studentNumber,
+                        employeeID: employeeId,
+                        email: email,
                         userId: userId
                     },
                     success: function (data) {
@@ -156,7 +163,6 @@
                     }
                 })
             });
-        $(document).ready(function() {
 
             $('#updatePasswordButton').click(function () {
                 var oldPassword = $('#oldPassword').val();
@@ -183,6 +189,9 @@
                         userId: userId
                     },
                     success: function (data) {
+                        $('#oldPassword').val('');
+                        $('#newPasswordOne').val('');
+                        $('#newPasswordTwo').val('');
                         successOperation(thisElement, false);
                     },
                     error: function (data) {
