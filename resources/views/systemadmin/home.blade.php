@@ -226,11 +226,12 @@
                                         <div class="block">
                                             <div class="block_content">
                                                 <h2 class="title">
-                                                    <a>Approve Account</a>
+                                                    <a>Approve/Reject Account</a>
                                                 </h2>
                                                 <p class="excerpt">
                                                     Any user's account can be approved from the 'Approve Account' section of the
-                                                    <a href="{{route('admin')}}">Admin</a> page. An email address is needed.
+                                                    <a href="{{route('admin')}}">Admin</a> page. An email address is needed. Rejecting
+                                                    an account will prevent the user from logging into the system.
                                                 </p>
                                             </div>
                                         </div>
@@ -245,7 +246,7 @@
                                                    In the 'Add FAQ' section of the <a href="{{route('admin')}}">Admin</a> page, a FAQ can
                                                     be added with its answer. Once added, it will be displayed to the FAQ page of the system.
                                                     <br><br>
-                                                    FAQ can also be deleted in the 'Delete FAQ' section.
+                                                    FAQ can also be edited/deleted in the 'View/Delete FAQ' section.
                                                 </p>
                                             </div>
                                         </div>

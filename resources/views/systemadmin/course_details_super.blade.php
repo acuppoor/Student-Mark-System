@@ -389,7 +389,16 @@
 
                                                 <div class="panel">
                                                     <a class="panel-heading collapsed" role="tab" id="headingOne" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                                                        <h4 class="panel-title">Course Convenor</h4>
+                                                        <h4 class="panel-title">
+                                                            <div class="row">
+                                                                <div class="col-md-5">
+                                                                    Course Convenor
+                                                                </div>
+                                                                <div class="col-md-7" style="text-align: right">
+                                                                    <i class="fa fa-angle-double-down" style="text-align: right"></i>
+                                                                </div>
+                                                            </div>
+                                                        </h4>
                                                     </a>
                                                     <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne" aria-expanded="false" style="height: 0px;">
                                                         <div class="panel-body">
@@ -410,7 +419,16 @@
 
                                                 <div class="panel">
                                                     <a class="panel-heading collapsed" role="tab" id="headingTwo" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                                        <h4 class="panel-title">Lecturer</h4>
+                                                        <h4 class="panel-title">
+                                                            <div class="row">
+                                                                <div class="col-md-5">
+                                                                    Lecturer
+                                                                </div>
+                                                                <div class="col-md-7" style="text-align: right">
+                                                                    <i class="fa fa-angle-double-down" style="text-align: right"></i>
+                                                                </div>
+                                                            </div>
+                                                        </h4>
                                                     </a>
                                                     <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo" aria-expanded="false" style="height: 0px;">
                                                         <div class="panel-body">
@@ -432,7 +450,16 @@
 
                                                 <div class="panel">
                                                     <a class="panel-heading collapsed" role="tab" id="headingThree" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                                        <h4 class="panel-title">Students</h4>
+                                                        <h4 class="panel-title">
+                                                            <div class="row">
+                                                                <div class="col-md-5">
+                                                                    Students
+                                                                </div>
+                                                                <div class="col-md-7" style="text-align: right">
+                                                                    <i class="fa fa-angle-double-down" style="text-align: right"></i>
+                                                                </div>
+                                                            </div>
+                                                        </h4>
                                                     </a>
                                                     <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree" aria-expanded="false" style="height: 0px;">
                                                         <div class="panel-body">
@@ -460,7 +487,16 @@
 
                                                 <div class="panel">
                                                     <a class="panel-heading collapsed" role="tab" id="headingFour" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-                                                        <h4 class="panel-title">Teaching Assistant</h4>
+                                                        <h4 class="panel-title">
+                                                            <div class="row">
+                                                                <div class="col-md-5">
+                                                                    Teaching Assistant
+                                                                </div>
+                                                                <div class="col-md-7" style="text-align: right">
+                                                                    <i class="fa fa-angle-double-down" style="text-align: right"></i>
+                                                                </div>
+                                                            </div>
+                                                        </h4>
                                                     </a>
                                                     <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour" aria-expanded="false" style="height: 0px;">
                                                         <div class="panel-body">
@@ -591,7 +627,16 @@
                                             <div class="accordion" id="accordion" role="tablist" aria-multiselectable="true">
                                                 <div class="panel">
                                                     <a class="panel-heading collapsed" role="tab" id="headingOne1" data-toggle="collapse" data-parent="#accordion" href="#collapseOne1" aria-expanded="false" aria-controls="collapseOne1">
-                                                        <h4 class="panel-title">Course Convenors</h4>
+                                                        <h4 class="panel-title">
+                                                            <div class="row">
+                                                                <div class="col-md-5">
+                                                                    Course Convenors
+                                                                </div>
+                                                                <div class="col-md-7" style="text-align: right">
+                                                                    <i class="fa fa-angle-double-down" style="text-align: right"></i>
+                                                                </div>
+                                                            </div>
+                                                        </h4>
                                                     </a>
                                                     <div id="collapseOne1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne1" aria-expanded="false" style="height: 0px;">
                                                         <div class="panel-body">
@@ -634,7 +679,16 @@
 
                                                 <div class="panel">
                                                     <a class="panel-heading collapsed" role="tab" id="headingTwo1" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo1" aria-expanded="false" aria-controls="collapseTwo1">
-                                                        <h4 class="panel-title">Lecturers</h4>
+                                                        <h4 class="panel-title">
+                                                            <div class="row">
+                                                                <div class="col-md-5">
+                                                                    Lecturers
+                                                                </div>
+                                                                <div class="col-md-7" style="text-align: right">
+                                                                    <i class="fa fa-angle-double-down" style="text-align: right"></i>
+                                                                </div>
+                                                            </div>
+                                                        </h4>
                                                     </a>
                                                     <div id="collapseTwo1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo1" aria-expanded="false" style="height: 0px;">
                                                         <div class="panel-body">
@@ -677,7 +731,16 @@
 
                                                 <div class="panel">
                                                     <a class="panel-heading collapsed" role="tab" id="headingThree1" data-toggle="collapse" data-parent="#accordion" href="#collapseThree1" aria-expanded="false" aria-controls="collapseThree1">
-                                                        <h4 class="panel-title">Students</h4>
+                                                        <h4 class="panel-title">
+                                                            <div class="row">
+                                                                <div class="col-md-5">
+                                                                    Students
+                                                                </div>
+                                                                <div class="col-md-7" style="text-align: right">
+                                                                    <i class="fa fa-angle-double-down" style="text-align: right"></i>
+                                                                </div>
+                                                            </div>
+                                                        </h4>
                                                     </a>
                                                     <div id="collapseThree1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree1" aria-expanded="false" style="height: 0px;">
                                                         <div class="panel-body">
@@ -714,7 +777,16 @@
 
                                                 <div class="panel">
                                                     <a class="panel-heading collapsed" role="tab" id="headingFour1" data-toggle="collapse" data-parent="#accordion" href="#collapseFour1" aria-expanded="false" aria-controls="collapseFour1">
-                                                        <h4 class="panel-title">Teaching Assistants</h4>
+                                                        <h4 class="panel-title">
+                                                            <div class="row">
+                                                                <div class="col-md-5">
+                                                                    Teaching Assistants
+                                                                </div>
+                                                                <div class="col-md-7" style="text-align: right">
+                                                                    <i class="fa fa-angle-double-down" style="text-align: right"></i>
+                                                                </div>
+                                                            </div>
+                                                        </h4>
                                                     </a>
                                                     <div id="collapseFour1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour1" aria-expanded="false" style="height: 0px;">
                                                         <div class="panel-body">
@@ -785,16 +857,23 @@
                                                             <div class="col-md-7">
                                                                 <a class="" role="tab" id="headingTwo{{$count.''.$count}}" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo{{$count.''.$count}}" aria-expanded="false" aria-controls="collapseTwo{{$count.''.$count}}">
                                                                     <h4 class="panel-title">
-                                                                        <table>
-                                                                            <tr>
-                                                                                <td>
-                                                                                    {{$count.'. '}}
-                                                                                </td>
-                                                                                <td>
-                                                                                    <input type="text" class="form-control {{str_replace(' ', '', $coursework['name'])}}" data-type="name" value="{{$coursework['name']}}">
-                                                                                </td>
-                                                                            </tr>
-                                                                        </table>
+                                                                        <div class="row">
+                                                                            <div class="col-md-5">
+                                                                                <table>
+                                                                                    <tr>
+                                                                                        <td>
+                                                                                            {{$count.'. '}}
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <input type="text" class="form-control {{str_replace(' ', '', $coursework['name'])}}" data-type="name" value="{{$coursework['name']}}">
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </table>
+                                                                            </div>
+                                                                            <div class="col-md-7" style="text-align: right">
+                                                                                <i class="fa fa-angle-double-down" style="text-align: right"></i>
+                                                                            </div>
+                                                                        </div>
                                                                     </h4>
                                                                 </a>
                                                             </div>
@@ -860,7 +939,16 @@
                                                                                     <td>
                                                                                         <div class="panel">
                                                                                             <a class="panel-heading collapsed" role="tab" id="headingTwo{{$count.''.$count.$subcoursework['id']}}" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo{{$count.''.$count.$subcoursework['id']}}" aria-expanded="false" aria-controls="collapseTwo{{$count.''.$count.$subcoursework['id']}}">
-                                                                                                <h4 class="panel-title">Settings</h4>
+                                                                                                <h4 class="panel-title">
+                                                                                                    <div class="row">
+                                                                                                        <div class="col-md-5">
+                                                                                                            Settings
+                                                                                                        </div>
+                                                                                                        <div class="col-md-7" style="text-align: right">
+                                                                                                            <i class="fa fa-angle-double-down" style="text-align: right"></i>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </h4>
                                                                                             </a>
                                                                                             <div id="collapseTwo{{$count.''.$count.$subcoursework['id']}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo{{$count.''.$count.$subcoursework['id']}}" aria-expanded="false" style="height: 0px;">
                                                                                                 <div class="panel-body">
@@ -895,7 +983,16 @@
                                                                                     <td>
                                                                                         <div class="panel">
                                                                                             <a class="panel-heading collapsed" role="tab" id="headingTwo{{$count.''.$count.$subcoursework['id'].$subcount}}" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo{{$count.''.$count.$subcoursework['id'].$subcount}}" aria-expanded="false" aria-controls="collapseTwo{{$count.''.$count.$subcoursework['id'].$subcount}}">
-                                                                                                <h4 class="panel-title">Sections</h4>
+                                                                                                <h4 class="panel-title">
+                                                                                                    <div class="row">
+                                                                                                        <div class="col-md-5">
+                                                                                                            Settings
+                                                                                                        </div>
+                                                                                                        <div class="col-md-7" style="text-align: right">
+                                                                                                            <i class="fa fa-angle-double-down" style="text-align: right"></i>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </h4>
                                                                                             </a>
                                                                                             <div id="collapseTwo{{$count.''.$count.$subcoursework['id'].$subcount}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo{{$count.''.$count.$subcoursework['id'].$subcount}}" aria-expanded="false" style="height: 0px;">
                                                                                                 <div class="panel-body">
@@ -962,16 +1059,23 @@
                                                             <div class="col-md-8">
                                                                 <a role="tab" id="{{$count.''.$count}}headingTwo{{$count.''.$count}}" data-toggle="collapse" data-parent="#accordion" href="#{{$count.''.$count}}collapseTwo{{$count.''.$count}}" aria-expanded="false" aria-controls="{{$count.''.$count}}collapseTwo{{$count.''.$count}}">
                                                                     <h4 class="panel-title">
-                                                                        <table>
-                                                                            <tr>
-                                                                                <td>
-                                                                                    {{$count.'. '}}
-                                                                                </td>
-                                                                                <td>
-                                                                                    <input type="text" class="form-control {{str_replace(' ', '', $subminimum['name'])}}" data-type="name" value="{{$subminimum['name']}}">
-                                                                                </td>
-                                                                            </tr>
-                                                                        </table>
+                                                                        <div class="row">
+                                                                            <div class="col-md-5">
+                                                                                <table>
+                                                                                    <tr>
+                                                                                        <td>
+                                                                                            {{$count.'. '}}
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <input type="text" class="form-control {{str_replace(' ', '', $subminimum['name'])}}" data-type="name" value="{{$subminimum['name']}}">
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </table>
+                                                                            </div>
+                                                                            <div class="col-md-7" style="text-align: right">
+                                                                                <i class="fa fa-angle-double-down" style="text-align: right"></i>
+                                                                            </div>
+                                                                        </div>
                                                                     </h4>
                                                                 </a>
                                                             </div>
