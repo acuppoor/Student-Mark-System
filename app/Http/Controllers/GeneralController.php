@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Faculty;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use \Illuminate\Support\Facades\Response;
 
 class GeneralController extends Controller
 {
@@ -49,5 +51,16 @@ class GeneralController extends Controller
         }
         if($email){$user->email = $email;}
         $user->save();
+    }
+
+    public function getFaculties(Request $request){
+        $faculties = [];
+        foreach (Faculty::all() as $item) {
+            $fac = [];
+            $fac['name'] = $item->name;
+            $fac['id'] = $item->id;
+            $faculties[] = $fac;
+        }
+        return Response::json($faculties);
     }
 }

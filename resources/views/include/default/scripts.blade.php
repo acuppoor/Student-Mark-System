@@ -25,4 +25,4 @@
 <script src="{{asset('first_bootstrap/js/jquery.easing.min.js')}}"></script>
 <!-- Custom scripts for this template -->
 <script src="{{asset('first_bootstrap/js/new-age.min.js')}}"></script>
-<script src="{{asset('first_bootstrap/js/colourchanger.js')}}"></script>
+{{--<script src="{{asset('first_bootstrap/js/colourchanger.js')}}"></script>--}}

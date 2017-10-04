@@ -19,7 +19,7 @@
                     <form class="form-horizontal" method="POST" action="{{ route('login') }}">
                         {{ csrf_field() }}
                         <div class="col-md-12 form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 form-control-label">E-Mail Address</label>
+                            <label for="email" class="col-md-4 form-control-label">E-Mail Address*</label>
 
                             <div class="col-md-12">
                                 <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus>
@@ -32,7 +32,7 @@
                             </div>
                         </div>
                         <div class="col-md-12 form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label for="password" class="col-md-4 form-control-label">Password</label>
+                            <label for="password" class="col-md-4 form-control-label">Password*</label>
 
                             <div class="col-md-12">
                                 <input id="password" type="password" class="form-control" name="password" required>
@@ -52,6 +52,13 @@
                                         <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me
                                     </label>
                                 </div>
+                            </div>
+                            <div class="col-md-6">
+                                @if($accountNotApproved)
+                                    <span class="help-block">
+                                        <strong>{{ $accountNotApproved }}</strong>
+                                    </span>
+                                @endif
                             </div>
                         </div>
                         <div class="col-md-12 form-group">

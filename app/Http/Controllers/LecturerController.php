@@ -1243,7 +1243,7 @@ class LecturerController extends Controller
 
         $course = Course::where('id', $courseId)->first();
         $coursework = Coursework::where('id', $courseworkId)->first();
-        $subcourseworks = $coursework->subcourseworks;
+        $subcourseworks = $coursework?$coursework->subcourseworks:[];
         $columns = [];
         $results = [];
 
@@ -1262,22 +1262,23 @@ class LecturerController extends Controller
             $courseworkTotalMark = 0.0;
 
             $subcourseworks = [];
+            if($coursework) {
+                foreach ($coursework->subcourseworks as $subcoursework) {
 
-            foreach ($coursework->subcourseworks as $subcoursework) {
+                    $subcourseworkWeighting = $subcoursework->weighting_in_coursework;
+                    $subcourseworkN = 0.0;
+                    $subcourseworkD = 0.0;
+                    foreach ($subcoursework->sections as $section) {
+                        $subcourseworkD += $section->max_marks;
+                        $sectionMap = SectionUserMarkMap::where('user_id', $user->id)
+                            ->where('section_id', $section->id)->first();
+                        $subcourseworkN += ($sectionMap ? $sectionMap->marks : 0);
+                    }
+                    $subcourseworkFinalMark = $subcourseworkD != 0 ? ($subcourseworkN * $subcourseworkWeighting) / $subcourseworkD : 0;
+                    $courseworkTotalMark += $subcourseworkFinalMark;
 
-                $subcourseworkWeighting = $subcoursework->weighting_in_coursework;
-                $subcourseworkN = 0.0;
-                $subcourseworkD = 0.0;
-                foreach ($subcoursework->sections as $section) {
-                    $subcourseworkD += $section->max_marks;
-                    $sectionMap = SectionUserMarkMap::where('user_id', $user->id)
-                        ->where('section_id', $section->id)->first();
-                    $subcourseworkN += ($sectionMap? $sectionMap->marks:0);
+                    $subcourseworks[] = round($subcourseworkFinalMark, 2);
                 }
-                $subcourseworkFinalMark = $subcourseworkD!=0?($subcourseworkN*$subcourseworkWeighting)/$subcourseworkD:0;
-                $courseworkTotalMark += $subcourseworkFinalMark;
-
-                $subcourseworks[] = round($subcourseworkFinalMark, 2);
             }
             $result['subcourseworks'] = $subcourseworks;
             $result['total_marks'] = round($courseworkTotalMark, 2);
@@ -1696,9 +1697,9 @@ class LecturerController extends Controller
             throwException(); // a section eventually has to be for a course
         }
         $deptAdminCourseMap = DeptAdminDeptMap::where('user_id', Auth::user()->id)
-            ->where('department_id', $section->subcoursework->coursework->course->department->id)->first();
+            ->where('department_id', $section->subCoursework->coursework->course->department->id)->first();
         $convenorCourseMap = ConvenorCourseMap::where('user_id', Auth::user()->id)
-            ->where('course_id', $section->subcoursework->coursework->course->department->id)->first();
+            ->where('course_id', $section->subCoursework->coursework->course->department->id)->first();
 
         if((($deptAdminCourseMap && $deptAdminCourseMap->status ==0) ||
                 ($convenorCourseMap && $convenorCourseMap->status==0)) && Auth::user()->role_id != 6){
@@ -1868,18 +1869,20 @@ class LecturerController extends Controller
         $subcourseworkId = $request->input('uploadSubcoursework');
         $sectionId = $request->input('uploadSection');
 
-        $section = Section::where('id', $sectionId)->first();
-        $subcoursework = SubCoursework::where('id', $subcourseworkId)->first();
-        $coursework = Coursework::where('id', $courseworkId)->first();
+        if($courseworkId != 0) {
+            $section = Section::where('id', $sectionId)->first();
+            $subcoursework = SubCoursework::where('id', $subcourseworkId)->first();
+            $coursework = Coursework::where('id', $courseworkId)->first();
 
-        $deptAdminCourseMap = DeptAdminDeptMap::where('user_id', Auth::user()->id)
-            ->where('department_id', $section->subCoursework->coursework->course->department->id)->first();
-        $convenorCourseMap = ConvenorCourseMap::where('user_id', Auth::user()->id)
-            ->where('course_id', $section->subCoursework->coursework->course->department->id)->first();
+            $deptAdminCourseMap = DeptAdminDeptMap::where('user_id', Auth::user()->id)
+                ->where('department_id', $section->subCoursework->coursework->course->department->id)->first();
+            $convenorCourseMap = ConvenorCourseMap::where('user_id', Auth::user()->id)
+                ->where('course_id', $section->subCoursework->coursework->course->department->id)->first();
 
-        if((($deptAdminCourseMap && $deptAdminCourseMap->status ==0) ||
-                ($convenorCourseMap && $convenorCourseMap->status==0)) && Auth::user()->role_id != 6){
-            throwException();
+            if ((($deptAdminCourseMap && $deptAdminCourseMap->status == 0) ||
+                    ($convenorCourseMap && $convenorCourseMap->status == 0)) && Auth::user()->role_id != 6) {
+                throwException();
+            }
         }
 
         $validation =   $courseworkId==0 || ($coursework && $subcoursework && $section &&

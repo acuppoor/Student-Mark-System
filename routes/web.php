@@ -57,6 +57,7 @@ Route::post('/downloadstudentslist', 'PagesController@downloadFinalGrade');
 Route::post('/downloaddplist', 'PagesController@downloadDPList');
 
 Route::post('/getdepartments', 'PagesController@getDepartments');
+Route::post('/getfaculties', 'PagesController@getFaculties');
 Route::post('/adddepartmentadmin', 'PagesController@addDepartmentAdmin');
 Route::post('/addfaculty', 'PagesController@addFaculty');
 Route::post('/adddepartment', 'PagesController@addDepartment');
@@ -64,6 +65,7 @@ Route::post('/updatefaculty', 'PagesController@updateFaculty');
 Route::post('/deletefaculty', 'PagesController@deleteFaculty');
 Route::post('/updatedepartment', 'PagesController@updateDepartment');
 Route::post('/deletedepartment', 'PagesController@deleteDepartment');
+Route::post('/addfaq', 'PagesController@addFAQ');
 
 
 Route::get('/courses', 'PagesController@otherCourses')->name("other_courses");
@@ -81,8 +83,11 @@ Route::post('/resetpassword', 'PagesController@resetPassword');
 Route::get('/searchmarks', 'PagesController@searchMarks')->name("search_marks");
 Route::post('/searchmarks', 'PagesController@getMarks');
 Route::post('/approveaccount', 'PagesController@approveByEmail');
+Route::post('/rejectaccount', 'PagesController@rejectAccount');
 Route::post('/changepassword', 'PagesController@changePassword');
 Route::post('/updatepersonalinfo', 'PagesController@updatePersonalInfo');
+Route::post('/updatefaq', 'PagesController@updateFAQ');
+Route::post('/deletefaq', 'PagesController@deleteFAQ');
 
 Route::get('/admin', 'PagesController@admin')->name("admin");
 Route::get('/faculties&departments', 'PagesController@faculties')->name("faculties");

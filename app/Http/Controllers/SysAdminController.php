@@ -7,6 +7,7 @@ use App\Course;
 use App\Department;
 use App\DeptAdminDeptMap;
 use App\Faculty;
+use App\FAQuestion;
 use App\FinalGradeType;
 use App\LecturerCourseMap;
 use App\SectionUserMarkMap;
@@ -559,5 +560,69 @@ class SysAdminController extends Controller
             }
         }
         throwException();
+    }
+
+    public function rejectAccount(Request $request){
+        $email = $request->input('email');
+
+        if($email){
+            $user = User::where('email', $email)->first();
+            if($user){
+                $user->approved = 0;
+                $user->save();
+                return;
+            }
+        }
+        throwException();
+    }
+
+    public function addFAQ(Request $request){
+        $question = $request->input('question');
+        $answer = $request->input('answer');
+
+        if($question && $answer){
+            $faq = new FAQuestion();
+            $faq->question = $question;
+            $faq->answer = $answer;
+            $faq->save();
+        }
+    }
+
+    public function getFAQs(){
+        $faqs = [];
+        foreach (FAQuestion::all() as $faq) {
+            $f = [];
+            $f['question'] = $faq->question;
+            $f['answer'] = $faq->answer;
+            $f['id'] = $faq->id;
+            $faqs[] = $f;
+        }
+        return $faqs;
+    }
+
+    public function updateFAQ(Request $request){
+        $id = $request->input('id');
+        $question = $request->input('question');
+        $answer = $request->input('answer');
+
+        $faq = FAQuestion::where('id', $id)->first();
+        if($faq){
+            $faq->question = $question;
+            $faq->answer = $answer;
+            $faq->save();
+        } else {
+            throwException();
+        }
+    }
+
+    public function deleteFAQ(Request $request){
+        $id = $request->input('id');
+
+        $faq = FAQuestion::where('id', $id)->first();
+        if($faq){
+            $faq->delete();
+        } else {
+            throwException();
+        }
     }
 }

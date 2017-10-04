@@ -1322,9 +1322,9 @@ class PagesController extends Controller
             case 4:
                 return view('lecturer.access_denied');
             case 5:
-                return view('departmentadmin.admin');
+                return view('departmentadmin.access_denied');
             case 6:
-                return view('systemadmin.admin');
+                return view('systemadmin.admin')->with('faqs',  app('App\Http\Controllers\SysAdminController')->getFAQs());
         }
     }
 
@@ -1627,5 +1627,52 @@ class PagesController extends Controller
             return view('auth.login');
         }
         app('App\Http\Controllers\GeneralController')->updatePersonalInfo($request);
+    }
+
+    public function getFaculties(Request $request){
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login');
+        }
+        return app('App\Http\Controllers\GeneralController')->getFaculties($request);
+    }
+
+    public function addFAQ(Request $request){
+        $this->checkApproval();
+        if(Auth::user()->role_id != 6){
+            throwException();
+        }
+        return app('App\Http\Controllers\SysAdminController')->addFAQ($request);
+    }
+
+    public function rejectAccount(Request $request){
+        $this->checkApproval();
+        if(Auth::user()->role_id != 6){
+            throwException();
+        }
+        return app('App\Http\Controllers\SysAdminController')->rejectAccount($request);
+    }
+
+    public function updateFAQ(Request $request){
+        $this->checkApproval();
+        if(Auth::user()->role_id != 6){
+            throwException();
+        }
+        return app('App\Http\Controllers\SysAdminController')->updateFAQ($request);
+    }
+
+    public function deleteFAQ(Request $request){
+        $this->checkApproval();
+        if(Auth::user()->role_id != 6){
+            throwException();
+        }
+        return app('App\Http\Controllers\SysAdminController')->deleteFAQ($request);
+    }
+
+    private function checkApproval(){
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
+        }
     }
 }

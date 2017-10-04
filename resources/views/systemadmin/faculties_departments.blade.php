@@ -25,53 +25,6 @@
                 <div class="col-md-12">
                     <div class="x_panel" style="height: auto;">
                         <div class="x_title">
-                            <h2>Add Department Admin</h2>
-                            <ul class="nav navbar-right panel_toolbox">
-                                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a>
-                                </li>
-                            </ul>
-                            <div class="clearfix"></div>
-                        </div>
-                        <div class="x_content collapse" style="display: none;">
-                            <div class="row">
-                                {{csrf_field()}}
-                                <div class="col-md-3">
-                                    <label for="">Faculty*:</label>
-                                    <select id="deptAdminFacultyDropdown" class="form-control">
-                                        <option value="-1"></option>
-                                        @foreach($faculties as $faculty)
-                                            <option value="{{$faculty['id']}}">{{$faculty['name']}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="">Department*:</label>
-                                    <select id="deptAdminDepartmentDropdown" class="form-control">
-                                        <option value="-1"></option>
-                                    </select>
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="">Email*:</label>
-                                    <input type="email" id="deptAdminEmailAddress" class="form-control">
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="">&nbsp;</label><br>
-                                    <button type="button" id="addDepartmentAdminButton" class="btn btn-dark btn-round spinnerNeeded">
-                                        <i class="spinnerPlaceholder"></i>
-                                        <i class="fa fa-plus"></i>
-                                        Add
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="x_panel" style="height: auto;">
-                        <div class="x_title">
                             <h2>Create Faculty</h2>
                             <ul class="nav navbar-right panel_toolbox">
                                 <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a>
@@ -82,7 +35,7 @@
                         <div class="x_content collapse" style="display: none;">
                             <div class="row">
                                 <div class="col-md-3">
-                                    <label for="">Name*:</label>
+                                    <label for="">Name* (E.g: Science):</label>
                                     <input type="text" class="form-control" id="createFacultyName">
                                 </div>
                                 <div class="col-md-3">
@@ -122,16 +75,63 @@
                                     </select>
                                 </div>
                                 <div class="col-md-3">
-                                    <label for="">Name*:</label>
+                                    <label for="">Name* (E.g: Computer Science):</label>
                                     <input type="text" class="form-control" id="createDepartmentName">
                                 </div>
                                 <div class="col-md-3">
-                                    <label for="">Code*:</label>
+                                    <label for="">Code* (E.g: CSC):</label>
                                     <input type="text" class="form-control" id="createDepartmentCode">
                                 </div>
                                 <div class="col-md-3">
                                     <label for="">&nbsp;</label><br>
                                     <button id="createDepartmentButton" type="button" class="btn btn-dark btn-round spinnerNeeded">
+                                        <i class="spinnerPlaceholder"></i>
+                                        <i class="fa fa-plus"></i>
+                                        Add
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="x_panel" style="height: auto;">
+                        <div class="x_title">
+                            <h2>Add Department Admin</h2>
+                            <ul class="nav navbar-right panel_toolbox">
+                                <li><a class="collapse-link"><i class="fa fa-chevron-down"></i></a>
+                                </li>
+                            </ul>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content collapse" style="display: none;">
+                            <div class="row">
+                                {{csrf_field()}}
+                                <div class="col-md-3">
+                                    <label for="">Faculty*:</label>
+                                    <select id="deptAdminFacultyDropdown" class="form-control">
+                                        <option value="-1"></option>
+                                        @foreach($faculties as $faculty)
+                                            <option value="{{$faculty['id']}}">{{$faculty['name']}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="">Department*:</label>
+                                    <select id="deptAdminDepartmentDropdown" class="form-control">
+                                        <option value="-1"></option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="">Email*:</label>
+                                    <input type="email" id="deptAdminEmailAddress" class="form-control">
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="">&nbsp;</label><br>
+                                    <button type="button" id="addDepartmentAdminButton" class="btn btn-dark btn-round spinnerNeeded">
                                         <i class="spinnerPlaceholder"></i>
                                         <i class="fa fa-plus"></i>
                                         Add
@@ -424,12 +424,50 @@
                         facultyName:name
                     },
                     success:function (data) {
-                        successOperation(thisElement);
+                        successOperation(thisElement, true);
+                        $.ajax({
+                            type: 'POST',
+                            url: '/getfaculties',
+                            data:{},
+                            success:function (data) {
+                                $('#createDepartmentFacultyDropdown').empty();
+
+                                var option = document.createElement('option');
+                                option.value=-1;
+                                option.text = "";
+                                $('#createDepartmentFacultyDropdown').append(option);
+
+                                for(var i = 0; i < data.length; i++){
+                                    var option = document.createElement('option');
+                                    option.value = data[i].id;
+                                    option.text = data[i].name;
+                                    $('#createDepartmentFacultyDropdown').append(option);
+                                }
+
+                                $('#deptAdminFacultyDropdown').empty();
+
+                                var option = document.createElement('option');
+                                option.value=-1;
+                                option.text = "";
+                                $('#deptAdminFacultyDropdown').append(option);
+
+                                for(var i = 0; i < data.length; i++){
+                                    var option = document.createElement('option');
+                                    option.value = data[i].id;
+                                    option.text = data[i].name;
+                                    $('#deptAdminFacultyDropdown').append(option);
+                                }
+                            },
+                            error: function (data) {
+                            }
+                        });
                     },
                     error: function (data) {
                         failOperation(thisElement);
                     }
                 });
+
+
             });
 
             $('#addDepartmentAdminButton').click(function(){
@@ -453,8 +491,11 @@
                 })
             });
 
-            function successOperation(element){
+            function successOperation(element, showReload){
                 element.children('.spinnerPlaceholder').replaceWith('<i class="spinnerPlaceholder fa fa-check-circle"></i>');
+                if(showReload){
+                    document.getElementById('reloadPageButton').style.display = 'block';
+                }
             }
 
             function failOperation(element){

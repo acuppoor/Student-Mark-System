@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use App\Http\Controllers\Controller;
+use App\UserDepartmentMap;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -77,8 +78,6 @@ class RegisterController extends Controller
             $user = User::where('email', $data['email'])->first();
         }
 
-        print_r($data);
-
         if(!$user){
            $user =  new User();
            $user->first_name = $data['firstName'];
@@ -102,6 +101,25 @@ class RegisterController extends Controller
             $user->save();
 //            Auth::logout();
         }
+
+        /**
+         * Adding the user to the first department which is Computer Science in the event the user is
+         *not already mapped to a department. This must, however, be changed to allow user to select their department.
+         *Currently, it is assumed the system is mainly being used for comp sci dept.
+         */
+        $userDepartmentMap = UserDepartmentMap::where('user_id', $user->id)->first();
+        if(!$userDepartmentMap){
+            $userDepartmentMap = new UserDepartmentMap();
+            $userDepartmentMap->user_id = $user->id;
+            $userDepartmentMap->department_id = 1;
+            $userDepartmentMap->status = 0;
+            $userDepartmentMap->save();
+        }
+
+        /**
+         * the section just above must be commnented if the user is allowed to choose his department when
+         * logging in
+         */
 
         return /*redirect()->route('login')*/ $user;
     }

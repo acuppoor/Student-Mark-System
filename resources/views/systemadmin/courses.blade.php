@@ -32,7 +32,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
                     </button>
-                    <h4 class="modal-title" id="myModalLabel">New Coursework</h4>
+                    <h4 class="modal-title" id="myModalLabel">New Course</h4>
                 </div>
                 <form method="" action="">
                     <div class="modal-body">
@@ -59,6 +59,7 @@
                                 </select>
                             </div>
                             <div class="col-md-6">
+                                <label for="">Department*:</label>
                                 <select id="createCourseDepartment" class="form-control" name="courseDepartment">
                                     <option {{request('courseDepartment')?'':'selected'}}></option>
                                     @foreach(\App\Department::all() as $department)
@@ -252,21 +253,23 @@
                 var confirmation = confirm('Are you sure you want to delete the course? All its courseworks, subcourseworks and ' +
                     'sections will be deleted permanently.');
 
-                if(!confirmation){
-                    nullOperation(thisElement);
-                    return;
+                if(confirmation) {
+
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '/deletecourse',
+                        data: {courseId: courseId},
+                        success: function (data) {
+                            successOperation(thisElement);
+                        },
+                        error: function (data) {
+                            failOperation(thisElement);
+                        }
+                    });
+                } else {
+                    nullOperation(this);
                 }
-                $.ajax({
-                    type: 'POST',
-                    url: '/deletecourse',
-                    data:{courseId: courseId},
-                    success: function (data) {
-                        successOperation(thisElement);
-                    },
-                    error: function (data) {
-                        failOperation(thisElement);
-                    }
-                });
             });
 
             $('#createCourseButton').click(function(){

@@ -2,7 +2,7 @@
 
 initialColour1 = "1a000d";//"7b4397";
 initialColour2 = "0000la";//"000d1a";//"dc2430";
-// setInterval(function(){updateColour()}, 100);
+setInterval(function(){updateColour()}, 100);
 
 function updateColour(){
     initialColour1 = (parseInt(initialColour1, 16) + 1).toString(16);

@@ -20,12 +20,12 @@ class CreateRolesTable extends Migration
 
         DB::table('roles')->insert(
             array(
-                array('role' => 'student'),
-                array('role' => 'teaching_assistant'),
-                array('role' => 'lecturer'),
-                array('role' => 'course_convenor'),
-                array('role' => 'department_admin'),
-                array('role' => 'system_admin')
+                array('role' => 'Student'),
+                array('role' => 'Teaching Assistant'),
+                array('role' => 'Lecturer'),
+                array('role' => 'Course Convenor'),
+                array('role' => 'Department Admin'),
+                array('role' => 'System Admin')
             )
         );
     }
