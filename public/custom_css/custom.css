@@ -2,7 +2,6 @@
     border: 1px solid black;
 }
 
-.btn-warning{
+.btn-danger{
     background-color: #23527c;
-    border-color: #23527c;
 }

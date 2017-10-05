@@ -17,7 +17,11 @@ class PagesController extends Controller
      * This class mainly acts as a middleware between the routes and the other controllers.
      * All routes redirects to a method in this class, and some checks are done.
      * Checks such as user authentication and determining if user is permitted to do the operation in question.
-     * If user is permitted to do the operation, the correct method from the controller is called.
+     * If user is permitted to do the operation, the correct method from the correct controller is called.
+     * Therefore this class functions do not require special comments since all follow the same approach.
+     * all the functions names used here are similar in the controller being called, example,
+     * getAccount(Request) function in this class calls the getAccount(Request) function in the
+     * SysAdminController. The getAccount(Request) in SysAdminController has the details about how accounts are retrieved.
      * */
 
 
@@ -1613,6 +1617,11 @@ class PagesController extends Controller
         }
     }
 
+    /**
+     * this method make sure that only a system admin can do this operation
+     * @param Request $request
+     * @return $this
+     */
     public function changePassword(Request $request){
         if(Auth::user()->approved != 1){
             Auth::logout();
@@ -1621,6 +1630,10 @@ class PagesController extends Controller
         app('App\Http\Controllers\GeneralController')->changePassword($request);
     }
 
+    /**
+     * @param Request $request
+     * @return $this
+     */
     public function updatePersonalInfo(Request $request){
         if(Auth::user()->approved != 1){
             Auth::logout();
@@ -1629,11 +1642,20 @@ class PagesController extends Controller
         app('App\Http\Controllers\GeneralController')->updatePersonalInfo($request);
     }
 
+    /**
+     * @param Request $request
+     * @return mixed
+     */
     public function getFaculties(Request $request){
         $this->checkApproval();
         return app('App\Http\Controllers\GeneralController')->getFaculties($request);
     }
 
+    /**
+     * makes sure that only system admin can create FAQ
+     * @param Request $request
+     * @return $this
+     */
     public function addFAQ(Request $request){
         if(Auth::user()->approved != 1){
             Auth::logout();
@@ -1645,6 +1667,11 @@ class PagesController extends Controller
         return app('App\Http\Controllers\SysAdminController')->addFAQ($request);
     }
 
+    /**
+     * makes sure that only system admin can reject an account
+     * @param Request $request
+     * @return $this
+     */
     public function rejectAccount(Request $request){
         if(Auth::user()->approved != 1){
             Auth::logout();
@@ -1656,6 +1683,11 @@ class PagesController extends Controller
         return app('App\Http\Controllers\SysAdminController')->rejectAccount($request);
     }
 
+    /**
+     * makes sure that only system admin can update FAQ
+     * @param Request $request
+     * @return $this
+     */
     public function updateFAQ(Request $request){
         if(Auth::user()->approved != 1){
             Auth::logout();
@@ -1667,6 +1699,11 @@ class PagesController extends Controller
         return app('App\Http\Controllers\SysAdminController')->updateFAQ($request);
     }
 
+    /**
+     * make sure that only sysadmin can delete FAQ
+     * @param Request $request
+     * @return $this
+     */
     public function deleteFAQ(Request $request){
         if(Auth::user()->approved != 1){
             Auth::logout();
@@ -1678,6 +1715,11 @@ class PagesController extends Controller
         return app('App\Http\Controllers\SysAdminController')->deleteFAQ($request);
     }
 
+    /**
+     * makes sure that only system admin can request any account's info
+     * @param Request $request
+     * @return $this
+     */
     public function getAccount(Request $request){
         if(Auth::user()->approved != 1){
             Auth::logout();

@@ -355,7 +355,7 @@
                             facultyId: facultyId
                         },
                         success: function (data) {
-                            successOperation(thisElement);
+                            successOperation(thisElement, true);
                         },
                         error: function (data) {
                             failOperation(thisElement);

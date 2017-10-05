@@ -32,6 +32,16 @@ use Maatwebsite\Excel\Facades\Excel;
 class LecturerController extends Controller
 {
     /**
+     * This controller is mainly used for the lecturer/convenor.
+     * Other users requests also come to this controller, just to avoid duplicate codes (same code in different controllers).
+     * The PagesController controls who can access methods in this class.
+     * No user's request communicates directly to this controller or any other controller in general.
+     */
+
+
+
+
+    /**
      * returns the full course details to the client including subminimums
      * no further checks needed because they are being done in PagesController
      * @param $courseId

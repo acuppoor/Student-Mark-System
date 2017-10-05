@@ -30,7 +30,15 @@ class Course extends Model
         return $this->hasMany('App\LecturerCourseMap');
     }
 
+    public function convenors(){
+        return $this->hasMany('App\ConvenorCourseMap');
+    }
+
     public function subminimums(){
         return $this->hasMany('App\Subminimum');
+    }
+
+    public function finalGrades(){
+        return $this->hasMany('App\UserCourseFinalGrade');
     }
 }

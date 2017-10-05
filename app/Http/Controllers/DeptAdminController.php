@@ -20,11 +20,33 @@ use Illuminate\Support\Facades\Auth;
 
 class DeptAdminController extends Controller
 {
+    /**
+     * this controller is mainly for operations done by dept admin.
+     * Some other users can make calls to this.
+     * PagesController controls who access this controller, that is, no request is sent directly to this one.
+     * This makes sure every user is doing what he is permitted to do.
+     */
+
+
+    /**utility function to check similarity between two strings.
+     * Same as the 'LIKE' operator for sql
+     * @param $haystack
+     * @param $needle
+     * @return bool
+     */
     private function isSimilar($haystack, $needle){
         $pos = strpos(strtolower($haystack), strtolower($needle));
         return ($pos===0||$pos>=1) || strtolower($haystack)==strtolower($needle);
     }
 
+    /**
+     * This returns all the courses that a department admin will see on his courses pages.
+     * Look for the department id to which the department admin is mapped to and then
+     * all courses with that department id forms a set.
+     * This set is then filtered according to the search criteria
+     * @param Request $request
+     * @return $this
+     */
     public function getCourses(Request $request){
         $deptAdminMap = Auth::user()->departmentAdminMap;
 
@@ -64,6 +86,12 @@ class DeptAdminController extends Controller
         return view('departmentadmin.courses')->with('courses', $courses);
     }
 
+    /**
+     * takes in a courseid, this will look for all the details of a course and then return a view with the array course
+     * containing all the course details.
+     * @param $courseId
+     * @return $this|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function getCourseDetails($courseId){
         $course = Course::where('id', $courseId)->first();
 
@@ -155,6 +183,11 @@ class DeptAdminController extends Controller
 
     }
 
+    /**
+     * this takes in some course details and create a new course
+     * The new course is mapped to the department of the department admin
+     * @param Request $request
+     */
     public function createCourse(Request $request){
         $name = $request->input('name');
         $code = $request->input('code');
@@ -184,6 +217,10 @@ class DeptAdminController extends Controller
         $course->save();
     }
 
+    /**
+     * delete a course with all its contents uptill section marks
+     * @param Request $request
+     */
     public function deleteCourse(Request $request){
         $courseId = $request->input('courseId');
 
@@ -210,6 +247,15 @@ class DeptAdminController extends Controller
                 $subcoursework->delete();
             }
             $coursework->delete();
+        }
+        foreach ($course->finalGrades as $gradeMap) {
+            $gradeMap->delete();
+        }
+        foreach ($course->subminimums as $subminimum) {
+            foreach ($subminimum->subminimumRows as $subminimumRow) {
+                $subminimumRow->delete();
+            }
+            $subminimum->delete();
         }
         $course->delete();
     }

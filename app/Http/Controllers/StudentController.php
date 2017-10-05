@@ -18,17 +18,20 @@ use Illuminate\Support\Facades\Response;
 
 class StudentController extends Controller
 {
+    /**
+     * return the student home/marks page with the courses array
+     * @return $this
+     */
     public function studentHome(){
         return view('student.my_marks')->with('courses', $this->getCourses(null, null, null, null));
     }
 
+    /**
+     * calls the getCourses function with search-filters passed into the request object
+     * @param Request $request
+     * @return $this
+     */
     public function marksFilter(Request $request){
-        /*return Response::json($this->getCourses(
-            $request->input('courseCode'),
-            $request->input('courseYear'),
-            $request->input('courseType'),
-            $request->input('courseDepartment')
-        ));*/
         return view('student.my_marks')
             ->with(array('courses'=> $this->getCourses(
                     $request->input('courseCode'),
@@ -39,6 +42,13 @@ class StudentController extends Controller
             ));
     }
 
+    /**
+     * filters out the courses which the TA can see
+     * put them in an array with their details
+     * returns the ta_courses view with the list of courses
+     * @param $request
+     * @return $this
+     */
     public function taFilter($request){
         $courses = [];
         foreach (Auth::user()->courseTAMaps as $courseMap){
@@ -70,13 +80,14 @@ class StudentController extends Controller
             $courses[] = $course;
         }
         return view('student.ta_courses')->with('courses', $courses);
-//        return Response::json($courses);
     }
 
-   /* public function getTaCourse($courseId){
-
-    }*/
-
+    /**
+     * get the marks for a student. takes in a compulsory studentnumber and optional year and optional coursecode
+     * search for the students' marks and return that to the view
+     * @param Request $request
+     * @return array|void
+     */
     public function getMarks(Request $request){
         $studentNumber = $request->input('studentNumber');
         $courseYear = $request->input('courseYear');
@@ -260,11 +271,27 @@ class StudentController extends Controller
 
     }
 
+    /**
+     * utility function to check for similarity between 2 strings.
+     * Works same way as the LIKE sql operator.
+     * @param $haystack
+     * @param $needle
+     * @return bool
+     */
     private function isSimilar($haystack, $needle){
         $pos = strpos(strtolower($haystack), strtolower($needle));
         return ($pos===0||$pos>=1) || strtolower($haystack)==strtolower($needle);
     }
 
+    /**
+     * returns a list of courses which the students can see with their marks
+     * DP calculation and course/subcoursework/classmark/yearmark calculations are done here
+     * @param null $courseCode
+     * @param null $year
+     * @param null $type
+     * @param null $department
+     * @return array
+     */
     private function getCourses($courseCode=null, $year = null, $type=null, $department=null){ // student
         if(!$year){
             $year = (int) date("Y");
@@ -405,7 +432,6 @@ class StudentController extends Controller
             }
 
             $result['dp_status'] = 'DP';
-//            print_r($subminimums); print_r($submCourseworks); die();
 
             foreach ($subminimums as $subminimum) {
                 $threshold = $subminimum['threshold'];
@@ -429,6 +455,4 @@ class StudentController extends Controller
         }
         return $results;
     }
-
-
 }

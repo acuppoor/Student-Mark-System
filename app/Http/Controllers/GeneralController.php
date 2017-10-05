@@ -9,6 +9,17 @@ use \Illuminate\Support\Facades\Response;
 
 class GeneralController extends Controller
 {
+    /**
+     * This controller is mainly used for general tasks which can be assosciated with many kind of users.
+     */
+
+
+    /**
+     * this method takes in a userid with a new and old password
+     * the authenticity of the user is checked and also checks whether the user is changing his own password
+     * the password is updated
+     * @param Request $request
+     */
     public function changePassword(Request $request){
         $oldPassword = $request->input('oldPassword');
         $newPasswordOne = $request->input('newPasswordOne');
@@ -23,6 +34,11 @@ class GeneralController extends Controller
         $user->save();
     }
 
+    /**
+     * it is first checked that the user is updating his own personal information
+     * if yes, the user account is updated.
+     * @param Request $request
+     */
     public function updatePersonalInfo(Request $request){
         $firstName = $request->input('firstName');
         $lastName = $request->input('lastName');
@@ -53,6 +69,11 @@ class GeneralController extends Controller
         $user->save();
     }
 
+    /**
+     * AJAX call to this function to get the faculties name and id available in the system
+     * @param Request $request
+     * @return mixed
+     */
     public function getFaculties(Request $request){
         $faculties = [];
         foreach (Faculty::all() as $item) {

@@ -23,6 +23,11 @@ use Illuminate\Support\Facades\Response;
 
 class SysAdminController extends Controller
 {
+    /**
+     * this function is used to returned the admin page of the system admin with the faculties details
+     * faculties details are needed to render the page
+     * @return $this
+     */
     public function getFaculties(){
         $faculties = [];
         foreach (Faculty::all() as $faculty){
@@ -54,6 +59,12 @@ class SysAdminController extends Controller
         return view('systemadmin.faculties_departments')->with('faculties', $faculties);
     }
 
+    /**
+     * this function searches for the departments for a faculty. it takes in a faculty id.
+     * request is normally made through AJAX
+     * @param Request $request
+     * @return mixed
+     */
     public function getDepartments(Request $request){
         $facultyId = $request->input('facultyId');
         $depts = [];
@@ -66,6 +77,12 @@ class SysAdminController extends Controller
         return Response::json($depts);
     }
 
+    /**
+     * This function is used to add a department admin to a department
+     * First it's checked, if the email address is already assosciated with an account. If yes,
+     * a map is created to map the user to the department. otherwise an account is created prior to the mapping.
+     * @param Request $request
+     */
     public function addDepartmentAdmin(Request $request){
         $departmentId = $request->input('departmentId');
         $email = $request->input('email');
@@ -95,6 +112,10 @@ class SysAdminController extends Controller
         }
     }
 
+    /**
+     * This is used to add a new faculty. it takes in a faculty name and insert it in the faculty table.
+     * @param Request $request
+     */
     public function addFaculty(Request $request){
         $name = $request->input('facultyName');
         $faculty = Faculty::where('name', $name)->first();
@@ -107,6 +128,12 @@ class SysAdminController extends Controller
         }
     }
 
+    /**
+     * This function adds a department to the department table.
+     * First it is checked that the faculty to which the new department is being mapped exists. If
+     *no such faculty exists, then an error is thrown.
+     * @param Request $request
+     */
     public function addDepartment(Request $request){
         $name = $request->input('name');
         $code = $request->input('code');
@@ -125,6 +152,11 @@ class SysAdminController extends Controller
         }
     }
 
+    /**
+     * this method searches for the faculty given a faculty id. if not found, an error is thrown.
+     * If found, the name of the faculty is updated.
+     * @param Request $request
+     */
     public function updateFaculty(Request $request){
         $name = $request->input('name');
         $facultyId = $request->input('facultyId');
@@ -139,6 +171,11 @@ class SysAdminController extends Controller
         }
     }
 
+    /**
+     * this method searches for the faculty which is to be deleted. If not found, error thrown.
+     * The faculty with all its departments-courses-coursework-subcoursewor-sections-marks are then deleted if no error.
+     * @param Request $request
+     */
     public function deleteFaculty(Request $request){
         $facultyId = $request->input('facultyId');
         $faculty = Faculty::where('id', $facultyId)->first();
@@ -147,7 +184,47 @@ class SysAdminController extends Controller
             foreach ($departments as $department) {
                 $courses = $department->courses;
                 foreach ($courses as $course) {
+                    foreach ($course->courseworks as $coursework) {
+                        foreach ($coursework->subCourseworks as $subCoursework) {
+                            foreach ($subCoursework->sections as $section) {
+                                foreach ($section->userMarkMap as $map) {
+                                    $map->delete();
+                                }
+                                $section->delete();
+                            }
+                            $subCoursework->delete();
+                        }
+                        $coursework->delete();
+                    }
+                    foreach ($course->students as $studentMap) {
+                        $studentMap->delete();
+                    }
+                    foreach ($course->teachingAssistants as $teachingAssistantMap) {
+                        $teachingAssistantMap->delete();
+                    }
+                    foreach ($course->lecturer as $lecturerMap) {
+                        $lecturerMap->delete();
+                    }
+                    foreach ($course->convenors as $convenorMap) {
+                        $convenorMap->delete();
+                    }
+                    foreach ($course->finalGrades as $gradeMap) {
+                        $gradeMap->delete();
+                    }
+                    foreach ($course->subminimums as $subminimum) {
+                        foreach ($subminimum->subminimumRows as $subminimumRow) {
+                            $subminimumRow->delete();
+                        }
+                        $subminimum->delete();
+                    }
                     $course->delete();
+
+                }
+                foreach ($department->adminMaps as $adminMap) {
+                    $adminMap->delete();
+                }
+                foreach ($department->users as $userMap) {
+                    $userMap->delete();
                 }
                 $department->delete();
             }
@@ -155,6 +232,11 @@ class SysAdminController extends Controller
         }
     }
 
+    /**
+     * Takes in new details for a department, checks if the department exists and then save the changes
+     * If department does not exist, an error is thrown.
+     * @param Request $request
+     */
     public function updateDepartment(Request $request){
         $facultyId = $request->input('facultyId');
         $departmentId = $request->input('departmentId');
@@ -184,13 +266,57 @@ class SysAdminController extends Controller
        }
     }
 
+    /**
+     * Delete department with assosciated courses-courseworks-subcourseworks-section with all the maps
+     * @param Request $request
+     */
     public function deleteDepartment(Request $request){
         $departmentId = $request->input('departmentId');
         $department = Department::where('id', $departmentId)->first();
         if($department){
             $courses = $department->courses;
             foreach ($courses as $course) {
+                foreach ($course->courseworks as $coursework) {
+                    foreach ($coursework->subCourseworks as $subCoursework) {
+                        foreach ($subCoursework->sections as $section) {
+                            foreach ($section->userMarkMap as $map) {
+                                $map->delete();
+                            }
+                            $section->delete();
+                        }
+                        $subCoursework->delete();
+                    }
+                    $coursework->delete();
+                }
+                foreach ($course->students as $studentMap) {
+                    $studentMap->delete();
+                }
+                foreach ($course->teachingAssistants as $teachingAssistantMap) {
+                    $teachingAssistantMap->delete();
+                }
+                foreach ($course->lecturer as $lecturerMap) {
+                    $lecturerMap->delete();
+                }
+                foreach ($course->convenors as $convenorMap) {
+                    $convenorMap->delete();
+                }
+                foreach ($course->finalGrades as $gradeMap) {
+                    $gradeMap->delete();
+                }
+                foreach ($course->subminimums as $subminimum) {
+                    foreach ($subminimum->subminimumRows as $subminimumRow) {
+                        $subminimumRow->delete();
+                    }
+                    $subminimum->delete();
+                }
                 $course->delete();
+
+            }
+            foreach ($department->adminMaps as $adminMap) {
+                $adminMap->delete();
+            }
+            foreach ($department->users as $userMap) {
+                $userMap->delete();
             }
             $department->delete();
         } else {
@@ -198,11 +324,24 @@ class SysAdminController extends Controller
         }
     }
 
+    /**
+     * utility method that works same way as 'LIKE' in sql. compares 2 strings.
+     * @param $haystack
+     * @param $needle
+     * @return bool
+     */
     private function isSimilar($haystack, $needle){
         $pos = strpos(strtolower($haystack), strtolower($needle));
         return ($pos===0||$pos>=1) || strtolower($haystack)==strtolower($needle);
     }
 
+    /**
+     *
+     * get all the courses for the current year. It is used to rended the courses page of the
+     * system admin.
+     * @param Request $request
+     * @return $this
+     */
     public function getCourses(Request $request){
         if($request->input('courseYear')){
             $currentYear = date($request->input('courseYear').'-01-01');
@@ -241,6 +380,11 @@ class SysAdminController extends Controller
         return view('systemadmin.courses')->with('courses', $courses);
     }
 
+    /**
+     * Utility method for the admin to reset someone's password using his email address
+     * bcrypt is used to hash the password
+     * @param Request $request
+     */
     public function resetPassword(Request $request){
         $email = $request->input('email');
         $user = User::where('email', $email)->first();
@@ -456,6 +600,11 @@ class SysAdminController extends Controller
 
     }
 
+    /**
+     * Creates a course using the details passed in the request object.
+     *
+     * @param Request $request
+     */
     public function createCourse(Request $request){
         $name = $request->input('name');
         $code = $request->input('code');
@@ -491,6 +640,10 @@ class SysAdminController extends Controller
         $course->save();
     }
 
+    /**
+     * deletes a course with all it associated contents such as coursework, subcoursework etc
+     * @param Request $request
+     */
     public function deleteCourse(Request $request){
         $courseId = $request->input('courseId');
 
@@ -515,6 +668,15 @@ class SysAdminController extends Controller
                 $subcoursework->delete();
             }
             $coursework->delete();
+        }
+        foreach ($course->finalGrades as $gradeMap) {
+            $gradeMap->delete();
+        }
+        foreach ($course->subminimums as $subminimum) {
+            foreach ($subminimum->subminimumRows as $subminimumRow) {
+                $subminimumRow->delete();
+            }
+            $subminimum->delete();
         }
         $course->delete();
     }
@@ -547,7 +709,8 @@ class SysAdminController extends Controller
     }
 
     /**
-     *
+     * Takes in an email address, looks for the account and marks it as approved.
+     * @param Request $request
      */
     public function approveByEmail(Request $request){
         $email = $request->input('email');
@@ -563,6 +726,10 @@ class SysAdminController extends Controller
         throwException();
     }
 
+    /**
+     * takes in an email address, loooks for the account and marks it as unapproved. account can no longer log in.
+     * @param Request $request
+     */
     public function rejectAccount(Request $request){
         $email = $request->input('email');
 
@@ -577,6 +744,10 @@ class SysAdminController extends Controller
         throwException();
     }
 
+    /**
+     * takes in a question and answer. and then creates an entry in the FAQuestion table
+     * @param Request $request
+     */
     public function addFAQ(Request $request){
         $question = $request->input('question');
         $answer = $request->input('answer');
@@ -589,6 +760,10 @@ class SysAdminController extends Controller
         }
     }
 
+    /**
+     * get all the FAQs
+     * @return array
+     */
     public function getFAQs(){
         $faqs = [];
         foreach (FAQuestion::all() as $faq) {
@@ -601,6 +776,10 @@ class SysAdminController extends Controller
         return $faqs;
     }
 
+    /**
+     * Takes in a FAQ id, new question and new answer. The existing FAQ is then looked for and updated.
+     * @param Request $request
+     */
     public function updateFAQ(Request $request){
         $id = $request->input('id');
         $question = $request->input('question');
@@ -616,6 +795,10 @@ class SysAdminController extends Controller
         }
     }
 
+    /**
+     * takes in a FAQ id and then delete the FAQ
+     * @param Request $request
+     */
     public function deleteFAQ(Request $request){
         $id = $request->input('id');
 
@@ -627,6 +810,12 @@ class SysAdminController extends Controller
         }
     }
 
+    /**
+     * takes in an email address and then returns the accounts detail.
+     * useful for the system admin to determine whether to approve an account or not.
+     * @param Request $request
+     * @return mixed
+     */
     public function getAccount(Request $request){
         $email = $request->input('email');
 
