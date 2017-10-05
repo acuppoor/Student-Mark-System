@@ -997,7 +997,7 @@ class LecturerController extends Controller
     public function getConvenors(Request $request){
         $courseId = $request->input('courseId');
         $convenorMaps = ConvenorCourseMap::where('course_id', $courseId)->get();
-        $convenors = qqqqqqqqqqqqqqqqqq;
+        $convenors = [];
         foreach ($convenorMaps as $convenorMap) {
             $convenor = [];
             $user = $convenorMap->user;

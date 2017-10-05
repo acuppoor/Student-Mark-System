@@ -15,12 +15,12 @@ class CreateCoursesTable extends Migration
     {
         Schema::create('courses', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
+            $table->string('name')->default('-');
             $table->string('code');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->integer('term_number');
             $table->date('start_date');
-            $table->date('end_date');
+            $table->date('end_date')->nullable();
             $table->integer('type_id');
             $table->integer('department_id');
             $table->timestamps();

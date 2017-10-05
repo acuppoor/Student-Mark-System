@@ -182,7 +182,7 @@ $(document).ready(function(){
                 weighting: weighting
             },
             success:function(data){
-                successOperation(thisElement);
+                successOperation(thisElement, false);
             },
             error:function(data){
                 failOperation(thisElement);
@@ -216,7 +216,7 @@ $(document).ready(function(){
                 type: type
             },
             success:function(data){
-                successOperation(thisElement);
+                successOperation(thisElement), false;
             },
             error:function(data){
                 failOperation(thisElement);
@@ -247,7 +247,7 @@ $(document).ready(function(){
                 maxMarks: maxMarks
             },
             success:function(data){
-                successOperation(thisElement);
+                successOperation(thisElement, false);
             },
             error:function(data){
                 failOperation(thisElement);
@@ -290,7 +290,7 @@ $(document).ready(function(){
                 releaseDate: releaseDate
             },
             success:function(data){
-                successOperation(thisElement);
+                successOperation(thisElement, false);
             },
             error:function(data){
                 failOperation(thisElement);
@@ -332,7 +332,7 @@ $(document).ready(function(){
                 releaseDate: releaseDate
             },
             success:function(data){
-                successOperation(thisElement);
+                successOperation(thisElement, false);
             },
             error:function(data){
                 failOperation(thisElement);
@@ -361,7 +361,8 @@ $(document).ready(function(){
                 userIds:userIds
             },
             success:function(data){
-                successOperation(thisElement);
+                successOperation(thisElement, false);
+                $('#refreshTAsList').click();
             },
             error:function(data){
                 failOperation(thisElement);
@@ -389,7 +390,8 @@ $(document).ready(function(){
                 userIds:userIds
             },
             success:function(data){
-                successOperation(thisElement);
+                successOperation(thisElement, false);
+                $('#refreshStudentsList').click();
             },
             error:function(data){
                 failOperation(thisElement);
@@ -417,7 +419,8 @@ $(document).ready(function(){
                 userIds:userIds
             },
             success:function(data){
-                successOperation(thisElement);
+                successOperation(thisElement, false);
+                $('#refreshLecturersList').click();
             },
             error:function(data){
                 failOperation(thisElement);
@@ -445,7 +448,8 @@ $(document).ready(function(){
                 userIds:userIds
             },
             success:function(data){
-                successOperation(thisElement);
+                successOperation(thisElement, false);
+                $('#refreshConvenorsList').click();
             },
             error:function(data){
                 failOperation(thisElement);
@@ -477,7 +481,8 @@ $(document).ready(function(){
                 courseId: courseId
             },
             success:function(data){
-                successOperation(thisElement);
+                successOperation(thisElement, false);
+                $('#refreshTAsList').click();
             },
             error:function(data){
                 failOperation(thisElement);
@@ -523,7 +528,8 @@ $(document).ready(function(){
                 courseId: courseId
             },
             success:function(data){
-                successOperation(thisElement, true);
+                successOperation(thisElement, false);
+                $('#refreshLecturersList').click();
             },
             error:function(data){
                 failOperation(thisElement);
@@ -562,7 +568,8 @@ $(document).ready(function(){
                 courseId: courseId
             },
             success:function(data){
-                successOperation(thisElement, true);
+                successOperation(thisElement, false);
+                $('#refreshConvenorsList').click();
             },
             error:function(data){
                 failOperation(thisElement);
@@ -598,6 +605,7 @@ $(document).ready(function(){
             },
             success:function(data){
                 successOperation(thisElement, false);
+                $('#searchParticipantsButton').click();
             },
             error:function(data){
                 failOperation(thisElement);
@@ -633,7 +641,7 @@ $(document).ready(function(){
                 data:sections
             },
             success:function(data){
-                successOperation(thisElement);
+                successOperation(thisElement, false);
             },
             error:function(data){
                 failOperation(thisElement);
@@ -800,38 +808,49 @@ $(document).ready(function(){
         var rowId = $(this).data('subminimumid');
         var thisElement = $(this);
 
-        $.ajax({
-            type: 'POST',
-            url: '/deletesubminimum',
-            data:{
-                id: rowId
-            },
-            success:function(data){
-                successOperation(thisElement, true);
-            },
-            error:function(data){
-                failOperation(thisElement);
-            }
-        });
+        var confirmation = confirm('Are you sure you want to delete the subminimum? This may affect the DP calculation.');
+        if(confirmation) {
+            $.ajax({
+                type: 'POST',
+                url: '/deletesubminimum',
+                data: {
+                    id: rowId
+                },
+                success: function (data) {
+                    successOperation(thisElement, true);
+                },
+                error: function (data) {
+                    failOperation(thisElement);
+                }
+            });
+        } else {
+            nullOperation(thisElement);
+        }
     });
 
     $('.deleteRowButton').click(function(){
         var rowId = $(this).data('rowid');
         var thisElement = $(this);
 
-        $.ajax({
-            type: 'POST',
-            url: '/deletesubminimumrow',
-            data:{
-                id: rowId
-            },
-            success:function(data){
-                successOperation(thisElement, true);
-            },
-            error:function(data){
-                failOperation(thisElement);
-            }
-        });
+        var confirmation = confirm('Are you sure you want to delete the subminimum row? This may affect the DP calculation.');
+
+        if(confirmation) {
+            $.ajax({
+                type: 'POST',
+                url: '/deletesubminimumrow',
+                data: {
+                    id: rowId
+                },
+                success: function (data) {
+                    successOperation(thisElement, true);
+                },
+                error: function (data) {
+                    failOperation(thisElement);
+                }
+            });
+        } else {
+            nullOperation(thisElement);
+        }
     });
 
     $('#newRowButton').click(function(){
@@ -925,11 +944,12 @@ $(document).ready(function(){
                 }
                 dataString += '</tbody>';
                 $('#TAsListResultsBody').replaceWith(dataString);
+                refreshDone(thisElement);
             },
             error: function(data){
+                refreshDone(thisElement);
             }
         });
-        refreshDone(thisElement);
     });
 
     $('#refreshStudentsList').click(function(){
@@ -961,11 +981,12 @@ $(document).ready(function(){
                 }
                 dataString += '</tbody>';
                 $('#studentsListResultsBody').replaceWith(dataString);
+                refreshDone(thisElement);
             },
             error: function(data){
+                refreshDone(thisElement);
             }
         });
-        refreshDone(thisElement);
     });
 
     $('#refreshLecturersList').click(function(){
@@ -997,11 +1018,13 @@ $(document).ready(function(){
                 }
                 dataString += '</tbody>';
                 $('#lecturersListResultsBody').replaceWith(dataString);
+                refreshDone(thisElement);
             },
             error: function(data){
+                refreshDone(thisElement);
             }
         });
-        refreshDone(thisElement);
+
     });
 
     $('.refreshSpin').click(function(){
@@ -1009,7 +1032,7 @@ $(document).ready(function(){
     });
 
     function refreshDone(element){
-        element.children('#refreshPlaceholder').replaceWith('<i class="fa fa-check-circle"></i>');
+        element.children('#refreshPlaceholder').replaceWith('<i id="refreshPlaceholder" class="fa fa-check-circle"></i>');
     }
 
     $('#refreshConvenorsList').click(function(){
@@ -1042,11 +1065,12 @@ $(document).ready(function(){
                 }
                 dataString += '</tbody>';
                 $('#convenorsListResultsBody').replaceWith(dataString);
+                refreshDone(thisElement);
             },
             error: function(data){
+                refreshDone(thisElement);
             }
         });
-        refreshDone(thisElement);
     });
 
     $('.spinnerNeeded').click(function(){
@@ -1057,19 +1081,27 @@ $(document).ready(function(){
     $('.deleteCourseworkButton').click(function(){
         var courseworkid = $(this).data('courseworkid');
         var thisElement = $(this);
-        $.ajax({
-            type: 'POST',
-            url: '/deletecoursework',
-            data:{
-                courseworkId: courseworkid,
-            },
-            success:function(data){
-                successOperation(thisElement, true);
-            },
-            error:function(data){
-                failOperation(thisElement);
-            }
-        });
+
+        var confirmation = confirm('Are you sure you want to delete the coursework? All the assosciated contents such as ' +
+            'subcoursework, sections and marks will be deleted and this is not reversible.')
+
+        if(confirmation) {
+            $.ajax({
+                type: 'POST',
+                url: '/deletecoursework',
+                data: {
+                    courseworkId: courseworkid,
+                },
+                success: function (data) {
+                    successOperation(thisElement, true);
+                },
+                error: function (data) {
+                    failOperation(thisElement);
+                }
+            });
+        } else {
+            nullOperation(thisElement);
+        }
     });
 
     $('#createSectionButtonModal').click(function(){
@@ -1087,7 +1119,7 @@ $(document).ready(function(){
                 subcourseworkId: subcourseworkId
             },
             success:function(data){
-                successOperation(thisElement);
+                successOperation(thisElement, true);
                 $('#sectionMaxMarks').val("");
                 $('#sectionName').val("");
                 $('#subcourseworkId').val("");
@@ -1105,37 +1137,52 @@ $(document).ready(function(){
     $('.deleteSection').click(function(){
         var sectionid = $(this).data('sectionid');
         var thisElement = $(this);
-        $.ajax({
-            type: 'POST',
-            url: '/deletesection',
-            data:{
-                sectionId: sectionid,
-            },
-            success:function(data){
-                successOperation(thisElement);
-            },
-            error: function(data){
-                failOperation(thisElement);
-            }
-        });
+
+        var confirmation = confirm('Are you sure you want to delete the section? All students\' marks assosciated to that' +
+            ' will be lost.');
+
+        if(confirmation) {
+            $.ajax({
+                type: 'POST',
+                url: '/deletesection',
+                data: {
+                    sectionId: sectionid,
+                },
+                success: function (data) {
+                    successOperation(thisElement, true);
+                },
+                error: function (data) {
+                    failOperation(thisElement);
+                }
+            });
+        } else {
+            nullOperation(this);
+        }
     });
 
     $('.deleteSubcoursework').click(function(){
         var subcourseworkid = $(this).data('subcourseworkid');
         var thisElement = $(this);
-        $.ajax({
-            type: 'POST',
-            url: '/deletesubcoursework',
-            data:{
-                subcourseworkId: subcourseworkid,
-            },
-            success:function(data){
-                successOperation(thisElement);
-            },
-            error:function(data){
-                failOperation(thisElement);
-            }
-        });
+
+        var confirmation = confirm('Are you sure you want to delete the subcoursework? All assosciated contents will be deleted.');
+
+        if(confirmation) {
+            $.ajax({
+                type: 'POST',
+                url: '/deletesubcoursework',
+                data: {
+                    subcourseworkId: subcourseworkid,
+                },
+                success: function (data) {
+                    successOperation(thisElement, true);
+                },
+                error: function (data) {
+                    failOperation(thisElement);
+                }
+            });
+        } else {
+            nullOperation(this);
+        }
     });
 
     $('#createSubcourseworkButtonModal').click(function(){
@@ -1167,7 +1214,7 @@ $(document).ready(function(){
                 $('#subcourseworkWeighting').val("");
                 $('#subcourseworkDisplayMarks').val("");
                 $('#subcourseworkDisplayPercentage').val("");
-                successOperation(thisElement);
+                successOperation(thisElement, true);
             },
             error:function(data){
                 failOperation(thisElement);
@@ -1203,7 +1250,7 @@ $(document).ready(function(){
                 courseId: courseId
             },
             success:function(data){
-                successOperation(thisElement);
+                successOperation(thisElement, false);
             },
             error:function(data){
                 failOperation(thisElement);
@@ -1453,9 +1500,6 @@ $(document).ready(function(){
             success: function (data) {
                 var dataString ='<tbody id="searchParticipantsResultsBody">';
                 for(var i = 0; i < data.length; i++) {
-//                            if (data[i].firstName == 'undefined') {
-//                                break;
-//                            }
                     dataString += '<tr class="even pointer">' +
                         '<td class="a-center table-row">' +
                         '<input type="checkbox" class="searchParticipantsResultsCheckbox" data-userid="' + data[i].id + '">' +
@@ -1507,7 +1551,7 @@ $(document).ready(function(){
                 term: courseTerm
             },
             success: function (data) {
-                successOperation(thisElement, true);
+                successOperation(thisElement, false);
             },
             error: function (data){
                 failOperation(thisElement);
@@ -1542,6 +1586,7 @@ $(document).ready(function(){
             },
             success: function (data) {
                 successOperation(thisElement, true);
+                $('#convenorEmailAddress').val('')
             },
             error: function(data){
                 failOperation(thisElement);
@@ -1567,6 +1612,7 @@ $(document).ready(function(){
             },
             success: function (data) {
                 successOperation(thisElement, true);
+                $('#lecturerEmailAddress').val('');
             },
             error: function(data){
                 failOperation(thisElement);
@@ -1592,6 +1638,7 @@ $(document).ready(function(){
             },
             success: function (data) {
                 successOperation(thisElement, true);
+                $('#taEmailAddress').val('');
             },
             error: function(data){
                 failOperation(thisElement);
@@ -1599,4 +1646,8 @@ $(document).ready(function(){
         });
 
     });
+
+    function nullOperation(element){
+        element.children('.spinnerPlaceholder').replaceWith('<i class="spinnerPlaceholder"></i>');
+    }
 })
