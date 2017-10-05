@@ -150,33 +150,5 @@
             }
         });
 
-        /*var courseCode = $('#courseCode').val();
-        var courseType = $('#courseType').val();
-        var courseYear = $('#courseYear').val();
-        var courseDepartment = $('#courseDepartment').val();
-        var token = $('#_token').val();
-
-        $(document).ready(function(){
-            $('#searchButton').click(function(){
-                $.ajax({
-                    type: 'POST',
-                    url: 'tacourses/filter',
-                    data: {
-                        _token: token,
-                        courseCode: courseCode,
-                        courseType: courseType,
-                        courseYear: courseYear,
-                        courseDepartment: courseDepartment
-                    },
-                    success: function (data) {
-                        loadContent(data);
-                    }
-                });
-            });
-
-            function loadContent(data){
-                console.log(data);
-            }
-        });*/
     </script>
 @endsection

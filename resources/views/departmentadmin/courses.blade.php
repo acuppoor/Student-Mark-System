@@ -241,21 +241,23 @@
                 var confirmation = confirm('Are you sure you want to delete the course? All its courseworks, subcourseworks and ' +
                     'sections will be deleted permanently.');
 
-                if(!confirmation){
+                if(confirmation) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/deletecourse',
+                        data:{courseId: courseId},
+                        success: function (data) {
+                            successOperation(thisElement, true);
+                        },
+                        error: function (data) {
+                            failOperation(thisElement);
+                        }
+                    });
+                } else {
                     nullOperation(thisElement);
                     return;
                 }
-                $.ajax({
-                    type: 'POST',
-                    url: '/deletecourse',
-                    data:{courseId: courseId},
-                    success: function (data) {
-                        successOperation(thisElement);
-                    },
-                    error: function (data) {
-                        failOperation(thisElement);
-                    }
-                });
+
             });
 
             $('#createCourseButton').click(function(){
@@ -281,7 +283,7 @@
                         term: courseTerm
                     },
                     success: function (data) {
-                        successOperation(thisElement);
+                        successOperation(thisElement, true);
                         $('#courseName').val('');
                         $('#courseCode').val('');
                         $('#courseStartDate').val("{{date('Y-m-d')}}");
@@ -295,8 +297,10 @@
                 });
             });
 
-            function successOperation(element){
-                document.getElementById('reloadPageButton').style.display = 'block';
+            function successOperation(element, showReload){
+                if(showReload) {
+                    document.getElementById('reloadPageButton').style.display = 'block';
+                }
                 element.children('.spinnerPlaceholder').replaceWith('<i class="spinnerPlaceholder fa fa-check-circle"></i>');
             }
 

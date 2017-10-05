@@ -254,8 +254,6 @@
                     'sections will be deleted permanently.');
 
                 if(confirmation) {
-
-
                     $.ajax({
                         type: 'POST',
                         url: '/deletecourse',
@@ -297,7 +295,7 @@
                         department: department
                     },
                     success: function (data) {
-                        successOperation(thisElement);
+                        successOperation(thisElement, true);
                         $('#courseName').val('');
                         $('#courseCode').val('');
                         $('#courseStartDate').val("{{date('Y-m-d')}}");

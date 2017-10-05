@@ -90,7 +90,7 @@ class RegisterController extends Controller
             $user->password = bcrypt($data['password']);
             $user->account_registered = 1;
             $user->save();
-        } else {
+        } else if($user && $user->account_registered == 0){
             $user->first_name = $data['firstName'];
             $user->last_name = $data['lastName'];
             $user->email = $data['email'];

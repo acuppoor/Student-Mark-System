@@ -285,24 +285,23 @@
                 var thisElement = $(this);
                 var confirmation = confirm('Are you sure you want to delete the department? All its' +
                     ' courses will be deleted!');
-                if(!confirmation){
+                if(confirmation) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/deletedepartment',
+                        data:{
+                            departmentId: departmentId
+                        },
+                        success: function (data) {
+                            successOperation(thisElement, true);
+                        },
+                        error: function (data) {
+                            failOperation(thisElement);
+                        }
+                    });
+                } else {
                     nullOperation(thisElement);
-                    return;
                 }
-
-                $.ajax({
-                    type: 'POST',
-                    url: '/deletedepartment',
-                    data:{
-                        departmentId: departmentId
-                    },
-                    success: function (data) {
-                        successOperation(thisElement);
-                    },
-                    error: function (data) {
-                        failOperation(thisElement);
-                    }
-                });
             });
 
             $('.saveDepartmentButton').click(function(){
@@ -335,7 +334,7 @@
                         userIds: userIds
                     },
                     success: function (data) {
-                        successOperation(thisElement);
+                        successOperation(thisElement, false);
                     },
                     error: function (data) {
                         failOperation(thisElement);
@@ -348,24 +347,23 @@
                 var thisElement = $(this);
                 var confirmation = confirm('Are you sure you want to delete the faculty? All its' +
                     ' departments and courses will be deleted!');
-                if(!confirmation){
+                if(confirmation) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/deletefaculty',
+                        data:{
+                            facultyId: facultyId
+                        },
+                        success: function (data) {
+                            successOperation(thisElement);
+                        },
+                        error: function (data) {
+                            failOperation(thisElement);
+                        }
+                    });
+                } else {
                     nullOperation(thisElement);
-                    return;
                 }
-
-                $.ajax({
-                    type: 'POST',
-                    url: '/deletefaculty',
-                    data:{
-                        facultyId: facultyId
-                    },
-                    success: function (data) {
-                        successOperation(thisElement);
-                    },
-                    error: function (data) {
-                        failOperation(thisElement);
-                    }
-                });
             });
 
             $('.saveFacultyButton').click(function(){
@@ -382,7 +380,7 @@
                         name: newName
                     },
                     success: function (data) {
-                        successOperation(thisElement);
+                        successOperation(thisElement, false);
                     },
                     error: function (data) {
                         failOperation(thisElement);
@@ -405,7 +403,7 @@
                         facultyId: facultyId
                     },
                     success:function (data) {
-                        successOperation(thisElement);
+                        successOperation(thisElement, true);
                     },
                     error: function (data) {
                         failOperation(thisElement);
@@ -483,7 +481,7 @@
                         email:email
                     },
                     success: function(data){
-                        successOperation(thisElement);
+                        successOperation(thisElement, true);
                     },
                     error: function(data){
                         failOperation(thisElement);

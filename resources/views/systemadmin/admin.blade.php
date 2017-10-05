@@ -218,19 +218,25 @@
                 var id = $(this).data('id');
                 var thisElement = $(this);
 
-                $.ajax({
-                    type: 'POST',
-                    url: '/deletefaq',
-                    data: {
-                        id: id
-                    },
-                    success: function (data) {
-                        successOperation(thisElement, true);
-                    },
-                    error: function (data) {
-                        failOperation(thisElement);
-                    }
-                })
+                var confirmation = confirm('Are you sure you want to delete the FAQ?');
+
+                if(confirmation) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/deletefaq',
+                        data: {
+                            id: id
+                        },
+                        success: function (data) {
+                            successOperation(thisElement, true);
+                        },
+                        error: function (data) {
+                            failOperation(thisElement);
+                        }
+                    })
+                } else {
+                    nullOperation(thisElement);
+                }
             });
 
             $('.saveFAQButton').click(function () {
@@ -332,6 +338,8 @@
                     },
                     success: function (data) {
                         successOperation(thisElement, false);
+                        $('#emailAddressPwdReset').val('');
+                        $('#passwordPwdReset').val('');
                     },
                     error: function (data) {
                         failOperation(thisElement);
@@ -348,6 +356,10 @@
 
             function failOperation(element) {
                 element.children('.spinnerPlaceholder').replaceWith('<i class="spinnerPlaceholder fa fa-times-circle"></i>');
+            }
+
+            function nullOperation(element){
+                element.children('.spinnerPlaceholder').replaceWith('<i class="spinnerPlaceholder"></i>');
             }
         });
 
