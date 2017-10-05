@@ -89,6 +89,8 @@ Route::post('/updatepersonalinfo', 'PagesController@updatePersonalInfo');
 Route::post('/updatefaq', 'PagesController@updateFAQ');
 Route::post('/deletefaq', 'PagesController@deleteFAQ');
 
+Route::post('/getaccount', 'PagesController@getAccount');
+
 Route::get('/admin', 'PagesController@admin')->name("admin");
 Route::get('/faculties&departments', 'PagesController@faculties')->name("faculties");
 

@@ -89,6 +89,69 @@
                 <div class="col-md-12">
                     <div class="x_panel" style="height: auto;">
                         <div class="x_title">
+                            <h2>Search Account</h2>
+                            <ul class="nav navbar-right panel_toolbox">
+                                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                </li>
+                            </ul>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content collapse" style="display: block;">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label for="">Email*:</label>
+                                    <input type="email" class="form-control" id="emailAddressSearch">
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="">&nbsp;</label><br>
+                                    <button class="btn btn-dark btn-round spinnerNeeded" id="searchAccountButton" type="button">
+                                        <i class="spinnerPlaceholder"></i>
+                                        <i class="fa fa-search"></i>
+                                        Search
+                                    </button>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label for="">First Name:</label>
+                                            <input type="text" class="form-control" id="firstName" disabled>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="">Last Name:</label>
+                                            <input type="text" class="form-control" id="lastName" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label for="">Student/Staff Number:</label>
+                                            <input type="text" class="form-control" id="studentNumber" disabled>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="">Employee Id:</label>
+                                            <input type="text" class="form-control" id="employeeId" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label for="">Email:</label>
+                                            <input type="email" class="form-control" id="emailAddress" disabled>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="">Role:</label>
+                                            <input type="text" class="form-control" id="role" disabled>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="x_panel" style="height: auto;">
+                        <div class="x_title">
                             <h2>Reject Account</h2>
                             <ul class="nav navbar-right panel_toolbox">
                                 <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
@@ -213,6 +276,42 @@
             }
         });
         $(document).ready(function() {
+
+            $('#searchAccountButton').click(function(){
+                var thisElement = $(this);
+                var email = $('#emailAddressSearch').val();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/getaccount',
+                    data: {
+                        email:email
+                    },
+                    success: function (data) {
+                        successOperation(thisElement, false);
+                        $('#firstName').val(data.firstName);
+                        $('#lastName').val(data.lastName);
+                        $('#studentNumber').val(data.studentNumber);
+                        $('#employeeId').val(data.employeeId);
+                        $('#emailAddress').val(data.email);
+                        $('#role').val(data.role);
+
+                    },
+                    error: function (data) {
+                        failOperation(thisElement);
+                    }
+                })
+            });
+
+            $('#emailAddressSearch').change(function () {
+
+                $('#firstName').val('');
+                $('#lastName').val('');
+                $('#studentNumber').val('');
+                $('#employeeId').val('');
+                $('#emailAddress').val('');
+                $('#role').val('');
+            });
 
             $('.deleteFAQButton').click(function () {
                 var id = $(this).data('id');

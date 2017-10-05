@@ -10,7 +10,7 @@
         <div class="col-md-6">
             <div class="panel panel-default" style="opacity: 0.9">
                 <div class="panel-heading">
-                    <div class="section-heading text-center">
+                    <div class="section-heading text-center" style="padding-top: 2%">
                         <h2>Register</h2>
                         <hr>
                     </div>

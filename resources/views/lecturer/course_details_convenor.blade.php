@@ -951,7 +951,7 @@
                                                                                                 </h4>
                                                                                             </a>
                                                                                             <div id="collapseTwo{{$count.''.$count.$subcoursework['id']}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo{{$count.''.$count.$subcoursework['id']}}" aria-expanded="false" style="height: 0px;">
-                                                                                                <div class="panel-body">
+                                                                                                <div class="panel-body border-needed">
                                                                                                     <table class="table table-striped jambo_table bulk_action">
                                                                                                         <tbody>
                                                                                                         <tr class="even pointer">
@@ -986,7 +986,7 @@
                                                                                                 <h4 class="panel-title">
                                                                                                     <div class="row">
                                                                                                         <div class="col-md-5">
-                                                                                                            Settings
+                                                                                                            Sections
                                                                                                         </div>
                                                                                                         <div class="col-md-7" style="text-align: right">
                                                                                                             <i class="fa fa-angle-double-down" style="text-align: right"></i>
@@ -995,7 +995,7 @@
                                                                                                 </h4>
                                                                                             </a>
                                                                                             <div id="collapseTwo{{$count.''.$count.$subcoursework['id'].$subcount}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo{{$count.''.$count.$subcoursework['id'].$subcount}}" aria-expanded="false" style="height: 0px;">
-                                                                                                <div class="panel-body">
+                                                                                                <div class="panel-body border-needed">
                                                                                                     @foreach($subcoursework['sections'] as $section)
                                                                                                         <table class="table table-striped jambo_table bulk_action">
                                                                                                             <tbody>

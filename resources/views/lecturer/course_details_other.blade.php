@@ -540,7 +540,7 @@
                                                                                                 </h4>
                                                                                             </a>
                                                                                             <div id="collapseTwo{{$count.''.$count.$subcoursework['id']}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo{{$count.''.$count.$subcoursework['id']}}" aria-expanded="false" style="height: 0px;">
-                                                                                                <div class="panel-body">
+                                                                                                <div class="panel-body border-needed">
                                                                                                     <table class="table table-striped jambo_table bulk_action">
                                                                                                         <tbody>
                                                                                                         <tr class="even pointer">
@@ -584,7 +584,7 @@
                                                                                                 </h4>
                                                                                             </a>
                                                                                             <div id="collapseTwo{{$count.''.$count.$subcoursework['id'].$subcount}}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo{{$count.''.$count.$subcoursework['id'].$subcount}}" aria-expanded="false" style="height: 0px;">
-                                                                                                <div class="panel-body">
+                                                                                                <div class="panel-body border-needed">
                                                                                                     @foreach($subcoursework['sections'] as $section)
                                                                                                         <table class="table table-striped jambo_table bulk_action">
                                                                                                             <tbody>

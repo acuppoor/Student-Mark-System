@@ -10,6 +10,7 @@ use App\Faculty;
 use App\FAQuestion;
 use App\FinalGradeType;
 use App\LecturerCourseMap;
+use App\Role;
 use App\SectionUserMarkMap;
 use App\TACourseMap;
 use App\User;
@@ -624,5 +625,23 @@ class SysAdminController extends Controller
         } else {
             throwException();
         }
+    }
+
+    public function getAccount(Request $request){
+        $email = $request->input('email');
+
+        $user = User::where('email', $email)->first();
+        $result = [];
+        if($user){
+            $result['firstName'] = $user->first_name;
+            $result['lastName'] = $user->last_name;
+            $result['studentNumber'] = $user->student_number;
+            $result['employeeId'] = $user->employee_id;
+            $result['email'] = $user->email;
+            $result['role'] = Role::where('id', $user->role_id)->first()->role;
+        } else {
+            throwException();
+        }
+        return Response::json($result);
     }
 }

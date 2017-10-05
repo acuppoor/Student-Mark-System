@@ -1678,4 +1678,15 @@ class PagesController extends Controller
         return app('App\Http\Controllers\SysAdminController')->deleteFAQ($request);
     }
 
+    public function getAccount(Request $request){
+        if(Auth::user()->approved != 1){
+            Auth::logout();
+            return view('auth.login')->with('accountNotApproved', "Your account has not been approved yet. Please send an email on xpy@marksystem.co.za");
+        }
+        if(Auth::user()->role_id != 6){
+            throwException();
+        }
+        return app('App\Http\Controllers\SysAdminController')->getAccount($request);
+    }
+
 }

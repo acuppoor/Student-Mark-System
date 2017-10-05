@@ -642,6 +642,7 @@ $(document).ready(function(){
             },
             success:function(data){
                 successOperation(thisElement, false);
+                $('#searchSubcourseworkMarkButton').click();
             },
             error:function(data){
                 failOperation(thisElement);

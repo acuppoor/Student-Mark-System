@@ -1,3 +1,8 @@
-.panel-body{
+.border-needed{
     border: 1px solid black;
+}
+
+.btn-warning{
+    background-color: #23527c;
+    border-color: #23527c;
 }
