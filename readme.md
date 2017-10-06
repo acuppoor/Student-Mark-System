@@ -3,11 +3,21 @@
 email: ```admin@admin.ac.za```
 password: ```1234567```
 
+########## Developers (Team Members) Details #####
+
+Team Leader: CUPPOOR Kushal, CPPKUS001;
+
+2nd Member: PAIDEYA Shanay, PDYSHA008;
+
+3rd Member: WOODMAN Dillon, WDMDIL001
+
 
 ################# Running the Website ######################################################################################
 Two ways:
 1st one is using docker; 
+
 please refer to other sections
+
 2nd one: run on an ubuntu terminal: ```$ php artisan serve```
 
 ################# Install Docker ###########################################################################################
