@@ -1,7 +1,13 @@
+########## System Admin Login Details #######
+
+email: ```admin@admin.ac.za```
+password: ```1234567```
+
+
 ################# Running the Website ######################################################################################
-Two ways: <br/><br/>
-1st one is using docker;<br/> 
-please refer to other sections<br/>
+Two ways:
+1st one is using docker; 
+please refer to other sections
 2nd one: run on an ubuntu terminal: ```$ php artisan serve```
 
 ################# Install Docker ###########################################################################################

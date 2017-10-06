@@ -30,11 +30,11 @@ class CreateUsersTable extends Migration
 
         DB::table('users')->insert(
             array(
-                'first_name' => 'Kushal',
-                'last_name' => 'Cuppoor',
-                'student_number' => 'cppkus001',
+                'first_name' => 'Admin',
+                'last_name' => 'Admin',
+                'student_number' => 'admadmadm',
                 'employee_id' => 1234567,
-                'email' => 'cppkus001@myuct.ac.za',
+                'email' => 'admin@admin.ac.za',
                 'password' => bcrypt('1234567'),
                 'account_registered' => 1,
                 'role_id' => 6,

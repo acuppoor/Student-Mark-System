@@ -604,8 +604,11 @@ class LecturerController extends Controller
      * @return array
      */
     public function getOtherCourses(Request $request){
-        $departmentCourses = Auth::user()->departmentMaps->first()->department->courses;
-
+        $departmentCourses = Auth::user()->departmentMaps->first();
+        if (!$departmentCourses){
+            return [];
+        }
+        $departmentCourses = $departmentCourses->department->courses;
         $otherCourses = array_merge($this->getLecturerCourses($request), $this->getConveningCourses($request));
         $courses = [];
 
