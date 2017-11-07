@@ -5,11 +5,7 @@ password: ```1234567```
 
 ########## Developers (Team Members) Details #####
 
-Team Leader: CUPPOOR Kushal, CPPKUS001;
-
-2nd Member: PAIDEYA Shanay, PDYSHA008;
-
-3rd Member: WOODMAN Dillon, WDMDIL001
+Developer: Cuppoor Kushal;
 
 
 ################# Running the Website ######################################################################################
